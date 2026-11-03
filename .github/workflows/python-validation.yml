@@ -1,0 +1,86 @@
+name: Multilingual Translation AI Inference - CPU Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  python-tests-without-gpu:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: translation_test
+          POSTGRES_PASSWORD: translation_test
+          POSTGRES_DB: translation_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U translation_test -d translation_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TRANSLATION_TEST_POSTGRESQL_URL: postgresql+psycopg://translation_test:translation_test@localhost:5432/translation_test
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install local development dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Test API, job orchestration and publication safety (CPU-only)
+        run: python -m pytest -q
+      - name: Static lint (Ruff)
+        run: python -m ruff check .
+      - name: Check import and syntax
+        run: python -m compileall -q src modal_app.py scripts
+
+  deployed-gateway-dependency-compatibility:
+    name: CPU tests with deployed gateway API versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install development environment with deployed API constraints
+        run: python -m pip install -c constraints/deployed-gateway.txt -e '.[dev]'
+      - name: Verify dependency consistency and CPU behavior
+        run: |
+          python -m pip check
+          python -m pytest -q
+          python -m ruff check .
+
+  quickstart-clean-install:
+    name: Quick Start install on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install only documented demo extra in an isolated environment
+        run: |
+          python -m venv .quickstart-venv
+          .quickstart-venv/bin/python -m pip install -e '.[demo]'
+      - name: Smoke-test local mock API without GPU, secrets or network requests
+        run: |
+          .quickstart-venv/bin/python scripts/examples/local_demo.py > "$RUNNER_TEMP/local-demo.txt"
+          .quickstart-venv/bin/python - <<'PY'
+          from pathlib import Path
+          output = Path(__import__("os").environ["RUNNER_TEMP"], "local-demo.txt").read_text()
+          assert "POST 202" in output, "Mock submission did not return HTTP 202"
+          assert "GET 200" in output, "Mock polling did not return HTTP 200"
+          assert "'is_mock_result': True" in output, "Mock response not clearly marked"
+          assert "MOCK ONLY" in output, "Mock output disclaimer missing"
+          print("Isolated Quick Start smoke PASS")
+          PY

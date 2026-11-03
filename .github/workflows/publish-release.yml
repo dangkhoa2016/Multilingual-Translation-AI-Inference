@@ -1,0 +1,134 @@
+name: Publish tagged release
+
+on:
+  push:
+    tags:
+      - "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  github-release:
+    if: github.repository == 'dangkhoa2016/Multilingual-Translation-AI-Inference'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0  # Keep complete source history available in tagged builds.
+
+      - name: Verify version tag and current main
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          test "$GITHUB_REF_NAME" = "v$version"
+          main_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          tagged_sha="$(git rev-parse HEAD)"
+          # Both new publications and updates to an existing Release must
+          # use the approved main HEAD. A stale, divergent or historical tag
+          # must never rewrite the public release notes.
+          test "$tagged_sha" = "$main_sha"
+
+      - name: Prepare bilingual release notes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from textwrap import dedent
+
+          version = Path("VERSION").read_text(encoding="utf-8").strip()
+          tag = os.environ["GITHUB_REF_NAME"]
+          repository = os.environ["GITHUB_REPOSITORY"]
+          if tag != f"v{version}":
+              raise ValueError("Tag and VERSION must match before publishing")
+
+          documents = ["README.md","README.vi.md","docs/development.md","docs/development.vi.md","docs/deployment.md","docs/deployment.vi.md","notebooks/translation_api_demo.ipynb","docs/security.md","docs/security.vi.md","docs/operations.md","docs/operations.vi.md"]
+          for document in documents:
+              if not Path(document).is_file():
+                  raise FileNotFoundError(f"Missing release documentation: {document}")
+          base = f"https://github.com/{repository}/blob/{tag}/"
+
+          english = """
+          ### v1.0.0 — Initial source release
+
+          **Multilingual Translation AI Inference 1.0.0** is the first versioned source release of a self-hosted translation inference toolkit for Modal. It combines an authenticated API gateway, durable PostgreSQL job orchestration, and four independently managed GPU model workers. The release is intended for developers, personal projects, and trusted single-tenant deployments.
+
+          ### Release highlights
+
+          - **Four translation backends:** Tencent Hy-MT2-30B-A3B, Index-Translate-35B-A3B-preview, Google Gemma 4 31B IT, and Qwen3.5-35B-A3B, with separately provisioned NVIDIA L40S workers and revision-pinned GGUF Q8_0 model artifacts.
+          - **Asynchronous translation and comparison:** submit a translation to one model or compare up to four, with persistent job results, polling, idempotency, and guarded recovery from uncertain execution.
+          - **Operational controls:** Bearer authentication, request throttling, PostgreSQL-backed admission and quota safeguards, and optional estimated GPU budget limits.
+          - **Self-hosting tools:** checksum-verified model manifests, an offline CPU mock demo, and opt-in provisioning of two Modal Secrets from one private configuration file. Manual Secret provisioning remains supported.
+          - **Developer resources:** bilingual English/Vietnamese documentation, a Jupyter API notebook, and CPU-only automated validation.
+          - **Notebook reliability and on-demand GPU reuse:** The API notebook uses an explicit User-Agent to avoid proxy rules that reject Python defaults, with safe HTTP 403 troubleshooting guidance. On-demand L40S workers use a 60-second idle scaledown window (`min_containers=0`) to reduce cold starts between rate-limited notebook requests; warm idle GPU time may incur charges.
+          - **One-click model-phase GPU benchmark:** Set `DEMO_MODE="offline"` for synthetic Run All or `DEMO_MODE="gpu"` for paid inference. The bilingual notebook defaults to English and offline simulation. Explicit GPU mode uses `BENCHMARK_SEQUENCE="per_model"` to warm each model then immediately measure the same three texts, reducing unnecessary cross-model idle. Four models use 16 actual API jobs (4 warm-ups and 12 measured); optional `"parallel"` preserves the original 5-job multi-model benchmark. Real job UUIDs remain private; comparison views are local. New timing fields identify confirmed same-container reuse and llama.cpp engine readiness when deployed, without inferring warmth from queue time. GPU costs, hidden Secrets, per-stage idempotency and GET-only recovery are documented. Automatic per-kernel `DEMO_RUN_ID` avoids accidental old-job reuse, while source text is visible before requests and in comparisons.
+
+          ### Release scope
+
+          This is a **source-code release**, not a hosted translation service. Model weights are not distributed with the repository. The gateway uses a shared Bearer credential for a trusted single tenant; it is **not a ready-made public multi-user SaaS platform**.
+
+          GitHub Actions verifies CPU behavior and clean installation workflows. Recorded GPU runs provide infrastructure evidence, **not** an accuracy benchmark, uptime guarantee, or service-level commitment. GPU, storage, and database usage can incur costs. Source code is MIT-licensed; upstream model weights retain their own license terms.
+
+          ### Start here
+
+          [README]({base}README.md) · [Deployment guide]({base}docs/deployment.md) · [API notebook]({base}notebooks/translation_api_demo.ipynb) · [Security]({base}docs/security.md)
+          """
+
+          vietnamese = """
+          ### v1.0.0 — Bản phát hành mã nguồn đầu tiên
+
+          **Multilingual Translation AI Inference 1.0.0** là bản mã nguồn có phiên bản đầu tiên của bộ công cụ tự triển khai dịch thuật AI trên Modal. Hệ thống kết hợp API gateway có xác thực, cơ chế điều phối job bền vững trong PostgreSQL và bốn GPU worker quản lý độc lập. Bản phát hành hướng tới developer, dự án cá nhân và môi trường single-tenant tin cậy.
+
+          ### Điểm nổi bật
+
+          - **Bốn backend dịch thuật:** Tencent Hy-MT2-30B-A3B, Index-Translate-35B-A3B-preview, Google Gemma 4 31B IT và Qwen3.5-35B-A3B, với GPU worker NVIDIA L40S riêng và artifact GGUF Q8_0 được khóa revision.
+          - **Dịch và so sánh bất đồng bộ:** gửi yêu cầu tới một model hoặc so sánh tối đa bốn model, lưu bền vững kết quả job, theo dõi bằng polling, idempotency và khôi phục thận trọng khi trạng thái thực thi chưa rõ.
+          - **Kiểm soát vận hành:** xác thực Bearer, giới hạn request, quota và kiểm soát tiếp nhận job qua PostgreSQL, tùy chọn giới hạn ngân sách GPU ước tính.
+          - **Công cụ tự triển khai:** manifest model có xác minh checksum, demo mock chỉ dùng CPU và công cụ tạo hai Modal Secrets từ một file cấu hình riêng tư khi chủ động bật. Cách tạo Secrets thủ công vẫn được hỗ trợ.
+          - **Tài nguyên cho developer:** tài liệu tiếng Anh/Việt, notebook Jupyter sử dụng API và quy trình kiểm thử tự động không cần GPU.
+          - **Độ ổn định notebook và tái sử dụng GPU:** Notebook đặt User-Agent rõ ràng, hướng dẫn xử lý HTTP 403 qua proxy. L40S worker dùng cửa sổ idle 60 giây (`min_containers=0`) để hạn chế cold start giữa các request notebook có giới hạn tốc độ; GPU idle còn warm có thể phát sinh phí.
+          - **Notebook benchmark GPU theo từng model:** Chọn `DEMO_MODE="offline"` để Run All giả lập hoặc `DEMO_MODE="gpu"` để inference GPU. Mặc định tiếng Anh và giả lập offline. Khi bật GPU, `BENCHMARK_SEQUENCE="per_model"` warm-up rồi đo ngay ba văn bản trên mỗi model để hạn chế thời gian chờ model khác. Bốn model dùng 16 job API thật (4 warm-up, 12 lượt đo); `"parallel"` tùy chọn giữ luồng đa model 5 job cũ. Bảng so sánh ghép trong notebook, không tạo UUID giả. Backend mới hỗ trợ bằng chứng tái sử dụng container và thời gian llama.cpp sẵn sàng; không suy luận warm từ queue. Tài liệu giải thích phí GPU, Secrets ẩn, idempotency theo stage và khôi phục chỉ GET. `DEMO_RUN_ID` tự sinh theo từng kernel để tránh vô tình đọc lại job cũ; văn bản nguồn được hiển thị trước request và trong bảng so sánh.
+
+          ### Phạm vi phát hành
+
+          Đây là **bản phát hành mã nguồn**, không phải dịch vụ dịch thuật host sẵn. Repository không đóng gói trọng số model. Gateway dùng chung Bearer token trong môi trường single-tenant tin cậy; đây **không phải nền tảng SaaS nhiều người dùng đã hoàn thiện để mở dịch vụ công khai**.
+
+          GitHub Actions kiểm tra luồng CPU và cài đặt sạch. Các lượt chạy GPU đã ghi nhận chỉ cung cấp bằng chứng hạ tầng, **không** chứng minh độ chính xác bản dịch, uptime hay cam kết mức dịch vụ. GPU, lưu trữ và database có thể phát sinh chi phí. Mã nguồn theo giấy phép MIT; trọng số model tuân thủ giấy phép upstream riêng.
+
+          ### Tài liệu bắt đầu
+
+          [README tiếng Việt]({base}README.vi.md) · [Hướng dẫn triển khai]({base}docs/deployment.vi.md) · [Notebook API]({base}notebooks/translation_api_demo.ipynb) · [Bảo mật]({base}docs/security.vi.md)
+          """
+
+          body = (
+              "## English\n\n" + dedent(english).strip().replace("{base}", base)
+              + "\n\n## Tiếng Việt\n\n" + dedent(vietnamese).strip().replace("{base}", base)
+              + "\n"
+          )
+          Path(os.environ["RUNNER_TEMP"], "translation-release-notes.md").write_text(
+              body, encoding="utf-8"
+          )
+          print("Concise bilingual release notes prepared; no GPU or network calls.")
+          PY
+
+      - name: Create or update the matching GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="Multilingual Translation AI Inference ${GITHUB_REF_NAME}"
+          notes="${RUNNER_TEMP}/translation-release-notes.md"
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release edit "${GITHUB_REF_NAME}" --title "$title" --notes-file "$notes"
+          else
+            gh release create "${GITHUB_REF_NAME}" --verify-tag --title "$title" --notes-file "$notes"
+          fi
