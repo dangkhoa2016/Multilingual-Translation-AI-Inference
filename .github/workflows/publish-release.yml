@@ -1,0 +1,129 @@
+name: Publish tagged release
+
+on:
+  push:
+    tags:
+      - "v1.0.0"
+
+permissions:
+  contents: write
+
+jobs:
+  github-release:
+    if: github.repository == 'dangkhoa2016/Multilingual-Translation-AI-Inference'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0  # Keep complete source history available in tagged builds.
+
+      - name: Verify version tag and current main
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          test "$GITHUB_REF_NAME" = "v$version"
+          main_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq '.commit.sha')"
+          tagged_sha="$(git rev-parse HEAD)"
+          # Both new publications and updates to an existing Release must
+          # use the approved main HEAD. A stale, divergent or historical tag
+          # must never rewrite the public release notes.
+          test "$tagged_sha" = "$main_sha"
+
+      - name: Prepare bilingual release notes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          version = Path("VERSION").read_text(encoding="utf-8").strip()
+          tag = os.environ["GITHUB_REF_NAME"]
+          repository = os.environ["GITHUB_REPOSITORY"]
+          if tag != f"v{version}":
+              raise ValueError("Tag and VERSION must match before publishing")
+
+          documents = ["README.md","README.vi.md","docs/development.md","docs/development.vi.md","docs/deployment.md","docs/deployment.vi.md","notebooks/translation_api_demo.ipynb","docs/security.md","docs/security.vi.md","docs/operations.md","docs/operations.vi.md"]
+          for document in documents:
+              if not Path(document).is_file():
+                  raise FileNotFoundError(f"Missing release documentation: {document}")
+          base = f"https://github.com/{repository}/blob/{tag}/"
+
+          english = """
+          ### Initial source release
+
+          **Multilingual Translation AI Inference 1.0.0** introduces a self-hosted toolkit for multilingual translation APIs on Modal. A FastAPI gateway coordinates asynchronous jobs stored in PostgreSQL across four independently scaling NVIDIA L40S model workers. This release provides source code and deployment tooling, not a hosted translation endpoint or bundled model weights.
+
+          ### Release highlights
+
+          - **Four independent model backends:** Tencent Hy-MT2-30B-A3B, Index-Translate-35B-A3B-preview, Google Gemma 4 31B IT and Qwen3.5-35B-A3B, each with pinned GGUF Q8_0 artifacts and a dedicated worker.
+          - **Authenticated asynchronous API:** submit single-model translations or compare 1–4 selected models; retrieve durable job states and results with polling and idempotency protection.
+          - **Operational safeguards:** shared Bearer authentication for a single tenant, per-process request throttling, PostgreSQL-backed quotas and admission limits, optional estimated GPU budgets and cautious recovery after uncertain execution.
+          - **Accessible developer experience:** an English/Vietnamese Jupyter API notebook, clearly labeled offline mock examples, reproducible model manifests and CPU-only validation.
+          - **Optional CPU operations monitor:** manual checks or an opt-in hourly schedule, disabled by default. Alerts appear in Modal Logs; automatic email and webhook notifications are not included.
+
+          ### Validation and limitations
+
+          GitHub Actions validates CPU behavior and clean Quick Start installation on Python 3.12 and 3.13. Sanitized historical reports document authenticated API jobs, PostgreSQL persistence and non-mock runs on four GPU workers. These observations do **not** establish translation quality, guaranteed language-pair support, current latency or production uptime.
+
+          GPU usage may incur charges, while storage, PostgreSQL and optional scheduled CPU checks can incur costs without translation traffic. The gateway does not provide separate credentials per client or globally distributed pre-authentication rate limiting. Original source code is MIT-licensed; upstream model weights and GGUF derivatives have separate licensing requirements.
+
+          ### Documentation
+
+          [English README]({base}README.md) · [Vietnamese README]({base}README.vi.md) · [API reference]({base}docs/development.md) · [Deployment guide]({base}docs/deployment.md) · [API notebook]({base}notebooks/translation_api_demo.ipynb) · [Security]({base}docs/security.md) · [Operations]({base}docs/operations.md)
+          """
+
+          vietnamese = """
+          ### Bản phát hành mã nguồn đầu tiên
+
+          **Multilingual Translation AI Inference 1.0.0** cung cấp bộ công cụ tự triển khai API dịch thuật đa ngôn ngữ trên Modal. FastAPI gateway điều phối các job bất đồng bộ được lưu trong PostgreSQL đến bốn GPU worker NVIDIA L40S hoạt động và mở rộng độc lập. Bản phát hành cung cấp mã nguồn và công cụ triển khai, không phải dịch vụ dịch thuật được host sẵn và không đóng gói trọng số model.
+
+          ### Điểm nổi bật của bản phát hành
+
+          - **Bốn backend model độc lập:** Tencent Hy-MT2-30B-A3B, Index-Translate-35B-A3B-preview, Google Gemma 4 31B IT và Qwen3.5-35B-A3B; mỗi model có worker riêng và artifact GGUF Q8_0 được khóa phiên bản.
+          - **API bất đồng bộ có xác thực:** gửi yêu cầu dịch với một model hoặc so sánh 1–4 model, theo dõi trạng thái và nhận kết quả job được lưu bền vững, có cơ chế idempotency.
+          - **Kiểm soát vận hành:** Bearer token dùng chung trong mô hình single-tenant, giới hạn request theo process, quota và giới hạn tiếp nhận lưu trong PostgreSQL, tùy chọn ngân sách GPU ước tính và khôi phục thận trọng khi trạng thái thực thi chưa rõ.
+          - **Trải nghiệm dành cho developer:** notebook Jupyter API tiếng Anh/Việt, ví dụ mock offline có đánh dấu rõ ràng, manifest model phục vụ tái lập và kiểm thử chỉ dùng CPU.
+          - **Giám sát CPU tùy chọn:** chạy thủ công hoặc bật lịch mỗi giờ khi triển khai; mặc định không có lịch tự động. Cảnh báo được ghi vào Modal Logs, chưa có email hoặc webhook tự động.
+
+          ### Kiểm chứng và giới hạn
+
+          GitHub Actions kiểm thử luồng CPU và cài đặt Quick Start sạch trên Python 3.12, 3.13. Các báo cáo kỹ thuật lịch sử đã làm sạch ghi nhận job API có xác thực, dữ liệu bền vững trong PostgreSQL và các lượt chạy GPU thật trên bốn worker. Những bằng chứng này **không** xác nhận chất lượng bản dịch, khả năng hỗ trợ mọi cặp ngôn ngữ, latency hiện tại hay uptime production.
+
+          Sử dụng GPU có thể phát sinh chi phí; lưu trữ, PostgreSQL và lịch kiểm tra CPU tùy chọn vẫn có thể tính phí khi không có yêu cầu dịch. Gateway chưa cung cấp credential riêng theo client hoặc rate limit phân tán toàn cục trước xác thực. Mã nguồn gốc theo giấy phép MIT; trọng số model và các bản GGUF phải tuân thủ giấy phép upstream riêng.
+
+          ### Tài liệu tham khảo
+
+          [README tiếng Việt]({base}README.vi.md) · [README tiếng Anh]({base}README.md) · [Tài liệu API]({base}docs/development.vi.md) · [Hướng dẫn triển khai]({base}docs/deployment.vi.md) · [Notebook API]({base}notebooks/translation_api_demo.ipynb) · [Bảo mật]({base}docs/security.vi.md) · [Vận hành]({base}docs/operations.vi.md)
+          """
+
+          body = (
+              "## English\n\n" + english.strip().replace("{base}", base)
+              + "\n\n## Tiếng Việt\n\n" + vietnamese.strip().replace("{base}", base)
+              + "\n"
+          )
+          Path(os.environ["RUNNER_TEMP"], "translation-release-notes.md").write_text(
+              body, encoding="utf-8"
+          )
+          print("Concise bilingual release notes prepared; no GPU or network calls.")
+          PY
+
+      - name: Create or update the matching GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title="Multilingual Translation AI Inference ${GITHUB_REF_NAME}"
+          notes="${RUNNER_TEMP}/translation-release-notes.md"
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release edit "${GITHUB_REF_NAME}" --title "$title" --notes-file "$notes"
+          else
+            gh release create "${GITHUB_REF_NAME}" --verify-tag --title "$title" --notes-file "$notes"
+          fi
