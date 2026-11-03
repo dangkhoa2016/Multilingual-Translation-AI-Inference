@@ -1,0 +1,114 @@
+{
+  "scope": "one-sentence model/GGUF/CUDA compatibility only; no production deployment",
+  "status": "all_selected_models_passed",
+  "selected_models": [
+    "hy_mt2_30b",
+    "index_35b",
+    "gemma4_31b_it",
+    "qwen35_35b"
+  ],
+  "total_rpc_wall_seconds": 34.355,
+  "results": {
+    "hy_mt2_30b": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "hy_mt2_30b",
+      "gguf_sha256_verification_marker": "d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 20.604,
+      "function_elapsed_seconds": 20.984,
+      "start_unix_seconds": 1794030440.7567108,
+      "end_unix_seconds": 1794030461.7406957,
+      "gpu_uuid": "GPU-REDACTED-008",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 31151,
+      "translation": "Chú cáo nhỏ đã băng qua cây cầu vào lúc bình minh.",
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 47,
+        "total_tokens": 69,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    },
+    "index_35b": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "index_35b",
+      "gguf_sha256_verification_marker": "066fe7db409c1fb41f5b0016e8c43cd1b683b6c6f61eb037283e4ad0a4ceac2a",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 24.774,
+      "function_elapsed_seconds": 25.266,
+      "start_unix_seconds": 1794030440.4866297,
+      "end_unix_seconds": 1794030465.7531254,
+      "gpu_uuid": "GPU-REDACTED-009",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 35335,
+      "translation": "Con cáo nhỏ băng qua cây cầu vào lúc mặt trời mọc.",
+      "usage": {
+        "completion_tokens": 14,
+        "prompt_tokens": 37,
+        "total_tokens": 51,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    },
+    "gemma4_31b_it": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "gemma4_31b_it",
+      "gguf_sha256_verification_marker": "d5808e5874e660a85ab45b2da00c9e3b4a003621249a333772232d1a703e4d67",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 16.266,
+      "function_elapsed_seconds": 17.107,
+      "start_unix_seconds": 1794030436.0232604,
+      "end_unix_seconds": 1794030453.130738,
+      "gpu_uuid": "GPU-REDACTED-010",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 32973,
+      "translation": "Chú cáo nhỏ đã băng qua cây cầu lúc bình minh.",
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 45,
+        "total_tokens": 58,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    },
+    "qwen35_35b": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "qwen35_35b",
+      "gguf_sha256_verification_marker": "3808866c016ab02b4adb26b873f7008a2cdd2c0704a39704050119ab0631db46",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 27.159,
+      "function_elapsed_seconds": 27.568,
+      "start_unix_seconds": 1794030436.2595985,
+      "end_unix_seconds": 1794030463.8275807,
+      "gpu_uuid": "GPU-REDACTED-011",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 35336,
+      "translation": "Con cáo nhỏ băng qua cây cầu lúc bình minh.",
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 44,
+        "total_tokens": 56,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    }
+  },
+  "sanitized_for_publication": true
+}

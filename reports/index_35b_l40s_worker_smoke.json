@@ -1,0 +1,31 @@
+{
+  "scope": "one-sentence model/GGUF/CUDA compatibility only; no production deployment",
+  "selected_models": [
+    "index_35b"
+  ],
+  "total_rpc_wall_seconds": 31.468,
+  "results": {
+    "index_35b": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "index_35b",
+      "gguf_sha256_verification_marker": "066fe7db409c1fb41f5b0016e8c43cd1b683b6c6f61eb037283e4ad0a4ceac2a",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 25.084,
+      "function_elapsed_seconds": 25.468,
+      "highest_sampled_vram_mib": 35335,
+      "translation": "Con cáo nhỏ băng qua cây cầu vào lúc mặt trời mọc.",
+      "usage": {
+        "completion_tokens": 14,
+        "prompt_tokens": 37,
+        "total_tokens": 51,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    }
+  },
+  "sanitized_for_publication": true
+}
