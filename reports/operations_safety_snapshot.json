@@ -1,0 +1,15 @@
+{
+  "kind": "cpu_only_workspace_billing_and_postgresql_safety_snapshot",
+  "read_only": true,
+  "database": {
+    "summary": "REDACTED",
+    "stale_dispatching_count": 0,
+    "stale_running_count": 0
+  },
+  "modal_billing": {
+    "scope": "entire_modal_workspace",
+    "amounts": "REDACTED"
+  },
+  "alerts": [],
+  "sanitized_for_publication": true
+}
