@@ -1,0 +1,66 @@
+{
+  "status": "pass",
+  "scope": "1000 Unicode codepoint real HTTP benchmark and input rejection gates",
+  "input_codepoints": 1000,
+  "input_utf8_bytes": 1002,
+  "four_models": [
+    "hy_mt2_30b",
+    "index_35b",
+    "gemma4_31b_it",
+    "qwen35_35b"
+  ],
+  "rejected_inputs_http_422": {
+    "1001_codepoints": 422,
+    "empty_whitespace": 422,
+    "same_language": 422,
+    "unknown_language": 422
+  },
+  "idempotent_job_reused": true,
+  "conflicting_payload_http_409": 409,
+  "parent_job_status": "completed",
+  "poll_requests": 25,
+  "elapsed_seconds": 82.35,
+  "runs": [
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 1189,
+      "error_code": null,
+      "attempt_no": 1,
+      "translation_sha256": "c3e996f6463483d7faa6ed30c0592b7b41663c749d6608eecc82fa5e935f7203"
+    },
+    {
+      "model": "index_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 1381,
+      "error_code": null,
+      "attempt_no": 1,
+      "translation_sha256": "c9be371b883ddaf1ae92aacf1a40e8869b7768e7301df11606eaa59935c3c280"
+    },
+    {
+      "model": "gemma4_31b_it",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 1141,
+      "error_code": null,
+      "attempt_no": 1,
+      "translation_sha256": "252624a2ae822ec914df2c0e797241428d23fba318ae89ccd64f34a12aac2677"
+    },
+    {
+      "model": "qwen35_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 1024,
+      "error_code": null,
+      "attempt_no": 1,
+      "translation_sha256": "5e7b0b6a6ea801a9e154539bb340220b7309ce3298368ec68cdd4b8bc60fa6aa"
+    }
+  ],
+  "sanitized_for_publication": true
+}

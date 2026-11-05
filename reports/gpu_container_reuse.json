@@ -1,0 +1,26 @@
+{
+  "scope": "Two sequential deployed class readiness RPC calls, not inference throughput",
+  "status": "two_readiness_calls_passed",
+  "same_gpu_uuid": true,
+  "warm_container_reuse_observed": true,
+  "first_call_cold_start_guaranteed": false,
+  "measurements": [
+    {
+      "call": 1,
+      "rpc_wall_seconds": 25.104,
+      "model": "hy_mt2_30b",
+      "gpu_uuid": "GPU-REDACTED-001",
+      "model_initialization_seconds": 20.047,
+      "sampled_vram_mib": 31151
+    },
+    {
+      "call": 2,
+      "rpc_wall_seconds": 0.459,
+      "model": "hy_mt2_30b",
+      "gpu_uuid": "GPU-REDACTED-001",
+      "model_initialization_seconds": 20.047,
+      "sampled_vram_mib": 31151
+    }
+  ],
+  "sanitized_for_publication": true
+}
