@@ -1,0 +1,42 @@
+{
+  "status": "real_gpu_api_passed",
+  "scope": "Real production POST -> Modal GPU -> PostgreSQL -> authenticated GET",
+  "all_models": true,
+  "input_codepoints": 774,
+  "elapsed_seconds": 54.516,
+  "runs": [
+    {
+      "model": "qwen35_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 674,
+      "error_code": null,
+      "translation_sha256": "0e89931cc82c9a5bfbe87352826c85529b295f560776ad9a24637944462a2669"
+    },
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 848,
+      "error_code": null,
+      "translation_sha256": "5c938b12cbc6c051cc23c2840df5718f2d8e99bc6f080637992495d45bbc44d4"
+    },
+    {
+      "model": "gemma4_31b_it",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 842,
+      "error_code": null,
+      "translation_sha256": "0dc251a087ca2e55b6408ac1015b130555ca95c116e9e8cb0472a834c5f47f78"
+    },
+    {
+      "model": "index_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 839,
+      "error_code": null,
+      "translation_sha256": "65024a4a939ce45be2cffcbc1e176267889281d194c49d2583c59287613e3166"
+    }
+  ],
+  "sanitized_for_publication": true
+}

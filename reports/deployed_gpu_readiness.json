@@ -1,0 +1,53 @@
+{
+  "status": "four_deployed_gpu_classes_ready",
+  "scope": "Deployed GPU Cls model load and health, not translation job dispatch",
+  "elapsed_rpc_seconds": 46.08,
+  "results": {
+    "hy_mt2_30b": {
+      "model": "hy_mt2_30b",
+      "gpu": "NVIDIA L40S",
+      "gpu_uuid": "GPU-REDACTED-002",
+      "sampled_vram_mib": 31151,
+      "total_vram_mib": 46068,
+      "ready_seconds": 24.092,
+      "verified_weight_file": "Hy-MT2-30B-A3B-Q8_0.gguf",
+      "single_GPU": true,
+      "model_loaded": true
+    },
+    "index_35b": {
+      "model": "index_35b",
+      "gpu": "NVIDIA L40S",
+      "gpu_uuid": "GPU-REDACTED-003",
+      "sampled_vram_mib": 35337,
+      "total_vram_mib": 46068,
+      "ready_seconds": 28.329,
+      "verified_weight_file": "Index-Translate-35B-A3B-preview.Q8_0.gguf",
+      "single_GPU": true,
+      "model_loaded": true
+    },
+    "gemma4_31b_it": {
+      "model": "gemma4_31b_it",
+      "gpu": "NVIDIA L40S",
+      "gpu_uuid": "GPU-REDACTED-004",
+      "sampled_vram_mib": 32974,
+      "total_vram_mib": 46068,
+      "ready_seconds": 33.071,
+      "verified_weight_file": "gemma-4-31B-it-Q8_0.gguf",
+      "single_GPU": true,
+      "model_loaded": true
+    },
+    "qwen35_35b": {
+      "model": "qwen35_35b",
+      "gpu": "NVIDIA L40S",
+      "gpu_uuid": "GPU-REDACTED-005",
+      "sampled_vram_mib": 35337,
+      "total_vram_mib": 46068,
+      "ready_seconds": 38.399,
+      "verified_weight_file": "Qwen3.5-35B-A3B-Q8_0.gguf",
+      "single_GPU": true,
+      "model_loaded": true
+    }
+  },
+  "errors": {},
+  "sanitized_for_publication": true
+}

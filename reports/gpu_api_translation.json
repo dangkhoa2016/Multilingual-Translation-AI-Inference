@@ -1,0 +1,18 @@
+{
+  "status": "real_gpu_api_passed",
+  "scope": "Real production POST -> Modal GPU -> PostgreSQL -> authenticated GET",
+  "all_models": false,
+  "input_codepoints": 52,
+  "elapsed_seconds": 44.282,
+  "runs": [
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 53,
+      "error_code": null,
+      "translation_sha256": "fdfeada62a79c10053cc53df406fe509265e219045842b8e12aa49b8e5744ae7"
+    }
+  ],
+  "sanitized_for_publication": true
+}

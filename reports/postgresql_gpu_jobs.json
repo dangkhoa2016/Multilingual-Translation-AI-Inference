@@ -1,0 +1,62 @@
+{
+  "status": "four_real_gpu_jobs_persisted_and_read_by_gateway",
+  "scope": "PostgreSQL async jobs, exact Modal GPU class dispatch and authenticated gateway GET; no public GPU submission mode",
+  "model_count": 4,
+  "source_language": "en",
+  "target_language": "vi",
+  "input_codepoints": 849,
+  "elapsed_seconds": 68.069,
+  "results": [
+    {
+      "model": "qwen35_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "nonempty_translation": true,
+      "translation_codepoints": 824,
+      "input_tokens": 214,
+      "output_tokens": 226,
+      "error_code": null,
+      "translation_sha256": "7f5339c57e9249a2ba19c24735d939bff61e2c2239aa237cce4d912d0d35768c"
+    },
+    {
+      "model": "gemma4_31b_it",
+      "status": "completed",
+      "is_mock_result": false,
+      "nonempty_translation": true,
+      "translation_codepoints": 943,
+      "input_tokens": 214,
+      "output_tokens": 250,
+      "error_code": null,
+      "translation_sha256": "1c0de03c8d928a3b05b82ce4db17e3b9f1e3ca595c484efedcb18a297a0e03f0"
+    },
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "nonempty_translation": true,
+      "translation_codepoints": 959,
+      "input_tokens": 213,
+      "output_tokens": 380,
+      "error_code": null,
+      "translation_sha256": "9ff90d9c8cba8d2ed9fb4324cbb47a604e5b18f79917912fb76f89c6a2381447"
+    },
+    {
+      "model": "index_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "nonempty_translation": true,
+      "translation_codepoints": 956,
+      "input_tokens": 214,
+      "output_tokens": 253,
+      "error_code": null,
+      "translation_sha256": "11b33ca577b655d2ac377b67d6f9caf7d013b94520dfa2f2f8dd236f06d410e8"
+    }
+  ],
+  "api_states": {
+    "qwen35_35b": "completed",
+    "gemma4_31b_it": "completed",
+    "hy_mt2_30b": "completed",
+    "index_35b": "completed"
+  },
+  "sanitized_for_publication": true
+}
