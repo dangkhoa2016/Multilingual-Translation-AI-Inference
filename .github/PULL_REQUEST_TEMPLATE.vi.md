@@ -1,0 +1,26 @@
+# Pull request / Yêu cầu hợp nhất
+
+> 🌐 Language / Ngôn ngữ: [English](PULL_REQUEST_TEMPLATE.md) | **Tiếng Việt**
+
+## Tóm tắt / Summary
+
+<!-- Tóm tắt thay đổi bằng tiếng Việt. -->
+
+## Lý do và phạm vi
+
+<!-- Vì sao cần thay đổi? Nội dung nào không bị ảnh hưởng? -->
+
+## Kết quả kiểm thử
+
+- [ ] Unit tests PASS (`python -m pytest -q`)
+- [ ] Ruff PASS (`python -m ruff check .`)
+- [ ] Publication safety tests PASS (`python -m pytest -q tests/security/test_publication_safety.py`)
+- [ ] Đã cập nhật tài liệu English/Tiếng Việt tương ứng
+- [ ] Không commit token, trọng số, dữ liệu cá nhân, đường dẫn secret
+- [ ] Đã giữ attribution và giấy phép upstream
+
+## Rủi ro và cách rollback
+
+<!-- Nêu migration, thay đổi API, chi phí và phương án khôi phục. -->
+
+> 🌐 [English](PULL_REQUEST_TEMPLATE.md)
