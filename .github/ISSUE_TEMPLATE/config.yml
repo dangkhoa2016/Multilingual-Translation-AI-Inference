@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Private security report / Báo cáo bảo mật riêng"
+    url: "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/security/advisories"
+    about: "Report vulnerabilities without public disclosure / Báo cáo lỗ hổng riêng tư"

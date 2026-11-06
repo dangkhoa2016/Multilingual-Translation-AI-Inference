@@ -1,0 +1,33 @@
+name: "Bug report / Báo lỗi"
+description: "Reproducible defect without sensitive data / Lỗi có thể tái hiện, không lộ dữ liệu riêng tư"
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "Use English or Vietnamese. Never paste tokens, personal text or connection strings. / Có thể dùng tiếng Anh hoặc tiếng Việt. Không gửi secret."
+  - type: textarea
+    id: description
+    attributes:
+      label: "Problem / Mô tả lỗi"
+      description: "What happened? / Điều gì đã xảy ra?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Reproduction steps / Cách tái hiện"
+      description: "CPU-only reproduction is preferred. / Ưu tiên tái hiện không dùng GPU."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior / Kết quả mong đợi"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: "Environment / Môi trường"
+      placeholder: "Python, OS, local/Modal; no secrets"

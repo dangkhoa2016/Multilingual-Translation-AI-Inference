@@ -1,0 +1,21 @@
+name: "Feature request / Đề xuất tính năng"
+description: "Propose a focused enhancement / Đề xuất cải tiến cụ thể"
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem to solve / Vấn đề cần giải quyết"
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: "Proposed approach / Giải pháp đề xuất"
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: "Compatibility, GPU cost, licenses / Tương thích, chi phí GPU, giấy phép"
