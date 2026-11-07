@@ -1,0 +1,41 @@
+id,group,direction,variant,elapsed_seconds,prompt_tokens,completion_tokens,finish_reason,error,lexical_concepts_present,latin_name_lam_preserved
+narrative_retest_vi_to_en,development_retest,vi->en,baseline_official_v1,2.145,395,230,stop,,"{""silver"": false}",False
+narrative_retest_vi_to_en,development_retest,vi->en,material_glossary_v1,1.906,464,233,stop,,"{""silver"": true}",True
+narrative_retest_vi_to_de,development_retest,vi->de,material_glossary_v1,2.978,464,386,stop,,"{""silver"": true}",True
+narrative_retest_vi_to_de,development_retest,vi->de,baseline_official_v1,2.88,395,379,stop,,"{""silver"": false}",False
+narrative_retest_vi_to_ja,development_retest,vi->ja,baseline_official_v1,2.925,395,384,stop,,"{""silver"": false}",
+narrative_retest_vi_to_ja,development_retest,vi->ja,material_glossary_v1,2.901,464,376,stop,,"{""silver"": true}",
+narrative_retest_vi_to_ko,development_retest,vi->ko,material_glossary_v1,3.2,464,419,stop,,"{""silver"": true}",
+narrative_retest_vi_to_ko,development_retest,vi->ko,baseline_official_v1,3.041,395,402,stop,,"{""silver"": false}",
+silver_ring_vi_to_en,independent_probe,vi->en,baseline_official_v1,0.384,99,44,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",False
+silver_ring_vi_to_en,independent_probe,vi->en,material_glossary_v1,0.402,168,44,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",True
+silver_ring_vi_to_de,independent_probe,vi->de,material_glossary_v1,0.555,168,63,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",True
+silver_ring_vi_to_de,independent_probe,vi->de,baseline_official_v1,0.505,99,63,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",True
+silver_ring_vi_to_ja,independent_probe,vi->ja,baseline_official_v1,0.526,99,65,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",
+silver_ring_vi_to_ja,independent_probe,vi->ja,material_glossary_v1,0.568,168,69,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",
+silver_ring_vi_to_ko,independent_probe,vi->ko,material_glossary_v1,0.581,168,68,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",
+silver_ring_vi_to_ko,independent_probe,vi->ko,baseline_official_v1,0.506,99,63,stop,,"{""silver"": true, ""copper"": true, ""gold"": true}",
+mixed_metals_vi_to_en,independent_probe,vi->en,baseline_official_v1,0.389,107,47,stop,,"{""silver"": true, ""copper"": false}",
+mixed_metals_vi_to_en,independent_probe,vi->en,material_glossary_v1,0.4,176,48,stop,,"{""silver"": true, ""copper"": true}",
+mixed_metals_vi_to_de,independent_probe,vi->de,material_glossary_v1,0.566,176,71,stop,,"{""silver"": true, ""copper"": true}",
+mixed_metals_vi_to_de,independent_probe,vi->de,baseline_official_v1,0.531,107,66,stop,,"{""silver"": true, ""copper"": false}",
+mixed_metals_vi_to_ja,independent_probe,vi->ja,baseline_official_v1,0.601,107,76,stop,,"{""silver"": true, ""copper"": true}",
+mixed_metals_vi_to_ja,independent_probe,vi->ja,material_glossary_v1,0.631,176,80,stop,,"{""silver"": true, ""copper"": true}",
+mixed_metals_vi_to_ko,independent_probe,vi->ko,material_glossary_v1,0.686,176,86,stop,,"{""silver"": true, ""copper"": true}",
+mixed_metals_vi_to_ko,independent_probe,vi->ko,baseline_official_v1,0.648,107,83,stop,,"{""silver"": true, ""copper"": true}",
+gold_object_vi_to_en,independent_probe,vi->en,baseline_official_v1,0.317,101,36,stop,,"{""gold"": true, ""silver"": true}",False
+gold_object_vi_to_en,independent_probe,vi->en,material_glossary_v1,0.351,170,41,stop,,"{""gold"": true, ""silver"": true}",True
+gold_object_vi_to_de,independent_probe,vi->de,material_glossary_v1,0.503,170,63,stop,,"{""gold"": true, ""silver"": true}",True
+gold_object_vi_to_de,independent_probe,vi->de,baseline_official_v1,0.478,101,60,stop,,"{""gold"": true, ""silver"": true}",False
+gold_object_vi_to_ja,independent_probe,vi->ja,baseline_official_v1,0.492,101,60,stop,,"{""gold"": true, ""silver"": true}",
+gold_object_vi_to_ja,independent_probe,vi->ja,material_glossary_v1,0.55,170,70,stop,,"{""gold"": true, ""silver"": true}",
+gold_object_vi_to_ko,independent_probe,vi->ko,material_glossary_v1,0.562,170,71,stop,,"{""gold"": true, ""silver"": true}",
+gold_object_vi_to_ko,independent_probe,vi->ko,baseline_official_v1,0.522,101,66,stop,,"{""gold"": true, ""silver"": true}",
+invoice_silver_vi_to_en,independent_probe,vi->en,baseline_official_v1,0.418,102,51,stop,,"{""silver"": true, ""copper"": true}",False
+invoice_silver_vi_to_en,independent_probe,vi->en,material_glossary_v1,0.441,171,54,stop,,"{""silver"": true, ""copper"": true}",True
+invoice_silver_vi_to_de,independent_probe,vi->de,material_glossary_v1,0.678,171,86,stop,,"{""silver"": true, ""copper"": true}",True
+invoice_silver_vi_to_de,independent_probe,vi->de,baseline_official_v1,0.598,102,76,stop,,"{""silver"": true, ""copper"": true}",False
+invoice_silver_vi_to_ja,independent_probe,vi->ja,baseline_official_v1,0.537,102,67,stop,,"{""silver"": true, ""copper"": true}",
+invoice_silver_vi_to_ja,independent_probe,vi->ja,material_glossary_v1,0.566,171,71,stop,,"{""silver"": true, ""copper"": true}",
+invoice_silver_vi_to_ko,independent_probe,vi->ko,material_glossary_v1,0.562,171,71,stop,,"{""silver"": true, ""copper"": true}",
+invoice_silver_vi_to_ko,independent_probe,vi->ko,baseline_official_v1,0.489,102,62,stop,,"{""silver"": true, ""copper"": true}",

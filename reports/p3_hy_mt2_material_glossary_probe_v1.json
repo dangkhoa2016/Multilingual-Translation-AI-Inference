@@ -1,0 +1,996 @@
+{
+  "generated_at_utc": "2026-11-07T05:12:02.941011+00:00",
+  "dataset": "benchmarks/hy_mt2_material_glossary_probe_v1.json",
+  "dataset_sha256": "63c03fd52780863ed946dee7bfbdd65235740c759fc5cbfdd6dccbdbd5cb2a10",
+  "scope": "synthetic development diagnosis only, NOT a human quality benchmark",
+  "modal_client_call_wall_seconds": 82.318,
+  "result": {
+    "status": "completed",
+    "records": [
+      {
+        "id": "narrative_retest_vi_to_en",
+        "group": "development_retest",
+        "direction": "vi->en",
+        "variant": "baseline_official_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "Before sunrise, Mai arrived at the small riverside train station. The clock above the entrance read 6:15, but a hand-written schedule indicated that the first train would depart at 6:40. Her grandfather had warned her that the old bridge might be closed after heavy rain, so she brought a paper map rather than relying solely on her phone. In her notebook, Mai wrote: “A delayed journey isn’t necessarily a failed one.”\n\nAt the ticket counter, an employee named An explained that the ferry operated only until 7:30 p.m., unless wind speeds exceeded 40 km/h. Mai bought two tickets for 12.50 euros and placed the receipt INV-2048 in her blue bag. She had promised to meet Professor Lin at the museum on November 7, 2026, but didn’t reveal why he wanted to see the brass compass.\n\nWhen the loudspeaker announced the departure, many passengers hurried toward Platform 3. Mai stayed behind to help a little girl find her lost red scarf. Outside, the river had risen overnight; a thin mist obscured the lights of the distant village.",
+        "elapsed_seconds": 2.145,
+        "completion_tokens": 230,
+        "prompt_tokens": 395,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_en",
+        "group": "development_retest",
+        "direction": "vi->en",
+        "variant": "material_glossary_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "Before sunrise, Mai arrived at the small riverside train station. The clock above the entrance showed 6:15, but a hand-written schedule indicated that the first train would depart at 6:40. Her grandfather had warned her that the old bridge might be closed after heavy rain, so she brought a paper map rather than relying solely on her phone. In her notebook, Mai wrote: “A delayed journey isn’t necessarily a failed one.”\n\nAt the ticket counter, an employee named An explained that the ferry operated only until 7:30 p.m., unless wind speeds exceeded 40 km/h. Mai bought two tickets for 12.50 euros and placed the receipt labeled INV-2048 into her blue bag. She had promised to meet Professor Lâm at the museum on November 7, 2026, but didn’t reveal why he wanted to see the silver compass.\n\nWhen the loudspeaker announced the departure, many passengers hurried toward Platform 3. Mai stayed behind to help a little girl find her lost red scarf. Outside, the river had risen overnight; a thin mist obscured the lights of the distant village.",
+        "elapsed_seconds": 1.906,
+        "completion_tokens": 233,
+        "prompt_tokens": 464,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_de",
+        "group": "development_retest",
+        "direction": "vi->de",
+        "variant": "material_glossary_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "Bevor die Sonne aufging, kam Mai zum kleinen Bahnhof am Flussufer. Die Uhr über dem Eingang zeigte 06:15, doch der handgeschriebene Fahrplan vermeldete, dass der erste Zug um 06:40 abfahren würde. Ihr Großvater hatte sie gewarnt, dass die alte Brücke nach starken Regenfällen gesperrt sein könnte; deshalb hatte sie eine Papierkarte mitgenommen, anstatt sich allein auf ihr Handy zu verlassen. In ihr Notizbuch schrieb Mai: „Eine verspätete Reise ist noch lange keine gescheiterte Reise.“\n\nAm Fahrkartenschalter erklärte die Angestellte namens An, dass die Fähre nur bis 19:30 verkehre – es sei denn, der Wind überschreite eine Geschwindigkeit von 40 km/h. Mai kaufte zwei Tickets für insgesamt 12,50 Euro und steckte den Beleg INV-2048 in ihre blaue Tasche. Sie hatte versprochen, Professor Lâm am 7. November 2026 im Museum zu treffen, verschwieg jedoch, warum er das silberne Kompassgerät sehen wollte.\n\nAls die Lautsprecherdurchsage ertönte, eilten viele Fahrgäste zum Gleis 3. Mai blieb zurück, um einem kleinen Kind zu helfen, sein verlorenes rotes Tuch zu suchen. Draußen war der Fluss über Nacht angestiegen; ein dünner Nebel verdeckte das Licht der fernen Dörfer.",
+        "elapsed_seconds": 2.978,
+        "completion_tokens": 386,
+        "prompt_tokens": 464,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_de",
+        "group": "development_retest",
+        "direction": "vi->de",
+        "variant": "baseline_official_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "Vor Sonnenaufgang kam Mai zum kleinen Bahnhof am Flussufer. Die Uhr über dem Eingang zeigte 06:15 an, doch der handgeschriebene Fahrplan vermeldete, dass der erste Zug um 06:40 abfahren würde. Ihr Großvater hatte sie gewarnt, dass die alte Brücke nach starken Regenfällen gesperrt sein könnte; deshalb hatte sie eine Papierkarte mitgenommen, statt sich nur auf ihr Handy zu verlassen. In ihr Notizbuch schrieb Mai: „Eine verspätete Reise ist noch lange keine gescheiterte Reise.“\n\nAm Ticketschalter erklärte der Mitarbeiter namens An, dass die Fähre nur bis 19:30 verkehre – es sei denn, der Wind überschreite 40 km/h. Mai kaufte zwei Tickets für insgesamt 12,50 Euro und steckte den Beleg INV-2048 in ihre blaue Tasche. Sie hatte Professor Lin versprochen, ihn am 7. November 2026 im Museum zu treffen, verriet ihm aber nicht, warum er den Kupferkompass sehen wollte.\n\nAls die Lautsprecherdurchsage ertönte, eilten viele Fahrgäste zum Gleis 3. Mai blieb zurück, um einem kleinen Kind zu helfen, sein verlorenes rotes Tuch zu suchen. Draußen war der Flusswasserstand in der Nacht gestiegen; ein dünner Nebel verdeckte das Licht der fernen Dörfer.",
+        "elapsed_seconds": 2.88,
+        "completion_tokens": 379,
+        "prompt_tokens": 395,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_ja",
+        "group": "development_retest",
+        "direction": "vi->ja",
+        "variant": "baseline_official_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "日の出前、マイは川岸にある小さな駅に着いた。入口上の時計は06時15分を示していたが、手書きの時刻表には最初の列車が06時40分に出発すると記されていた。祖父から、大雨の後には古い橋が閉鎖される可能性があると聞いていたので、彼女は携帯電話だけを頼りにするのではなく紙の地図も持ってきた。手帳にマイはこう書き留めた。「遅れた旅が必ずしも失敗した旅というわけではない。」\n\n切符売り場で、アンという名前の係員が、風速が40キロメートル/時を超えない限りフェリーは19時30分まで運航すると説明した。マイは12ユーロ50セントで切符を二枚購入し、領収書INV-2048を青いバッグにしまった。彼女は2026年11月7日に博物館で林教授と会う約束をしていたが、なぜ教授が銅製の羅針盤を見たがっているのかは明かさなかった。\n\nスピーカーからアナウンスが流れると、多くの乗客が急いで3番線ホームへ走っていった。マイはその場に留まり、失くした赤いハンカチを探している子供を手伝った。外では、夜の間に川の水位が上昇しており、薄い霧が遠くの村の明かりを覆い隠していた。",
+        "elapsed_seconds": 2.925,
+        "completion_tokens": 384,
+        "prompt_tokens": 395,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_ja",
+        "group": "development_retest",
+        "direction": "vi->ja",
+        "variant": "material_glossary_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "日の出前、マイは川岸にある小さな駅に到着した。入り口上の時計は6時15分を指していたが、手書きの時刻表には最初の列車が6時40分に出発すると記されていた。祖父から、大雨の後には古い橋が閉鎖される可能性があると聞いていたため、彼女は携帯電話だけを頼りにするのではなく、紙の地図も持参していた。手帳にマイはこう書き留めた。「遅れてしまった旅が、必ずしも失敗した旅とは限らない。」\n\n切符売り場で、アンという名の係員が、風速が時速40キロを超えない限りフェリーは19時30分まで運航すると説明した。マイは12.50ユーロで2枚の切符を購入し、領収書INV-2048を青いバッグに入れた。彼女は2026年11月7日に博物館で林教授と会う約束をしていたが、なぜ教授が銀製の羅針盤を見たがっているのかは明かさなかった。\n\nアナウンスが流れると、多くの乗客が急いで第3プラットフォームへ向かった。マイは残り、迷子になった赤いハンカチを探す子供を手伝った。外では、夜の間に川の水位が上昇しており、薄い霧が遠くの村の明かりを隠していた。",
+        "elapsed_seconds": 2.901,
+        "completion_tokens": 376,
+        "prompt_tokens": 464,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_ko",
+        "group": "development_retest",
+        "direction": "vi->ko",
+        "variant": "material_glossary_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "해가 뜨기 전, 마이는 강가에 위치한 작은 기차역에 도착했다. 출입문 위의 시계는 06시 15분을 가리키고 있었지만, 수기로 적힌 시간표에는 첫 열차가 06시 40분에 출발한다고 나와 있었다. 할아버지는 큰비가 내린 뒤에는 낡은 다리가 폐쇄될 수 있다고 당부했기에, 그녀는 휴대폰만 믿지 않고 종이 지도도 챙겼다. 수첩에 마이는 이렇게 적어두었다. “늦게 출발하는 여행이라도 반드시 실패하는 것은 아니다.”\n\n매표소에서 안이라는 이름의 직원은 바람의 속도가 시속 40km를 넘지 않는 한 페리는 오후 7시 30분까지만 운행된다고 설명했다. 마이는 12.50유로를 내고 표 두 장을 구입한 뒤, 영수증 INV-2048을 파란색 가방에 넣어두었다. 그녀는 2026년 11월 7일에 박물관에서 림 교수를 만나기로 약속했지만, 그가 왜 은으로 만든 나침반을 보고 싶어하는지는 말하지 않았다.\n\n스피커에서 안내 방송이 울리자 많은 승객들이 서둘러 3번 승강장으로 달려갔다. 마이는 뒤에 남아서 빨간 손수건을 잃어버린 어린아이를 도와주었다. 밖에는 밤사이 강물 수위가 높아져 있었으며, 얇은 안개가 멀리 있는 마을의 불빛들을 가려버리고 있었다.",
+        "elapsed_seconds": 3.2,
+        "completion_tokens": 419,
+        "prompt_tokens": 464,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "narrative_retest_vi_to_ko",
+        "group": "development_retest",
+        "direction": "vi->ko",
+        "variant": "baseline_official_v1",
+        "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+        "input_characters": 914,
+        "output": "해가 뜨기 전, 마이는 강가에 위치한 작은 기차역에 도착했다. 출입문 위의 시계는 06시 15분을 가리키고 있었지만, 손으로 쓴 일정표에는 첫 기차가 06시 40분에 출발한다고 적혀 있었다. 할아버지는 큰 비가 온 뒤에는 낡은 다리가 폐쇄될 수 있다고 당부했기 때문에, 그녀는 휴대폰만 믿지 않고 종이 지도도 챙겼다. 수첩에 마이는 이렇게 적었다: “지연된 여행이 꼭 실패한 여행인 것은 아니다.”\n\n매표소에서 안이라는 이름의 직원이 페리는 풍속이 시속 40km를 초과하지 않는 한 19시 30분까지만 운행한다고 설명했다. 마이는 12.50유로를 내고 두 장의 표를 샀으며, 영수증 INV-2048을 파란색 가방에 넣었다. 그녀는 2026년 11월 7일에 박물관에서 림 교수를 만나기로 약속했지만, 그가 왜 구리 나침반을 보고 싶어하는지는 말하지 않았다.\n\n방송이 울리자 많은 승객들이 서둘러 3번 승강장으로 달려갔다. 마이는 남아서 어린아이가 잃어버린 빨간 손수건을 찾도록 도왔다. 밖에서는 밤사이 강물이 불어올랐고, 얇은 안개가 멀리 있는 마을의 불빛들을 가려버렸다.",
+        "elapsed_seconds": 3.041,
+        "completion_tokens": 402,
+        "prompt_tokens": 395,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "baseline_official_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "Mrs. Lan gave Professor Lin a ring made of pure silver. She emphasized that the ring was not made of copper or gold, and the date on the certificate of authenticity was 2026-11-07.",
+        "elapsed_seconds": 0.384,
+        "completion_tokens": 44,
+        "prompt_tokens": 99,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "material_glossary_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "Mrs. Lan gave Professor Lâm a ring made of pure silver. She emphasized that the ring was not made of copper or gold, and that the date on the certification was 2026-11-07.",
+        "elapsed_seconds": 0.402,
+        "completion_tokens": 44,
+        "prompt_tokens": 168,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "material_glossary_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "Frau Lan überreichte Professor Lâm einen Ring aus reinem Silber. Sie betonte, dass der Ring weder aus Kupfer noch aus Gold gefertigt sei und dass das Datum auf dem Prüfzertifikat der 07.11.2026 sei.",
+        "elapsed_seconds": 0.555,
+        "completion_tokens": 63,
+        "prompt_tokens": 168,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "baseline_official_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "Frau Lan überreichte Professor Lâm einen Ring aus reinem Silber. Sie betonte, dass der Ring weder aus Kupfer noch aus Gold gefertigt sei und dass das Datum auf dem Prüfzertifikat der 07.11.2026 sei.",
+        "elapsed_seconds": 0.505,
+        "completion_tokens": 63,
+        "prompt_tokens": 99,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "baseline_official_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "ランさんは林教授に純銀で作られた指輪を渡した。彼女は、その指輪が銅や金で作られたものではなく、鑑定書に記載された日付が2026年11月7日であることを強調した。",
+        "elapsed_seconds": 0.526,
+        "completion_tokens": 65,
+        "prompt_tokens": 99,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "material_glossary_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "ランさんは、林教授に純銀で作られた指輪を贈りました。彼女は、その指輪が銅や金で作られたものではなく、鑑定書に記載されている日付が2026年11月7日であることを強調しました。",
+        "elapsed_seconds": 0.568,
+        "completion_tokens": 69,
+        "prompt_tokens": 168,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "material_glossary_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "란 부인은 림 교수에게 순은으로 만들어진 반지를 선물했습니다. 그녀는 그 반지가 구리나 금으로 만들어진 것이 아니며, 검사 증명서에 적힌 날짜도 2026년 11월 7일이라고 강조했습니다.",
+        "elapsed_seconds": 0.581,
+        "completion_tokens": 68,
+        "prompt_tokens": 168,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "silver_ring_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "baseline_official_v1",
+        "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+        "input_characters": 168,
+        "output": "란 부인은 림 교수에게 순은으로 만든 반지를 선물했다. 그녀는 그 반지가 구리나 금으로 만들어진 것이 아니며, 검사증상의 날짜가 2026년 11월 7일이라고 강조했다.",
+        "elapsed_seconds": 0.506,
+        "completion_tokens": 63,
+        "prompt_tokens": 99,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true,
+            "gold": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "baseline_official_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "Engineer Minh placed the silver key next to the bronze box. During the inventory at 08:45, he recorded the code INV-2048, then instructed his assistant not to switch the positions of the two items.",
+        "elapsed_seconds": 0.389,
+        "completion_tokens": 47,
+        "prompt_tokens": 107,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "material_glossary_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "Engineer Minh placed the silver key next to the copper box. At 08:45, during his inventory check, he recorded the code INV-2048 and instructed his assistant not to swap the positions of the two items.",
+        "elapsed_seconds": 0.4,
+        "completion_tokens": 48,
+        "prompt_tokens": 176,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "material_glossary_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "Ingenieur Minh legte den silbernen Schlüssel neben die kupferne Schatulle. Bei der Inventarisierung um 08:45 Uhr notierte er den Code INV-2048 und wies seinen Assistenten an, die Positionen der beiden Gegenstände nicht zu vertauschen.",
+        "elapsed_seconds": 0.566,
+        "completion_tokens": 71,
+        "prompt_tokens": 176,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "baseline_official_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "Ingenieur Minh legte den silbernen Schlüssel neben die bronzene Schachtel. Bei der Inventur um 08:45 notierte er den Code INV-2048 und wies seinen Assistenten an, die Position der beiden Gegenstände nicht zu vertauschen.",
+        "elapsed_seconds": 0.531,
+        "completion_tokens": 66,
+        "prompt_tokens": 107,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": false
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "baseline_official_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "ミン技師は、銀製の鍵を銅製の箱の隣に置いた。08時45分に棚卸しを行った際、彼はINV-2048という番号を記録し、助手にこの二つの品物の位置を入れ替えてはいけないと念を押した。",
+        "elapsed_seconds": 0.601,
+        "completion_tokens": 76,
+        "prompt_tokens": 107,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "material_glossary_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "ミン技師は、銀製の鍵を銅製の箱の隣に置いた。08時45分に棚卸しを行った際、彼はINV-2048という番号を記録し、助手に対してこの二つの品物の位置を絶対に入れ替えてはならないと念を押した。",
+        "elapsed_seconds": 0.631,
+        "completion_tokens": 80,
+        "prompt_tokens": 176,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "material_glossary_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "민 엔지니어는 은으로 만들어진 열쇠를 구리로 된 상자 옆에 놓았습니다. 오전 8시 45분에 재고를 점검할 때, 그는 INV-2048이라는 코드를 기록한 뒤 조수에게 두 물건의 위치를 절대 바꾸지 말라고 당부했습니다.",
+        "elapsed_seconds": 0.686,
+        "completion_tokens": 86,
+        "prompt_tokens": 176,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "mixed_metals_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "baseline_official_v1",
+        "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+        "input_characters": 165,
+        "output": "민 엔지니어는 은으로 만든 열쇠를 구리 상자 옆에 놓았다. 오전 8시 45분에 재고를 점검할 때, 그는 INV-2048이라는 코드를 기록한 뒤 조수에게 두 물건의 위치를 절대 바꾸지 말라고 당부했다.",
+        "elapsed_seconds": 0.648,
+        "completion_tokens": 83,
+        "prompt_tokens": 107,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "baseline_official_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "In the exhibition hall, the gold crown was placed on blue velvet. Guide Lin confirmed that this was not a silver crown, and visitors were not allowed to touch it.",
+        "elapsed_seconds": 0.317,
+        "completion_tokens": 36,
+        "prompt_tokens": 101,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "material_glossary_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "In the exhibition hall, the gold crown was placed on a blue velvet cloth. The guide named Lâm confirmed that this was not a silver crown, and visitors were not allowed to touch it.",
+        "elapsed_seconds": 0.351,
+        "completion_tokens": 41,
+        "prompt_tokens": 170,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "material_glossary_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "In der Ausstellungshalle liegt die aus Gold gefertigte Krone auf einem blauen Samttuch. Der Guide namens Lâm bestätigte, dass es sich nicht um eine Silberkrone handelt und dass die Besucher sie nicht berühren dürfen.",
+        "elapsed_seconds": 0.503,
+        "completion_tokens": 63,
+        "prompt_tokens": 170,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "baseline_official_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "In der Ausstellungshalle lag die aus Gold gefertigte Krone auf einem blauen Samttuch. Der Guide namens Lin bestätigte: Es handelt sich nicht um eine Silberkrone, und Besucher dürfen sie nicht berühren.",
+        "elapsed_seconds": 0.478,
+        "completion_tokens": 60,
+        "prompt_tokens": 101,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "baseline_official_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "展示室では、金で作られた王冠が青いビロードの上に置かれている。林という名のガイドは、これが銀の王冠ではないこと、そして見学客は触ってはいけないことを確認した。",
+        "elapsed_seconds": 0.492,
+        "completion_tokens": 60,
+        "prompt_tokens": 101,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "material_glossary_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "展示室の中で、金で作られた王冠が青いベルベットの布の上に置かれていました。ラムという名の案内人は、これが銀製の王冠ではないこと、そして見学客はそれに触れてはいけないことを確認しました。",
+        "elapsed_seconds": 0.55,
+        "completion_tokens": 70,
+        "prompt_tokens": 170,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "material_glossary_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "전시실 안에서 금으로 만들어진 왕관이 파란색 벨벳 위에 놓여 있었습니다. 림이라는 이름의 안내원은 이것이 은으로 만든 왕관이 아니며, 관람객들은 그 왕관에 손대서는 안 된다고 말했습니다.",
+        "elapsed_seconds": 0.562,
+        "completion_tokens": 71,
+        "prompt_tokens": 170,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "gold_object_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "baseline_official_v1",
+        "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+        "input_characters": 194,
+        "output": "전시실에서 금으로 만든 왕관이 파란색 벨벳 위에 놓여 있었다. 림이라는 이름의 안내원은 이것이 은으로 만든 왕관이 아니며, 관람객들은 만져서는 안 된다고 확인해주었다.",
+        "elapsed_seconds": 0.522,
+        "completion_tokens": 66,
+        "prompt_tokens": 101,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "gold": true,
+            "silver": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "baseline_official_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "Product specifications for SKU-A17: 925 sterling silver material, weight of 18.5 g, silver-white color. Responsible person Mr. Lin specified that no copper is substituted for silver during production. Lot number: LOT-301.",
+        "elapsed_seconds": 0.418,
+        "completion_tokens": 51,
+        "prompt_tokens": 102,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_en",
+        "group": "independent_probe",
+        "direction": "vi->en",
+        "variant": "material_glossary_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "Product specifications for SKU-A17: Made of 925 sterling silver; weight: 18.5 grams; color: silver-white. The supervisor named Lâm explicitly stated: do not substitute copper for silver during production. Batch code: LOT-301.",
+        "elapsed_seconds": 0.441,
+        "completion_tokens": 54,
+        "prompt_tokens": 171,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "material_glossary_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "Produktspezifikationen für SKU-A17: Material: Sterlingsilber (925), Gewicht: 18,5 g, Farbe: silberweiß. Der Verantwortliche namens Lâm betont ausdrücklich: Beim Produktionsprozess darf Silber nicht durch Kupfer ersetzt werden. Chargennummer: LOT-301.",
+        "elapsed_seconds": 0.678,
+        "completion_tokens": 86,
+        "prompt_tokens": 171,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": true,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_de",
+        "group": "independent_probe",
+        "direction": "vi->de",
+        "variant": "baseline_official_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "Produktspezifikationen SKU-A17: Material: Sterlingsilber 925, Gewicht: 18,5 g, Farbe: silberweiß. Verantwortlicher Herr Lin gibt an: Beim Herstellungsprozess wurde kein Kupfer durch Silber ersetzt. Chargennummer: LOT-301.",
+        "elapsed_seconds": 0.598,
+        "completion_tokens": 76,
+        "prompt_tokens": 102,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": false,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "baseline_official_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "製品仕様 SKU-A17：素材はシルバー925、重さは18.5g、色は銀白色。担当者の林氏によると、製造時に銅でシルバーを置き換えていないとのこと。ロット番号：LOT-301。",
+        "elapsed_seconds": 0.537,
+        "completion_tokens": 67,
+        "prompt_tokens": 102,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_ja",
+        "group": "independent_probe",
+        "direction": "vi->ja",
+        "variant": "material_glossary_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "製品仕様：SKU-A17。材質は純銀925、重量は18.5グラム、色は銀白色です。担当者のラム氏は、製造時に銀を銅で置き換えてはならないと明言しています。ロット番号：LOT-301。",
+        "elapsed_seconds": 0.566,
+        "completion_tokens": 71,
+        "prompt_tokens": 171,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "material_glossary_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "SKU-A17 제품 사양: 925 은 소재, 무게는 18.5g이며 색상은 은백색입니다. 담당자인 Lâm 씨는 제작 시 은을 구리로 대체해서는 안 된다고 명시했습니다. 로트 번호: LOT-301.",
+        "elapsed_seconds": 0.562,
+        "completion_tokens": 71,
+        "prompt_tokens": 171,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "material_glossary_v1"
+        },
+        "error": null
+      },
+      {
+        "id": "invoice_silver_vi_to_ko",
+        "group": "independent_probe",
+        "direction": "vi->ko",
+        "variant": "baseline_official_v1",
+        "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+        "input_characters": 166,
+        "output": "제품 사양 SKU-A17: 925 은함량, 무게 18.5g, 은백색. 담당자 림 씨는 제작 시 구리를 은으로 대체하지 않았다고 명시했습니다. 로트 번호: LOT-301.",
+        "elapsed_seconds": 0.489,
+        "completion_tokens": 62,
+        "prompt_tokens": 102,
+        "finish_reason": "stop",
+        "analysis": {
+          "lexical_concepts_present": {
+            "silver": true,
+            "copper": true
+          },
+          "missing_literal_identifiers": [],
+          "latin_name_lam_preserved": null,
+          "human_review_required": true,
+          "variant": "baseline_official_v1"
+        },
+        "error": null
+      }
+    ],
+    "requested_cases": 20,
+    "model_ready_seconds": 34.746,
+    "function_seconds": 74.203,
+    "max_observed_gpu_memory_mib": 31191,
+    "gpu_peak_is_exact": false,
+    "completion_tokens_total": 4850,
+    "stop_reason": null,
+    "gguf_sha256": "d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98",
+    "llama_cpp_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+    "engine_settings": {
+      "context_size": 4096,
+      "gpu_layers": 99,
+      "seed": 42,
+      "temperature": 0.7
+    },
+    "cost_controls": {
+      "max_containers": 1,
+      "function_timeout": 650,
+      "internal_seconds_budget": 500,
+      "completion_tokens_budget": 9000
+    }
+  },
+  "analysis_version": "lexical_context_v2",
+  "analysis_recomputed_offline_without_new_gpu_run": true,
+  "analysis_note": "Original generations and GPU measurements unchanged; lexical indicators recomputed to remove Korean grammatical-particle and Japanese terminology false signals. Not a semantic-quality score."
+}

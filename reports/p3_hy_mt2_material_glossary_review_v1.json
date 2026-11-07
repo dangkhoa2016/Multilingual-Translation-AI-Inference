@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-07",
+  "source_report": "reports/p3_hy_mt2_material_glossary_probe_v1.json",
+  "source_fixture": "benchmarks/hy_mt2_material_glossary_probe_v1.json",
+  "dataset_sha256": "63c03fd52780863ed946dee7bfbdd65235740c759fc5cbfdd6dccbdbd5cb2a10",
+  "review_type": "assistant_preliminary_semantic_anchor_review",
+  "native_language_human_reference_review_complete": false,
+  "gpu_requests_completed": 40,
+  "gpu_request_errors": 0,
+  "comparison": {
+    "development_retest": {
+      "source_case_count": 4,
+      "material_meaning_correct_baseline": 0,
+      "material_meaning_correct_glossary": 4,
+      "note": "One previously observed narrative reused across four target languages; not independent held-out quality."
+    },
+    "independent_probes": {
+      "source_case_count": 16,
+      "expected_material_lexical_signals_baseline": "34/36",
+      "expected_material_lexical_signals_glossary": "36/36",
+      "note": "Only lexical presence signals; cannot determine whether negation, factual relations or grammar are correct."
+    },
+    "latin_script_name_preservation": {
+      "baseline": "1/8",
+      "glossary": "8/8",
+      "note": "Preserve Lâm in English/German outputs; Japanese/Korean phonetic rendering is out of scope."
+    }
+  },
+  "specific_findings": [
+    {
+      "case_id": "narrative_retest_vi_to_en",
+      "severity": "major",
+      "problem": "Silver compass translated as brass compass",
+      "baseline_quote": "brass compass",
+      "glossary_quote": "silver compass",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "narrative_retest_vi_to_de",
+      "severity": "major",
+      "problem": "Silver compass translated as copper compass",
+      "baseline_quote": "Kupferkompass",
+      "glossary_quote": "silberne Kompassgerät",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "narrative_retest_vi_to_ja",
+      "severity": "major",
+      "problem": "Silver compass translated as copper compass",
+      "baseline_quote": "銅製の羅針盤",
+      "glossary_quote": "銀製の羅針盤",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "narrative_retest_vi_to_ko",
+      "severity": "major",
+      "problem": "Silver compass translated as copper compass",
+      "baseline_quote": "구리 나침반",
+      "glossary_quote": "은으로 만든 나침반",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "mixed_metals_vi_to_en",
+      "severity": "major",
+      "problem": "Copper box translated as bronze box",
+      "baseline_quote": "bronze box",
+      "glossary_quote": "copper box",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "mixed_metals_vi_to_de",
+      "severity": "major",
+      "problem": "Copper box translated as bronze box",
+      "baseline_quote": "bronzene Schachtel",
+      "glossary_quote": "kupferne Schatulle",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "invoice_silver_vi_to_de",
+      "severity": "critical",
+      "problem": "Source 'do not replace silver with copper' was reversed: baseline says no copper was replaced with silver, and changed a prohibition into a past-tense statement",
+      "baseline_quote": "wurde kein Kupfer durch Silber ersetzt",
+      "glossary_quote": "darf Silber nicht durch Kupfer ersetzt werden",
+      "glossary_fixed_in_this_run": true
+    },
+    {
+      "case_id": "narrative_retest_vi_to_en",
+      "severity": "minor",
+      "problem": "Source 'một em bé' does not specify gender, but output says little girl; glossary did not fix",
+      "baseline_quote": "a little girl",
+      "glossary_quote": "a little girl",
+      "glossary_fixed_in_this_run": false
+    }
+  ],
+  "evaluation_limits": [
+    "One paired generation per case and prompt; no repeated seeds or confidence intervals.",
+    "Four independent probe descriptions were designed around observed material-term failure. Not a blind held-out general-purpose corpus.",
+    "Lexical hits do not prove semantic or negation correctness, and may miss valid paraphrases.",
+    "Japanese and Korean fluency and honorific register need independent experts.",
+    "No FLORES+ parallel references were imported because existing Codespaces did not provide accepted gated access.",
+    "No change to production registry, PostgreSQL, CPU gateway or weights."
+  ],
+  "status": "DEVELOPMENT_PROBE_SUCCESSFUL_BUT_NOT_PRODUCTION_READY",
+  "next": "Reference-based cross-domain chrF++ scoring, expert review, long 1000-char cases per direction, multiple seeds and other models on identical dataset"
+}
