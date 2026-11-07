@@ -103,3 +103,17 @@ GPU budget or a production security system.
 - **Do not publish this mock API as a real translation service.**
 
 See [`README.vi.md`](README.vi.md) for Vietnamese documentation.
+
+
+## P3 candidate preflight (no GPU)
+
+The official `tencent/Hy-MT2-30B-A3B-GGUF` Q8_0 candidate is now locked
+by exact Hugging Face revision, file name, size and metadata SHA256, with a
+bounded GGUF header check. **No complete model file has been downloaded or
+locally SHA256-verified and no GPU text generation has been run.**
+
+- [P3 Hy-MT2 readiness and blockers](docs/p3-hy-mt2-readiness.md)
+- [Pinned artifact manifest](models/hy_mt2_30b_q8_0.lock.json)
+- Run `python scripts/verify_hy_mt2_p3.py --online --deep-header` (metadata only).
+- Pinned llama.cpp `llama-server` **CPU-only** build preflight passed;
+  actual GGUF loading, CUDA and L40S have not been tested.

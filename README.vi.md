@@ -97,3 +97,17 @@ API retry qua HTTP trên Modal CPU đã được nghiệm thu thực tế (HTTP 
 **Chưa hoàn tất:** reconciliation tự động an toàn, cảnh báo chi phí theo USD,
 budget/rate limits, P3 runtime llama.cpp, 4 GPU Functions, bảo mật nâng cao,
 retention và kiểm duyệt chất lượng. Không đưa API mock ra production dịch thuật.
+
+
+## P3 — Khóa metadata model Hy-MT2 (chưa dùng GPU)
+
+Đã cố định revision checkpoint, GGUF Q8_0 chính chủ, kích thước, SHA256
+do Hugging Face công bố, và kiểm tra header GGUF qua HTTP Range giới hạn.
+**Chưa tải toàn bộ file, chưa tính SHA256 trực tiếp trên weights, chưa chạy
+dịch thật trên L40S.** Không tự bật inference GPU khi mới pass metadata.
+
+- [Tài liệu preflight Hy-MT2](docs/p3-hy-mt2-readiness.md)
+- [Lock file](models/hy_mt2_30b_q8_0.lock.json)
+- Kiểm lại: `python scripts/verify_hy_mt2_p3.py --online --deep-header`
+- Đã build thành công `llama-server` trên **CPU Codespaces** ở commit đã khóa;
+  chưa build CUDA và chưa load weights để dịch thật.
