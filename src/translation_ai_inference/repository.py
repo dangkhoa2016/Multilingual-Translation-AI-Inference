@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import selectinload
 
 from .database import Job, JobRun, TranslationResult, utcnow
+from .gpu_budget import reserve_estimated_gpu_budget
 from .quotas import QuotaExceeded, apply_submission_quotas
 
 
@@ -32,7 +33,9 @@ class JobRepository:
 
     def submit(self, *, owner: str, idempotency_key: str | None, kind: str,
                payload: dict, model_keys: list[str], max_jobs_per_minute: int = 10,
-               max_jobs_per_day: int = 100, max_model_runs_per_day: int = 200) -> str:
+               max_jobs_per_day: int = 100, max_model_runs_per_day: int = 200,
+               estimated_gpu_microusd_per_run: int = 0,
+               max_estimated_gpu_microusd_per_day: int = 0) -> str:
         digest = payload_hash(kind, payload, model_keys)
         with self.session_factory() as session:
             if idempotency_key:
@@ -48,6 +51,11 @@ class JobRepository:
                     max_jobs_per_minute=max_jobs_per_minute,
                     max_jobs_per_day=max_jobs_per_day,
                     max_model_runs_per_day=max_model_runs_per_day,
+                )
+                reserve_estimated_gpu_budget(
+                    session, owner=owner, model_count=len(model_keys),
+                    microusd_per_run=estimated_gpu_microusd_per_run,
+                    daily_microusd_limit=max_estimated_gpu_microusd_per_day,
                 )
             except QuotaExceeded:
                 # Another request with this key may have committed while our
@@ -175,7 +183,9 @@ class JobRepository:
 
     def retry_failed_run(self, *, job_id: str, owner: str, run_id: str,
                          max_attempts_per_model: int = 2,
-                         max_model_runs_per_day: int = 200) -> str:
+                         max_model_runs_per_day: int = 200,
+                         estimated_gpu_microusd_per_run: int = 0,
+                         max_estimated_gpu_microusd_per_day: int = 0) -> str:
         """Explicit retry of a *definitely failed* run, never an uncertain execution.
 
         Lock the parent job row (PostgreSQL) so concurrent retry requests cannot
@@ -201,6 +211,11 @@ class JobRepository:
                 session, owner=owner, model_count=1,
                 max_jobs_per_minute=1, max_jobs_per_day=1,
                 max_model_runs_per_day=max_model_runs_per_day, retry=True,
+            )
+            reserve_estimated_gpu_budget(
+                session, owner=owner, model_count=1,
+                microusd_per_run=estimated_gpu_microusd_per_run,
+                daily_microusd_limit=max_estimated_gpu_microusd_per_day,
             )
             new_run = JobRun(job_id=job_id, model_key=original.model_key,
                              attempt_no=original.attempt_no + 1, status="queued")

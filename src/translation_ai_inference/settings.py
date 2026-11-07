@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from os import environ
 
+from .gpu_budget import configured_estimate
+
 
 @dataclass(frozen=True)
 class Settings:
@@ -14,6 +16,9 @@ class Settings:
     max_jobs_per_day: int = 100
     max_model_runs_per_day: int = 200
     max_attempts_per_model: int = 2
+    # Optional and explicitly *estimated* admission reservations, not actual Modal billing.
+    estimated_gpu_microusd_per_run: int = 0
+    max_estimated_gpu_microusd_per_day: int = 0
 
     @classmethod
     def from_environment(cls) -> "Settings":
@@ -37,5 +42,14 @@ class Settings:
             if value < 1:
                 raise ValueError(f"{variable} must be a positive integer")
             limits[key] = value
-        return cls(database_url=database_url, api_bearer_token=api_bearer_token,
-                   dispatcher_mode=dispatcher_mode, **limits)
+        estimate_per_run, budget_per_day = configured_estimate(
+            environ.get("TRANSLATION_ESTIMATED_GPU_USD_PER_RUN"),
+            environ.get("TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY"),
+        )
+        return cls(
+            database_url=database_url, api_bearer_token=api_bearer_token,
+            dispatcher_mode=dispatcher_mode,
+            estimated_gpu_microusd_per_run=estimate_per_run,
+            max_estimated_gpu_microusd_per_day=budget_per_day,
+            **limits,
+        )

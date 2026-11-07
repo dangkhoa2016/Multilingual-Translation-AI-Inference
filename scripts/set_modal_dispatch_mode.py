@@ -21,6 +21,7 @@ import time
 import urllib.request
 from pathlib import Path
 
+from translation_ai_inference.gpu_budget import configured_estimate
 from translation_ai_inference.resource_names import (
     MODAL_API_AUTH_SECRET_NAME,
     MODAL_APP_NAME,
@@ -57,12 +58,25 @@ def _run_modal(args, token, profile):
 
 
 def _apply_secret(mode, token, profile):
+    # If the operator chooses an estimated admission limit, validate and
+    # preserve BOTH fields when this script replaces the API Secret.
+    per_run_raw = os.environ.get("TRANSLATION_ESTIMATED_GPU_USD_PER_RUN")
+    per_day_raw = os.environ.get("TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY")
+    configured_estimate(per_run_raw, per_day_raw)
+    variables = {
+        "TRANSLATION_API_BEARER_TOKEN": token,
+        "TRANSLATION_DISPATCHER_MODE": mode,
+    }
+    if per_run_raw is not None:
+        variables.update({
+            "TRANSLATION_ESTIMATED_GPU_USD_PER_RUN": per_run_raw,
+            "TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY": per_day_raw,
+        })
+    elif mode == "modal-gpu":
+        print("WARNING: estimated GPU USD admission budget is not configured")
     with tempfile.TemporaryDirectory(prefix="gpu-dispatch-", dir="/tmp") as parent:
         path = Path(parent) / "auth.json"
-        path.write_text(json.dumps({
-            "TRANSLATION_API_BEARER_TOKEN": token,
-            "TRANSLATION_DISPATCHER_MODE": mode,
-        }), encoding="utf-8")
+        path.write_text(json.dumps(variables), encoding="utf-8")
         path.chmod(0o600)
         _run_modal([
             "secret", "create", MODAL_API_AUTH_SECRET_NAME,

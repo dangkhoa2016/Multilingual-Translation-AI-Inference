@@ -62,6 +62,14 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
                 max_jobs_per_minute=settings.max_jobs_per_minute,
                 max_jobs_per_day=settings.max_jobs_per_day,
                 max_model_runs_per_day=settings.max_model_runs_per_day,
+                estimated_gpu_microusd_per_run=(
+                    settings.estimated_gpu_microusd_per_run
+                    if settings.dispatcher_mode == "modal-gpu" else 0
+                ),
+                max_estimated_gpu_microusd_per_day=(
+                    settings.max_estimated_gpu_microusd_per_day
+                    if settings.dispatcher_mode == "modal-gpu" else 0
+                ),
             )
         except QuotaExceeded as exc:
             raise HTTPException(status_code=429, detail=str(exc),
@@ -95,6 +103,14 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
                 job_id=str(job_id), owner=settings.request_owner, run_id=str(run_id),
                 max_attempts_per_model=settings.max_attempts_per_model,
                 max_model_runs_per_day=settings.max_model_runs_per_day,
+                estimated_gpu_microusd_per_run=(
+                    settings.estimated_gpu_microusd_per_run
+                    if settings.dispatcher_mode == "modal-gpu" else 0
+                ),
+                max_estimated_gpu_microusd_per_day=(
+                    settings.max_estimated_gpu_microusd_per_day
+                    if settings.dispatcher_mode == "modal-gpu" else 0
+                ),
             )
         except QuotaExceeded as exc:
             raise HTTPException(status_code=429, detail=str(exc),
