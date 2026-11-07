@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic_unreferenced_diagnostic",
+  "description": "Synthetic translation diagnostics: there are no professionally validated reference translations. Human evaluation remains necessary.",
+  "source_provenance": "Original fictional test prompts authored for the project on 2026-11-07.",
+  "cases": [
+    {
+      "id": "en_to_vi_structured",
+      "source_language": "en",
+      "target_language": "vi",
+      "category": "structured",
+      "source_text": "Please confirm order {ORDER_ID} before 08:45 on 2026-11-07. The label <b>fragile</b> must stay visible. Contact support using ticket INV-2048; do not change code SKU-A17.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "en_to_vi_narrative",
+      "source_language": "en",
+      "target_language": "vi",
+      "category": "narrative_long",
+      "source_text": "Before sunrise, Mira reached the small railway station beside the river. The clock above the entrance showed 06:15, but the handwritten timetable said the first train would leave at 06:40. Her grandfather had warned her that the old bridge might close after heavy rain, so she carried a paper map rather than trusting the navigation app. In her notebook she wrote: \"A delayed journey is not necessarily a failed journey.\"\n\nAt the ticket office, a clerk named An explained that the ferry would operate until 19:30, unless the wind exceeded 40 km/h. Mira purchased two tickets for €12.50 and kept receipt INV-2048 in her blue bag. She promised to meet Professor Lâm at the museum on 7 November 2026, but she did not reveal why the professor had asked for the silver compass.\n\nWhen the announcement finally echoed through the station, passengers hurried toward platform 3. Mira stayed behind to help a child find a missing red scarf.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_en_structured",
+      "source_language": "vi",
+      "target_language": "en",
+      "category": "structured",
+      "source_text": "Vui lòng xác nhận đơn {ORDER_ID} trước 08:45 ngày 2026-11-07. Nhãn <b>dễ vỡ</b> phải luôn hiển thị. Liên hệ hỗ trợ bằng phiếu INV-2048; không đổi mã SKU-A17.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_en_narrative",
+      "source_language": "vi",
+      "target_language": "en",
+      "category": "narrative_long",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "de_to_vi_structured",
+      "source_language": "de",
+      "target_language": "vi",
+      "category": "structured",
+      "source_text": "Bitte bestätigen Sie Bestellung {ORDER_ID} vor 08:45 am 2026-11-07. Das Etikett <b>zerbrechlich</b> muss sichtbar bleiben. Verwenden Sie Ticket INV-2048; ändern Sie SKU-A17 nicht.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "de_to_vi_narrative",
+      "source_language": "de",
+      "target_language": "vi",
+      "category": "narrative_long",
+      "source_text": "Noch vor Sonnenaufgang erreichte Mira den kleinen Bahnhof am Fluss. Die Uhr über dem Eingang zeigte 06:15, doch laut dem handgeschriebenen Fahrplan sollte der erste Zug erst um 06:40 abfahren. Ihr Großvater hatte sie gewarnt, dass die alte Brücke nach starkem Regen gesperrt werden könnte. Deshalb trug sie eine Papierkarte bei sich, statt sich allein auf die Navigations-App zu verlassen. In ihr Notizbuch schrieb sie: „Eine verspätete Reise ist nicht unbedingt eine gescheiterte Reise.“\n\nAm Fahrkartenschalter erklärte ein Angestellter namens An, die Fähre fahre bis 19:30, solange der Wind nicht stärker als 40 km/h werde. Mira kaufte zwei Fahrkarten für 12,50 Euro und steckte die Quittung INV-2048 in ihre blaue Tasche. Sie hatte Professor Lâm versprochen, ihn am 7. November 2026 im Museum zu treffen, verriet jedoch niemandem, weshalb er den silbernen Kompass sehen wollte.\n\nAls die Durchsage endlich durch den Bahnhof hallte, eilten mehrere Reisende zu Gleis 3.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_de_structured",
+      "source_language": "vi",
+      "target_language": "de",
+      "category": "structured",
+      "source_text": "Vui lòng xác nhận đơn {ORDER_ID} trước 08:45 ngày 2026-11-07. Nhãn <b>dễ vỡ</b> phải luôn hiển thị. Liên hệ hỗ trợ bằng phiếu INV-2048; không đổi mã SKU-A17.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_de_narrative",
+      "source_language": "vi",
+      "target_language": "de",
+      "category": "narrative_long",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "ja_to_vi_structured",
+      "source_language": "ja",
+      "target_language": "vi",
+      "category": "structured",
+      "source_text": "2026-11-07の08:45までに注文{ORDER_ID}を確認してください。<b>割れ物</b>のラベルを見える位置に残してください。問い合わせ番号はINV-2048です。商品コードSKU-A17は変更しないでください。",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "ja_to_vi_narrative",
+      "source_language": "ja",
+      "target_language": "vi",
+      "category": "narrative_long",
+      "source_text": "日の出前、ミラは川沿いにある小さな駅に到着した。入口の上の時計は06:15を示していたが、手書きの時刻表には始発列車の出発時刻が06:40と書かれていた。祖父は、大雨の後には古い橋が通行止めになるかもしれないと警告していた。そのため、ミラは携帯電話の地図だけに頼らず、紙の地図も持ってきた。彼女は手帳に「遅れた旅が必ずしも失敗した旅とは限らない」と書き留めた。\n\n切符売り場では、アンという係員が、風速が40 km/hを超えない限り、渡し船は19:30まで運航すると説明した。ミラは12.50ユーロで切符を二枚買い、領収書INV-2048を青いかばんにしまった。彼女は2026年11月7日に博物館でラム教授と会う約束をしていたが、教授が銀の方位磁針を見たがっている理由は誰にも話さなかった。\n\nやがて駅に案内放送が響くと、乗客たちは急いで三番ホームへ向かった。しかしミラは、赤いマフラーをなくした子どもを手伝うために残った。外では一晩のうちに川の水位が上がり、薄い霧が遠くの村の明かりを隠していた。方位磁針は北を指すのだろうか。それとも、家族が忘れてしまった場所へ自分を導くのだろうか。彼女はしばらく立ち止まり、静かな川の流れを見つめた。駅長は乗客に落ち着いて行動し、狭い出口をふさがないよう求めた。次の案内放送で出発時刻が変更される可能性もあるという。ミラは後でほかの旅人に説明できるように、一つ一つの指示を手帳に丁寧に書き写した。",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_ja_structured",
+      "source_language": "vi",
+      "target_language": "ja",
+      "category": "structured",
+      "source_text": "Vui lòng xác nhận đơn {ORDER_ID} trước 08:45 ngày 2026-11-07. Nhãn <b>dễ vỡ</b> phải luôn hiển thị. Liên hệ hỗ trợ bằng phiếu INV-2048; không đổi mã SKU-A17.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_ja_narrative",
+      "source_language": "vi",
+      "target_language": "ja",
+      "category": "narrative_long",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "ko_to_vi_structured",
+      "source_language": "ko",
+      "target_language": "vi",
+      "category": "structured",
+      "source_text": "2026-11-07 08:45까지 주문 {ORDER_ID}를 확인해 주세요. <b>깨지기 쉬움</b> 표시가 보여야 합니다. 문의 번호는 INV-2048이며, 상품 코드 SKU-A17은 변경하지 마세요.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "ko_to_vi_narrative",
+      "source_language": "ko",
+      "target_language": "vi",
+      "category": "narrative_long",
+      "source_text": "해가 뜨기 전, 미라는 강가에 있는 작은 기차역에 도착했다. 입구 위 시계는 06:15를 가리켰지만 손으로 쓴 시간표에는 첫 열차가 06:40에 출발한다고 적혀 있었다. 할아버지는 큰비가 내린 뒤에는 오래된 다리가 통제될 수 있다고 경고했다. 그래서 미라는 휴대전화의 지도만 믿지 않고 종이 지도를 가방에 넣었다. 수첩에는 이렇게 썼다. “여행이 늦어진다고 해서 반드시 실패한 것은 아니다.”\n\n매표소에서 안이라는 직원은 바람이 40 km/h를 넘지 않는 한 나룻배가 19:30까지 운항한다고 설명했다. 미라는 12.50유로에 표 두 장을 사고 영수증 INV-2048을 파란 가방에 넣었다. 그녀는 2026년 11월 7일 박물관에서 람 교수와 만나기로 약속했지만, 교수가 은빛 나침반을 보고 싶어 하는 이유는 아무에게도 말하지 않았다.\n\n마침내 역에 안내 방송이 울려 퍼지자 승객들이 서둘러 3번 승강장으로 향했다. 그러나 미라는 빨간 목도리를 잃어버린 아이를 돕기 위해 남았다. 밖에서는 밤사이 강물이 불어났고, 엷은 안개가 먼 마을의 불빛을 감추고 있었다. 그녀는 나침반이 북쪽을 가리킬지, 아니면 가족이 오랫동안 잊고 지낸 장소로 자신을 이끌지 궁금했다. 역장은 모든 승객에게 침착하게 행동하고 좁은 출구를 막지 말라고 당부했다. 다음 안내 방송에서 출발 시간이 바뀔 수도 있다고 말했다. 미라는 나중에 다른 여행자들에게 설명할 수 있도록 모든 지시를 수첩에 꼼꼼히 적어 두었다.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_ko_structured",
+      "source_language": "vi",
+      "target_language": "ko",
+      "category": "structured",
+      "source_text": "Vui lòng xác nhận đơn {ORDER_ID} trước 08:45 ngày 2026-11-07. Nhãn <b>dễ vỡ</b> phải luôn hiển thị. Liên hệ hỗ trợ bằng phiếu INV-2048; không đổi mã SKU-A17.",
+      "required_literals": [
+        "{ORDER_ID}",
+        "INV-2048",
+        "SKU-A17",
+        "<b>",
+        "</b>"
+      ],
+      "quality_reference": null
+    },
+    {
+      "id": "vi_to_ko_narrative",
+      "source_language": "vi",
+      "target_language": "ko",
+      "category": "narrative_long",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "required_literals": [
+        "INV-2048"
+      ],
+      "quality_reference": null
+    }
+  ]
+}
