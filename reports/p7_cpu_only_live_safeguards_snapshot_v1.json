@@ -1,0 +1,28 @@
+{
+  "checked_at_utc": "2026-11-07T07:58:07.633796+00:00",
+  "kind": "cpu_only_workspace_billing_and_postgresql_safety_snapshot",
+  "read_only": true,
+  "database": {
+    "window_hours": 24,
+    "total_runs_by_state": {
+      "completed": 36
+    },
+    "recent_runs_by_state": {
+      "completed": 36
+    },
+    "recent_error_codes": {},
+    "recent_real_results_count": 15,
+    "stale_dispatching_count": 0,
+    "stale_running_count": 0,
+    "estimated_gpu_usd_reserved_today": 0.0,
+    "estimated_reservation_configured_owners": 0
+  },
+  "modal_billing": {
+    "scope": "entire_modal_workspace",
+    "period": "current_month",
+    "metered_cost_usd": "1.59568943",
+    "billed_cost_usd": "0E-8"
+  },
+  "alerts": [],
+  "note": "Workspace spending only; estimated reservations not actual cost. No GPU allocated, no job retries, no translated content logged."
+}
