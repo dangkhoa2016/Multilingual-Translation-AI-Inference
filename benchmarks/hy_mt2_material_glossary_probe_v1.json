@@ -1,0 +1,257 @@
+{
+  "schema_version": 1,
+  "kind": "synthetic_material_glossary_diagnostic_unreferenced",
+  "provenance": "One published V1 narrative retest plus four independent original Vietnamese prompts authored 2026-11-07; not a human reference corpus.",
+  "prompt_variants": [
+    "baseline_official_v1",
+    "material_glossary_v1"
+  ],
+  "target_languages": [
+    "en",
+    "de",
+    "ja",
+    "ko"
+  ],
+  "cases": [
+    {
+      "id": "narrative_retest_vi_to_en",
+      "source_language": "vi",
+      "target_language": "en",
+      "group": "development_retest",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "material_concepts_to_inspect": [
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "narrative_retest_vi_to_de",
+      "source_language": "vi",
+      "target_language": "de",
+      "group": "development_retest",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "material_concepts_to_inspect": [
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "narrative_retest_vi_to_ja",
+      "source_language": "vi",
+      "target_language": "ja",
+      "group": "development_retest",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "material_concepts_to_inspect": [
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "narrative_retest_vi_to_ko",
+      "source_language": "vi",
+      "target_language": "ko",
+      "group": "development_retest",
+      "source_text": "Trước khi mặt trời mọc, Mai đến ga tàu nhỏ bên bờ sông. Đồng hồ phía trên cửa ra vào chỉ 06:15, nhưng tấm lịch viết tay thông báo chuyến tàu đầu tiên sẽ khởi hành lúc 06:40. Ông nội từng dặn rằng cây cầu cũ có thể đóng sau trận mưa lớn, vì vậy cô mang theo bản đồ giấy thay vì chỉ tin vào điện thoại. Trong sổ tay, Mai viết: “Một chuyến đi chậm trễ chưa chắc đã là chuyến đi thất bại.”\n\nỞ quầy vé, nhân viên tên An giải thích rằng phà chỉ hoạt động đến 19:30, trừ khi gió vượt quá 40 km/h. Mai mua hai vé với giá 12,50 euro và cất hóa đơn INV-2048 vào chiếc túi màu xanh. Cô đã hứa gặp giáo sư Lâm tại bảo tàng vào ngày 7 tháng 11 năm 2026, nhưng không tiết lộ lý do ông muốn xem chiếc la bàn bạc.\n\nKhi tiếng loa vang lên, nhiều hành khách vội chạy về sân ga số 3. Mai ở lại giúp một em bé tìm chiếc khăn đỏ bị thất lạc. Ngoài trời, nước sông đã dâng cao trong đêm; màn sương mỏng che khuất ánh đèn ở ngôi làng xa.",
+      "material_concepts_to_inspect": [
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "silver_ring_vi_to_en",
+      "source_language": "vi",
+      "target_language": "en",
+      "group": "independent_probe",
+      "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper",
+        "gold"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "silver_ring_vi_to_de",
+      "source_language": "vi",
+      "target_language": "de",
+      "group": "independent_probe",
+      "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper",
+        "gold"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "silver_ring_vi_to_ja",
+      "source_language": "vi",
+      "target_language": "ja",
+      "group": "independent_probe",
+      "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper",
+        "gold"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "silver_ring_vi_to_ko",
+      "source_language": "vi",
+      "target_language": "ko",
+      "group": "independent_probe",
+      "source_text": "Bà Lan trao cho giáo sư Lâm một chiếc nhẫn làm bằng bạc nguyên chất. Bà nhấn mạnh: chiếc nhẫn không làm bằng đồng hoặc vàng, và ngày trên phiếu kiểm định là 2026-11-07.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper",
+        "gold"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "mixed_metals_vi_to_en",
+      "source_language": "vi",
+      "target_language": "en",
+      "group": "independent_probe",
+      "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "mixed_metals_vi_to_de",
+      "source_language": "vi",
+      "target_language": "de",
+      "group": "independent_probe",
+      "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "mixed_metals_vi_to_ja",
+      "source_language": "vi",
+      "target_language": "ja",
+      "group": "independent_probe",
+      "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "mixed_metals_vi_to_ko",
+      "source_language": "vi",
+      "target_language": "ko",
+      "group": "independent_probe",
+      "source_text": "Kỹ sư Minh đặt chiếc chìa khóa bằng bạc cạnh chiếc hộp bằng đồng. Khi kiểm kê lúc 08:45, anh ghi mã INV-2048, rồi dặn trợ lý không được đánh tráo vị trí của hai vật.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "gold_object_vi_to_en",
+      "source_language": "vi",
+      "target_language": "en",
+      "group": "independent_probe",
+      "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+      "material_concepts_to_inspect": [
+        "gold",
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "gold_object_vi_to_de",
+      "source_language": "vi",
+      "target_language": "de",
+      "group": "independent_probe",
+      "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+      "material_concepts_to_inspect": [
+        "gold",
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "gold_object_vi_to_ja",
+      "source_language": "vi",
+      "target_language": "ja",
+      "group": "independent_probe",
+      "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+      "material_concepts_to_inspect": [
+        "gold",
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "gold_object_vi_to_ko",
+      "source_language": "vi",
+      "target_language": "ko",
+      "group": "independent_probe",
+      "source_text": "Trong phòng trưng bày, chiếc vương miện làm bằng vàng được đặt trên tấm nhung xanh. Người hướng dẫn tên Lâm xác nhận: đây không phải là vương miện bạc, và khách tham quan không được chạm vào nó.",
+      "material_concepts_to_inspect": [
+        "gold",
+        "silver"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "invoice_silver_vi_to_en",
+      "source_language": "vi",
+      "target_language": "en",
+      "group": "independent_probe",
+      "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "invoice_silver_vi_to_de",
+      "source_language": "vi",
+      "target_language": "de",
+      "group": "independent_probe",
+      "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "invoice_silver_vi_to_ja",
+      "source_language": "vi",
+      "target_language": "ja",
+      "group": "independent_probe",
+      "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    },
+    {
+      "id": "invoice_silver_vi_to_ko",
+      "source_language": "vi",
+      "target_language": "ko",
+      "group": "independent_probe",
+      "source_text": "Thông số sản phẩm SKU-A17: chất liệu bạc 925, khối lượng 18,5 g, màu trắng bạc. Người phụ trách tên Lâm ghi rõ: không thay bạc bằng đồng khi sản xuất. Mã lô: LOT-301.",
+      "material_concepts_to_inspect": [
+        "silver",
+        "copper"
+      ],
+      "note": "Glossary / lexical checks only; negation and semantics require manual review"
+    }
+  ]
+}
