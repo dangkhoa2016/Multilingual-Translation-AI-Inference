@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference
 
-**Status: P1 HTTP API and early P2 CPU mock orchestration. Actual GPU translation is NOT implemented or deployed.**
+**Status: P1 API and P2 CPU-only mock deployment tested on Modal (2026-11-07). Actual GPU translation is NOT implemented or deployed.**
 
 This repository starts the text-only, async-first translation service described in
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md). The target
@@ -72,13 +72,17 @@ Provider `postgresql://` URLs are converted to the psycopg v3 SQLAlchemy driver.
 
 See [`docs/deployment.md`](docs/deployment.md). Use a **direct PostgreSQL connection** for schema migrations and, where supported, a
 pooled PostgreSQL connection for the deployed API/worker. The two Modal Secrets and
-PostgreSQL schema must be configured before deployment. `modal deploy modal_app.py`
-registers ONLY the CPU gateway and CPU mock worker. This has not been deployed yet.
+PostgreSQL schema must be configured before deployment. Run
+`.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py` from the
+repository root. It registers ONLY the CPU gateway and CPU mock worker.
+Development deployment and live Modal `spawn()` tests have passed. For reproducible
+verification, load `.env` and run `scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_MODAL_URL`.
+The script validates Bearer auth, idempotency, polling and four mock model runs.
 
 ## Current limitations
 
 - No real GGUF runtime, L40S configuration, GPU function registration or model weights.
-- PostgreSQL development migrations and API mock calls have passed; Modal `spawn()` has **not** been live tested.
+- PostgreSQL development migrations and Modal CPU `spawn()` have passed live smoke tests; this is not production-ready.
 - No reconciliation/retry scheduler, TTL/privacy purger, client quotas or cost guards yet.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
 - The initial migration contains job/run/results tables; model registry, reviews and full provenance

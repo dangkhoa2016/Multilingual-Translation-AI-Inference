@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference — Modal + PostgreSQL
 
-**Trạng thái: đã có API P1 và cơ chế chạy mock CPU một phần P2. Chưa triển khai dịch thuật GPU thật.**
+**Trạng thái: đã nghiệm thu API P1 và triển khai mock CPU trên Modal ở P2 (2026-11-07). Chưa triển khai dịch thuật GPU thật.**
 
 Mục tiêu: một Modal App, gateway FastAPI CPU, bốn worker L40S độc lập,
 PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấp dự kiến ban đầu). API mặc định là bất đồng bộ,
@@ -75,12 +75,17 @@ python scripts/local_demo.py
 ```
 
 Hướng dẫn cấu hình PostgreSQL và hai Modal Secrets: [`docs/deployment.md`](docs/deployment.md).
-`modal deploy modal_app.py` **chỉ đăng ký CPU**, không tạo Volume hay gọi GPU.
+`.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py ` **chỉ đăng ký CPU**, không tạo Volume hay gọi GPU.
+Đã chạy thử nghiệm thu `spawn()` từ gateway đến CPU worker, PostgreSQL và polling.
+Để nghiệm thu lại, nạp `.env` rồi chạy
+`.venv/bin/python scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_MODAL_URL`.
+Kịch bản kiểm tra Bearer token, idempotency, API polling và bốn mock runs.
 Các thông số P3, chọn model và benchmark vẫn theo kế hoạch
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md).
 
-**Đã nghiệm thu:** migrations PostgreSQL development và API mock qua database thật.
+**Đã nghiệm thu:** migrations PostgreSQL development, Modal CPU deploy,
+API gateway → `spawn()` → CPU mock worker → PostgreSQL → polling.
 
-**Chưa hoàn tất:** spawn trên Modal thật, retry/reconciliation,
+**Chưa hoàn tất:** retry/reconciliation,
 budget/rate limits, P3 runtime llama.cpp, 4 GPU Functions, bảo mật nâng cao,
 retention và kiểm duyệt chất lượng. Không đưa API mock ra production dịch thuật.

@@ -1,7 +1,7 @@
 # Deployment runbook — CPU mock only
 
 This runbook is **NOT** a production or GPU deployment guide.
-PostgreSQL migrations and local mock requests have been tested. Modal deployment and GPU inference have **not** been performed.
+Development PostgreSQL migrations, Modal CPU deployment, and asynchronous CPU mock smoke tests have passed (2026-11-07). **GPU inference has not been deployed.**
 
 ## 1. Provision a PostgreSQL development database
 
@@ -39,10 +39,10 @@ for both with conservative connection limits.
 
 ```bash
 pip install -e '.[dev]'
-modal deploy modal_app.py
-modal app list
-modal function info translation-ai-inference-api-and-model-workers/translation_inference_fastapi_cpu_gateway
-modal function info translation-ai-inference-api-and-model-workers/translation_inference_cpu_mock_job_worker
+.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py
+.venv/bin/modal app list --profile YOUR_MODAL_PROFILE
+.venv/bin/modal function info --profile YOUR_MODAL_PROFILE translation-ai-inference-api-and-model-workers/translation_inference_fastapi_cpu_gateway
+.venv/bin/modal function info --profile YOUR_MODAL_PROFILE translation-ai-inference-api-and-model-workers/translation_inference_cpu_mock_job_worker
 ```
 
 Both functions have `gpu=None`, min/buffer containers 0. The mock worker does not
@@ -50,9 +50,22 @@ translate text. Do not run `scripts/create_named_modal_volumes.sh` before P3.
 
 ## 4. Smoke
 
-Call `/health`, `/v1/models` with Bearer, submit a translation job, poll status,
-verify `is_mock_result=true` and mock disclaimer, verify duplicate Idempotency-Key
-uses the same `job_id`, and verify `GET` does not start GPU work.
+Run the manual integration smoke test against the actual Modal web URL after loading
+the local `.env` (the script reads only the bearer token from the environment):
+
+```bash
+set -a; source .env; set +a
+.venv/bin/python scripts/smoke_modal_cpu.py \
+  --base-url https://YOUR_DEPLOYED_ENDPOINT.modal.run
+```
+
+Checks: public `/health`, protected `/v1/models`, translation submission,
+`spawn()`, PostgreSQL persistence, GET polling, idempotency and conflict detection,
+plus a four-model CPU mock benchmark. Every result must declare
+`is_mock_result=true` with the mock disclaimer. No real inference runs.
+The public Modal URL uses application Bearer authentication for `/v1` endpoints;
+the `/health` endpoint is intentionally public. Do not expose this test gateway
+as a production translation service.
 
 ## 5. Rollback and incident notes
 

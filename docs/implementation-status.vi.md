@@ -5,10 +5,10 @@
 | P0 nguồn model | Đã kiểm tra metadata tài liệu, chưa pin revision/SHA | `docs/model-matrix.md` |
 | P1 Python package / FastAPI / model registry | Đã viết | `src/translation_ai_inference` |
 | P1 auth / validation / OpenAPI | Đã viết, unit test offline | `api.py`, `schemas.py`, `tests` |
-| P1 CI không GPU | Đã viết, chưa chạy GitHub-hosted | `.github/workflows/python-validation.yml` |
-| P2 ORM / migration | Đã viết; mới nghiệm thu SQLite | `database.py`, `db/migrations` |
-| P2 submit / idempotency / claim token | Đã viết; nghiệm thu SQLite | `repository.py`, `dispatcher.py` |
-| P2 Modal CPU `spawn()` | Đã viết adapter, **chưa chạy Modal thật** | `modal_app.py`, `dispatcher.py` |
+| P1 CI không GPU | Đã chạy GitHub-hosted thành công | `.github/workflows/python-validation.yml` |
+| P2 ORM / migration | Đã chạy PostgreSQL development thật | `database.py`, `db/migrations` |
+| P2 submit / idempotency / claim token | Đã nghiệm thu PostgreSQL và Modal CPU mock | `repository.py`, `dispatcher.py` |
+| P2 Modal CPU `spawn()` | **Đã nghiệm thu trên Modal thật (CPU)** | `modal_app.py`, `dispatcher.py` |
 | P2 automatic retry/reconciliation | **Chưa làm** | Đang để `dispatch_uncertain` |
 | P3–P4 4 GPU workers / 4 Volumes | **Chưa tạo/đăng ký** | Chỉ có tên tường minh trong `resource_names.py` |
 | P5 benchmark/human review | **Chưa làm** | Dataset cũ chưa import |
@@ -47,3 +47,17 @@ GPU trong giai đoạn mã nguồn mock.
 - Không in/commit credentials; `.env` được ignore và đặt permission `0600` trong Codespaces.
 - **24/24 tests + Ruff pass.** Chưa tạo Modal Secrets/deploy CPU vì chưa xác minh workspace đích.
 - PostgreSQL development đã có dữ liệu kiểm thử mock, không chứa bản dịch thật.
+
+## Cập nhật 2026-11-07 — Modal CPU deployment & live smoke
+
+- Xác minh Modal workspace được chọn có đủ hai Secrets với tên tường minh và không chứa migration direct URL.
+- Modal App `translation-ai-inference-api-and-model-workers` đã được deploy ở môi trường development.
+- Bổ sung `app = modal_application` để Modal CLI tự nhận diện entrypoint; chạy CLI trong project `.venv`.
+- Hai Functions có 1.0 CPU / 0.5 CPU, 512 MiB, GPU = none. **Không** tạo model Volumes.
+- `/health` → 200; `/v1/models` thiếu Bearer → 401; đúng Bearer → 200 với 4 model metadata.
+- Translation `POST` → 202, trạng thái `dispatching` → `completed` thông qua Modal CPU mock Function.
+- Idempotent replay cùng key dùng cùng job; payload khác với key đã dùng trả HTTP 409.
+- Benchmark chạy bốn mock runs qua Modal CPU, cả bốn `completed`, `is_mock_result=true`.
+- Script nghiệm thu có thể chạy lại: `scripts/smoke_modal_cpu.py`.
+- **25/25 tests + Ruff pass** trên Codespaces; không có model inference thực tế.
+- Chưa hoàn thành reconciliation, cost/rate limits, retention, production security hoặc đánh giá chất lượng dịch.
