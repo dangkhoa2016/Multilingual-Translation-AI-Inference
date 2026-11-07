@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# EXPLICIT, MANUAL, P3-ONLY: creates four named Volumes (no weights download).
-# Do not run during P1/P2. Must be executed by an authorized Modal account owner.
+# EXPLICIT, MANUAL: provisions four named model Volumes (no weights download).
+# Run only with authorization; existing Volumes must not be recreated casually.
 set -euo pipefail
 if [[ "${CONFIRM_TRANSLATION_GPU_VOLUME_CREATION:-}" != "YES" ]]; then
-  echo 'Volume creation disabled. Export CONFIRM_TRANSLATION_GPU_VOLUME_CREATION=YES only when starting P3.' >&2
+  echo 'Volume creation disabled. Export CONFIRM_TRANSLATION_GPU_VOLUME_CREATION=YES only when provisioning model Volumes.' >&2
   exit 2
 fi
 modal volume create translation-ai-inference-hy-mt2-30b-a3b-gguf-weights

@@ -1,7 +1,7 @@
 """One-time official Hy-MT2 Q8_0 weight staging into a Modal Volume.
 
 CPU-only. Never stores weights in Codespaces. No GPU allocated.
-Usage: modal run --profile bsmith888 scripts/modal_hy_mt2_stage_weights.py
+Usage: modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_stage_weights.py
 """
 import hashlib
 import json

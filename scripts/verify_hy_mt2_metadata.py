@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproducible Hy-MT2 P3 preflight; DOES NOT download 32 GB weights or use GPU.
+"""Reproducible Hy-MT2 metadata preflight; DOES NOT download 32 GB weights or use GPU.
 
 Offline: python scripts/verify_hy_mt2_metadata.py
 Online:  python scripts/verify_hy_mt2_metadata.py --online

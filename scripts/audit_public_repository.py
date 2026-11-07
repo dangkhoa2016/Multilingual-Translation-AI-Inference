@@ -47,7 +47,10 @@ REQUIRED = [
 LINK = re.compile(r"(?<!!)\[[^]]+\]\(([^)]+)\)")
 INTERNAL_CODE = re.compile(r"\b(?:P|M|R|Q)[1-9]\b|\bphase\s*\d+\b", re.IGNORECASE)
 FIXED_STATUS_DATE = re.compile(r"\b20\d\d-\d\d-\d\d\b")
-PRIVATE_ACCOUNTS = ("bsmith888", "Dilara Ha", "60597850+x8o8x")
+SENSITIVE_PATTERNS = (
+    re.compile(r"(?i)\b[a-z0-9_-]+--translation-ai-inference-api-and-model-worker-\d+\.us-[a-z0-9-]+\.modal\.run\b"),
+    re.compile(r"(?i)\b\d{7,}\+[a-z0-9]+@users\.noreply\.github\.com\b"),
+)
 MODEL_IDS = {"hy_mt2_30b", "index_35b", "gemma4_31b_it", "qwen35_35b"}
 
 
@@ -87,9 +90,9 @@ def audit() -> list[str]:
             match = regex.search(text)
             if match:
                 errors.append(f"{relative}: {label}: {match.group(0)}")
-        for marker in PRIVATE_ACCOUNTS:
-            if marker.lower() in text.lower():
-                errors.append(relative + ": private/account-specific attribution leaked")
+        for pattern in SENSITIVE_PATTERNS:
+            if pattern.search(text):
+                errors.append(relative + ": account-specific or private identity leaked")
         for dest in LINK.findall(text):
             link = dest.strip().split(" ", 1)[0].strip("<>")
             parsed = urlsplit(link)

@@ -80,5 +80,5 @@ def dispatch_queued_runs(repo: JobRepository, dispatcher: Dispatcher, job_id: st
             repo.record_modal_call(run_id, claim_token, call_id)
         except Exception:
             # An exception from spawn() is ambiguous: it may have been accepted.
-            # Do NOT blindly resubmit; reconciliation is planned for P2.
+            # Do NOT blindly resubmit; explicitly reconcile uncertain dispatch first.
             repo.mark_dispatch_uncertain(run_id, claim_token)

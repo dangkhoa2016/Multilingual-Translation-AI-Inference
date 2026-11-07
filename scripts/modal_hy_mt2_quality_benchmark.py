@@ -1,9 +1,9 @@
 """Opt-in, bounded one-L40S Hy-MT2 translation diagnostic (not production).
 
 Default command performs local validation only, with no GPU:
-    modal run --profile bsmith888 scripts/modal_hy_mt2_quality_benchmark.py
+    modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py
 GPU work is explicit:
-    modal run --profile bsmith888 scripts/modal_hy_mt2_quality_benchmark.py --run
+    modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py --run
 """
 import json
 import time

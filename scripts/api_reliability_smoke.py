@@ -1,4 +1,4 @@
-"""Opt-in, bounded P6 boundary/concurrency live API tests (never automatic retry).
+"""Opt-in, bounded real boundary/concurrency live API tests (never automatic retry).
 
 Purpose:
 * 1000 Unicode code points (multibyte UTF-8) -> four real GPU models, one job.

@@ -1,7 +1,7 @@
 """One-shot, low-cost GPU entitlement and memory probe for the Hy-MT2 smoke.
 
 Does NOT mount weights, create volumes, download model files, or deploy the API.
-Use: modal run --profile bsmith888 scripts/modal_hy_mt2_gpu_probe.py
+Use: modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_gpu_probe.py
 """
 import json
 import subprocess

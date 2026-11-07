@@ -24,7 +24,7 @@ def test_no_fixed_status_dates_or_internal_development_codes():
         body = doc.read_text(encoding="utf-8")
         assert not audit_module.INTERNAL_CODE.search(body), doc
         assert not audit_module.FIXED_STATUS_DATE.search(body), doc
-        assert all(marker not in body for marker in audit_module.PRIVATE_ACCOUNTS)
+        assert all(not p.search(body) for p in audit_module.SENSITIVE_PATTERNS)
 
 
 def test_license_attribution_and_model_separation():
@@ -64,4 +64,4 @@ def test_public_readme_has_functional_bilingual_badges():
         assert "LICENSE" in text
         assert "MODEL_LICENSE" in text
         assert "docs/roadmap" in text
-        assert "P2" not in text and "P7" not in text
+        assert not audit_module.INTERNAL_CODE.search(text)

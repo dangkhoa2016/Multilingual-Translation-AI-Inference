@@ -1,10 +1,10 @@
 """Opt-in, one-L40S development probe for Hy-MT2 material/terminology fidelity.
 
 With no flags, validate the local synthetic fixture only (no GPU):
-    modal run --profile bsmith888 scripts/modal_hy_mt2_material_glossary_probe.py
+    modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py
 
 For one explicitly bounded GPU diagnostic:
-    modal run --profile bsmith888 scripts/modal_hy_mt2_material_glossary_probe.py --run
+    modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py --run
 """
 import csv
 import hashlib

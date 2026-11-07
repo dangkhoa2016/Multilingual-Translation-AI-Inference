@@ -4,8 +4,8 @@ This is a temporary Modal App, NOT a deployed HTTP service. Uses one L40S
 only when invoked with --smoke. No GPU allocation for default build-check.
 
 Run:
-  modal run --profile bsmith888 scripts/modal_hy_mt2_gpu_smoke.py
-  modal run --profile bsmith888 scripts/modal_hy_mt2_gpu_smoke.py --smoke
+  modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_gpu_smoke.py
+  modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_gpu_smoke.py --smoke
 """
 import json
 import subprocess
