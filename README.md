@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference
 
-**Status: P1/P2 CPU mock is deployed; P3 has successfully run one real Hy-MT2 Q8_0 translation on a temporary Modal L40S. No permanent GPU translation API is deployed.**
+**Status: P1/P2 CPU mock is deployed; P3 has verified Hy-MT2 Q8_0 on one Modal L40S and completed a 16-case multilingual diagnostic. Semantic fidelity issues remain; no production GPU translation API is deployed.**
 
 This repository starts the text-only, async-first translation service described in
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md). The target
@@ -25,8 +25,10 @@ integration-test tool; it does **not** translate.
 The database provider is configurable via `TRANSLATION_INFERENCE_DATABASE_URL`; no provider name is
 embedded in Modal resource names, environment variable names, or Python identifiers.
 
-GPU Functions have explicit proposed names in `src/translation_ai_inference/resource_names.py`,
-but they are **not registered yet**: mounting empty volumes and starting L40S would waste money.
+Only the Hy-MT2 model Volume has been created and populated. The other three Volume
+names above are reserved, not provisioned. GPU Functions have proposed names in
+`src/translation_ai_inference/resource_names.py` but are **not registered in the
+production Modal App**.
 
 ## Run offline (SQLite; no Modal, hosted database, or GPU account needed)
 
@@ -92,7 +94,7 @@ GPU budget or a production security system.
 
 ## Current limitations
 
-- No production GPU translation worker or endpoint; the Hy-MT2 CUDA/Q8_0 one-sentence smoke ran separately, and three other candidates remain unverified.
+- No production GPU translation worker or endpoint; Hy-MT2 smoke and a 16-case quality diagnostic ran separately. Three other candidates remain unverified on GPU.
 - PostgreSQL development migrations and Modal CPU `spawn()` have passed live smoke tests; this is not production-ready.
 - No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
 - No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
@@ -116,7 +118,29 @@ verified against the pinned official hash. A short L40S hardware probe passed.
 - [P3 Hy-MT2 readiness and blockers](docs/p3-hy-mt2-readiness.md)
 - [Pinned artifact manifest](models/hy_mt2_30b_q8_0.lock.json)
 - Run `python scripts/verify_hy_mt2_p3.py --online --deep-header` (metadata only).
-- Pinned llama.cpp CUDA build, full GGUF loading and one real L40S EN→VI
-  completion **passed**; 1,000-character benchmarks and production gates remain open.
+- Pinned llama.cpp CUDA build, full GGUF loading and real L40S EN→VI smoke **passed**.
+- A controlled 16-case EN↔VI, DE↔VI, JA↔VI, KO↔VI diagnostic also completed.
+  Source passages were 617–969 characters, and notable semantic substitutions
+  require further review before any production inference is enabled.
 - [L40S GPU smoke results](docs/p3-hy-mt2-l40s-smoke.md) and
   [machine-readable report](reports/p3_hy_mt2_l40s_smoke.json).
+
+## P3 — Hy-MT2 multilingual quality diagnostic (2026-11-07)
+
+A paid, one-shot NVIDIA L40S run completed **16/16 translation requests** across
+EN↔VI, DE↔VI, JA↔VI and KO↔VI. Mean warm response latency was **0.653s** for
+structured text and **3.127s** for narrative text; highest sampled VRAM was
+**31,189 MiB**. The Modal RPC call took **52.271s**, including GPU startup.
+
+**Important:** The diagnostic exposed semantic fidelity errors: the Vietnamese
+expression for a *silver compass* was translated as *brass/copper* in all four
+target languages. Automatic placeholder checks reported zero issues, but they
+cannot establish semantic accuracy. This synthetic diagnostic has no qualified
+human-reviewed references, so **Hy-MT2 is not approved for production inference**.
+
+- [Diagnostic design, measured results, and limitations](docs/p3-hy-mt2-quality-diagnostic-review.md)
+- [Complete inference outputs](reports/p3_hy_mt2_quality_diagnostic_v1.json)
+- [Preliminary semantic review](reports/p3_hy_mt2_quality_review_v1.json)
+- To validate the suite without GPU, run
+  `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py`.
+- The `--run` option **allocates a billable L40S**; it is never invoked by CI.

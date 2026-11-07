@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference — Modal + PostgreSQL
 
-**Trạng thái: P1/P2 CPU mock đã triển khai; P3 đã dịch thành công một câu thật bằng Hy-MT2 Q8_0 trên L40S tạm thời. Chưa triển khai API dịch GPU production.**
+**Trạng thái: P1/P2 CPU mock đã triển khai; P3 đã xác minh Hy-MT2 Q8_0 trên L40S và chạy 16 ca dịch đa ngôn ngữ. Đã phát hiện lỗi trung thực ngữ nghĩa; chưa triển khai API GPU production.**
 
 Mục tiêu: một Modal App, gateway FastAPI CPU, bốn worker L40S độc lập,
 PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấp dự kiến ban đầu). API mặc định là bất đồng bộ,
@@ -23,9 +23,9 @@ PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấ
 Tên App, Secret và biến môi trường không phụ thuộc Neon hay nhà cung cấp PostgreSQL khác.
 Đổi nhà cung cấp chỉ cần cập nhật PostgreSQL URL/Secret, nếu schema tương thích.
 
-Bốn Volume chưa được tạo; script `scripts/create_named_modal_volumes.sh`
-chỉ chạy thủ công khi bắt đầu P3. Chưa đăng ký bốn GPU Functions để tránh bật L40S
-khi thiếu weights và kiểm thử engine.
+Đã tạo và xác minh **một Volume Hy-MT2** chứa GGUF Q8_0. Ba Volume còn lại
+chưa tạo. Script `scripts/create_named_modal_volumes.sh` chỉ dùng khi thực sự cần.
+Chưa đăng ký GPU Functions vào App production để tránh cấp phát L40S ngoài ý muốn.
 
 ## Chạy local không tốn GPU
 
@@ -95,11 +95,11 @@ API retry qua HTTP trên Modal CPU đã được nghiệm thu thực tế (HTTP 
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md).
 
 **Chưa hoàn tất:** reconciliation tự động an toàn, cảnh báo chi phí theo USD,
-budget/rate limits, P3 runtime llama.cpp, 4 GPU Functions, bảo mật nâng cao,
-retention và kiểm duyệt chất lượng. Không đưa API mock ra production dịch thuật.
+budget/rate limits, đánh giá chất lượng có bản dịch tham chiếu và người kiểm duyệt,
+3 model GPU còn lại, bảo mật nâng cao và retention. Không đưa API mock ra production dịch thuật.
 
 
-## P3 — Hy-MT2 Q8_0: weights đã kiểm chứng và chuẩn bị smoke L40S
+## P3 — Hy-MT2 Q8_0: weights đã kiểm chứng và smoke L40S thành công
 
 Đã cố định revision checkpoint, GGUF Q8_0 chính chủ và kiểm tra metadata.
 **Toàn bộ GGUF 31.985.729.376 bytes đã tải một lần vào Modal Volume**, được
@@ -111,7 +111,29 @@ là các bước nghiệm thu riêng, không đồng nghĩa với việc SHA256 
 - [Lock file](models/hy_mt2_30b_q8_0.lock.json)
 - Kiểm lại: `python scripts/verify_hy_mt2_p3.py --online --deep-header`
 - Đã build CUDA từ commit llama.cpp cố định, load toàn bộ GGUF và dịch
-  một câu EN→VI trên L40S **thành công**. Chưa nghiệm thu đoạn 1.000 ký tự,
-  benchmark nhiều ngôn ngữ hoặc các tiêu chí production.
+  một câu EN→VI trên L40S **thành công**.
+- Đã chạy 16 ca EN↔VI, DE↔VI, JA↔VI, KO↔VI trên L40S. Đoạn nguồn dài
+  617–969 ký tự. Phát hiện lỗi đổi nghĩa chất liệu ở các bản dịch VI→ngôn ngữ khác;
+  chưa hoàn tất benchmark tham chiếu và tiêu chí production.
 - [Kết quả GPU smoke](docs/p3-hy-mt2-l40s-smoke.md) và
   [báo cáo JSON](reports/p3_hy_mt2_l40s_smoke.json).
+
+## P3 — Benchmark kiểm thử đa ngôn ngữ Hy-MT2 (07/11/2026)
+
+Đã chạy thử nghiệm riêng biệt trên **một NVIDIA L40S**: **16/16 yêu cầu** có
+bản dịch, gồm EN↔VI, DE↔VI, JA↔VI và KO↔VI. Latency trung bình sau khi model
+đã nạp là **0,653 giây** với văn bản có cấu trúc và **3,127 giây** với đoạn truyện.
+VRAM cao nhất được lấy mẫu **31.189 MiB**; Modal RPC mất **52,271 giây**,
+bao gồm thời gian chuẩn bị GPU.
+
+**Lưu ý:** Tuy tất cả mã placeholder đều được giữ, kiểm tra ngữ nghĩa đã phát
+hiện lỗi nghiêm trọng: *la bàn bạc* bị dịch thành la bàn bằng đồng hoặc đồng thau
+ở cả bốn hướng VI→ngôn ngữ khác. Bộ fixture này là dữ liệu mô phỏng, chưa có
+bản dịch tham chiếu và kiểm duyệt độc lập. **Chưa phê duyệt Hy-MT2 cho production**.
+
+- [Thiết kế benchmark, kết quả đo và các giới hạn](docs/p3-hy-mt2-quality-diagnostic-review.md)
+- [Toàn bộ bản dịch GPU](reports/p3_hy_mt2_quality_diagnostic_v1.json)
+- [Đánh giá ngữ nghĩa sơ bộ](reports/p3_hy_mt2_quality_review_v1.json)
+- Kiểm tra dữ liệu và script không tốn GPU:
+  `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py`.
+- Thêm `--run` mới cấp phát **L40S có tính phí**; CI không chạy GPU.
