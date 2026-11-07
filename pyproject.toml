@@ -16,7 +16,7 @@ description = "Multilingual translation API with four independently scaling Moda
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi>=0.128,<0.129",
+    "fastapi>=0.128,<0.163",
     "pydantic>=2.13,<3",
     "SQLAlchemy>=2.0.40,<2.1",
     "psycopg[binary]>=3.2,<4",
