@@ -141,9 +141,12 @@ token, database URL or full translation text from private traffic.
 - An earlier Hy-MT2 diagnostic found real semantic material substitutions,
   including a silver compass becoming copper/brass. A glossary helped known
   cases but did not prove general correctness.
-- The API accepts up to 1,000 Unicode code points, but the current four-model
-  PostgreSQL integration smoke covered 849; full boundary and multi-paragraph
-  stress, throughput, high-concurrency and timeout recovery remain pending.
+- P6 verified an actual **1,000-Unicode-codepoint** four-model benchmark
+  through the production API and rejected 1,001 characters with HTTP 422.
+  Two same-model concurrent API submissions and Hy-MT2 immediate container
+  reuse were also validated. Extended soak, burst-load, production fault
+  injection and recovery remain outstanding. See
+  [P6 reliability and boundary results](p6-api-reliability-validation.md).
 - No per-provider dollar limit, multi-tenant identity, automatic safe
   reconciliation daemon or full production security audit is implemented.
 - Scale-to-zero reduces idle GPU compute charges but persistent model Volumes,

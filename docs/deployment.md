@@ -155,9 +155,11 @@ the CPU mock smoke script against the active real-GPU endpoint.
   the public App but does not delete PostgreSQL or persistent model Volumes.
   For temporary disabling of real inference while retaining the API, prefer
   switching to `modal-cpu-mock`.
-- Prior Hy-MT2 semantic errors remain unresolved as a general quality
-  certification matter. Human-reviewed reference-based evaluations, longer
-  1,000-character boundary tests, security and load tests are still required.
+- Prior Hy-MT2 semantic errors remain unresolved as a quality certification
+  matter. P6 has passed the exact 1,000-character boundary and two
+  same-model concurrent submissions, but security, throughput, sustained
+  soak and staging fault-injection tests are still outstanding. See the
+  [P6 reliability report](p6-api-reliability-validation.md).
 
 Additional guidance: [P2 operational safety](p2-operational-safety.md),
 [Modal scale-to-zero](https://modal.com/docs/guide/scale) and

@@ -137,3 +137,21 @@ This is operational compatibility evidence, **not** proof of translation
 accuracy or a completed reference-based benchmark.
 
 See [P5 deployment report](real-gpu-deployment.md).
+
+
+## 9. P6 — exact 1,000-character input and container reuse (2026-11-07)
+
+- A real four-model EN→VI benchmark with exactly 1,000 Unicode code
+  points (1,002 UTF-8 bytes) completed with nonmock output for all four
+  models.
+- 1,001 code points, empty whitespace, invalid language and same-language
+  requests were rejected with HTTP 422; conflicting idempotency payloads
+  returned HTTP 409.
+- Two independent POST jobs to Hy-MT2 completed without duplicate attempts.
+- Two consecutive deployed readiness calls reused the same L40S GPU UUID
+  (25.104 s and 0.459 s observed RPC durations, **not** an SLA).
+- Simulated timeout/connection-drop faults have CPU-only regression tests;
+  no fault injection was performed against live production GPU.
+
+This remains a compatibility and bounded reliability test, not a
+quality-scored benchmark. See [P6 test methodology and evidence](p6-api-reliability-validation.md).

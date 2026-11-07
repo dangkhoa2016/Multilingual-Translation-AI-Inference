@@ -104,8 +104,10 @@ GPU budget or a production security system.
 
 - All four GPU workers and authenticated live API are operational, but no independently
   scored human-reviewed translation benchmark or general translation-quality certification exists.
-- Four-model GPU API and PostgreSQL integration are verified at smoke level;
-  extended high-concurrency, 1,000-character boundary and resilience tests remain outstanding.
+- Four-model GPU API and PostgreSQL integration passed live smoke tests. The
+  exact 1,000-character input boundary, two concurrent jobs to one model, and
+  immediate GPU worker reuse have also passed. Extended soak, high-concurrency,
+  real fault-injection and recovery tests remain outstanding.
 - No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
 - No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
@@ -220,3 +222,25 @@ persisted in PostgreSQL and retrieved through authenticated GET.
 See the [real GPU deployment and operations guide](docs/real-gpu-deployment.md),
 [deployed GPU class readiness](reports/p5_deployed_four_gpu_classes_readiness_v1.json)
 and [actual four-model API result](reports/p5_real_gpu_api_four_model_smoke_v1.json).
+
+
+## P6 — Exact input boundary and GPU worker reuse (2026-11-07)
+
+**Live API reliability checks passed:** one benchmark containing exactly
+1,000 Unicode code points (1,002 UTF-8 bytes) completed across all four
+L40S models; 1,001 code points and other invalid inputs returned HTTP 422.
+Two simultaneous API submissions to Hy-MT2 created two independent jobs
+and both completed without retries. Two consecutive deployed Hy-MT2
+readiness calls observed reuse of the same L40S worker (25.104 s versus
+0.459 s RPC time). These are **measured results, not latency SLAs or proof
+of translation accuracy**.
+
+- [P6 methodology, outcomes and remaining risks](docs/p6-api-reliability-validation.md)
+- [Full boundary test report](reports/p6_four_models_exactly_1000_codepoints_v1.json)
+- [Same-model queue report](reports/p6_same_model_two_concurrent_jobs_v1.json)
+- [Container reuse report](reports/p6_hy_mt2_container_reuse_v1.json)
+
+Timeout, connection-loss and malformed inference responses were simulated
+in CPU-only regression tests without intentionally damaging production GPUs.
+Stress, operational failover, cost controls and a human-reviewed multilingual
+quality benchmark remain open.

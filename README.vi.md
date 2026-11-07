@@ -104,7 +104,8 @@ API retry qua HTTP trên Modal CPU đã được nghiệm thu thực tế (HTTP 
 
 **Chưa hoàn tất:** đối soát tự động, cảnh báo/hạn mức chi phí USD,
 đánh giá chất lượng bằng bản dịch tham chiếu và người kiểm duyệt,
-kiểm thử tải cao, ngưỡng 1.000 ký tự đầy đủ và bảo mật nâng cao.
+kiểm thử tải cao, xử lý lỗi GPU thực tế, timeout/recovery và bảo mật nâng cao.
+Giới hạn chính xác 1.000 Unicode code point đã qua kiểm thử ở P6.
 API GPU đã hoạt động nhưng chỉ nên sử dụng có kiểm soát cho đến khi
 các yêu cầu chất lượng và vận hành được nghiệm thu.
 
@@ -212,3 +213,26 @@ PostgreSQL và đọc lại thành công qua API GET được xác thực.
 Xem [hướng dẫn vận hành GPU và toàn bộ kết quả](docs/real-gpu-deployment.md),
 [báo cáo bốn class đã deploy](reports/p5_deployed_four_gpu_classes_readiness_v1.json)
 và [kết quả bốn model qua API thật](reports/p5_real_gpu_api_four_model_smoke_v1.json).
+
+
+## P6 — Nghiệm thu giới hạn đầu vào và tái sử dụng GPU (07/11/2026)
+
+**Các bài kiểm thử API thực tế đã đạt:** benchmark đầu vào đúng **1.000 ký tự
+Unicode (1.002 byte UTF-8)** hoàn thành trên cả bốn model L40S; đầu vào
+1.001 ký tự và những dữ liệu không hợp lệ đều bị từ chối bằng HTTP 422.
+Hai request gửi gần như đồng thời tới Hy-MT2 tạo hai job độc lập và đều
+hoàn thành, không retry. Hai lần gọi readiness liên tiếp tái sử dụng cùng
+một GPU L40S, với thời gian RPC quan sát **25,104 giây** và **0,459 giây**.
+
+Đây là kết quả đo thực tế, **không phải cam kết thời gian phản hồi hoặc
+chứng nhận chất lượng dịch**. Các lỗi timeout, mất kết nối và JSON lỗi
+được mô phỏng bằng unit test, không chủ động gây lỗi trên GPU production.
+
+- [Phương pháp, báo cáo và giới hạn P6](docs/p6-api-reliability-validation.md)
+- [Kết quả bốn model với đầu vào 1.000 ký tự](reports/p6_four_models_exactly_1000_codepoints_v1.json)
+- [Kết quả hai job cùng model](reports/p6_same_model_two_concurrent_jobs_v1.json)
+- [Kết quả tái sử dụng GPU container](reports/p6_hy_mt2_container_reuse_v1.json)
+
+Các bước còn lại: stress/soak testing, phục hồi lỗi hạ tầng thật trong môi
+trường staging, giới hạn chi phí USD, bảo mật và benchmark đa ngôn ngữ có
+bản dịch tham chiếu được kiểm duyệt.
