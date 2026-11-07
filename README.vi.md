@@ -42,6 +42,10 @@ alembic -c db/alembic.ini upgrade head
 uvicorn translation_ai_inference.local:app --host 127.0.0.1 --port 8000
 ```
 
+Nếu tạo `.env` trong Codespaces, cần nạp trước khi chạy Alembic/Uvicorn:
+`set -a; source .env; set +a`. File `.env` đã được Git bỏ qua.
+URL PostgreSQL dạng `postgresql://` được tự động dùng driver psycopg v3.
+
 Windows PowerShell: sử dụng `.venv\Scripts\Activate.ps1` và `$env:KEY='value'`
 thay cho các lệnh `source`/`export`.
 
@@ -75,6 +79,8 @@ Hướng dẫn cấu hình PostgreSQL và hai Modal Secrets: [`docs/deployment.m
 Các thông số P3, chọn model và benchmark vẫn theo kế hoạch
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md).
 
-**Chưa hoàn tất:** migration PostgreSQL và spawn trên Modal thật, retry/reconciliation,
+**Đã nghiệm thu:** migrations PostgreSQL development và API mock qua database thật.
+
+**Chưa hoàn tất:** spawn trên Modal thật, retry/reconciliation,
 budget/rate limits, P3 runtime llama.cpp, 4 GPU Functions, bảo mật nâng cao,
 retention và kiểm duyệt chất lượng. Không đưa API mock ra production dịch thuật.

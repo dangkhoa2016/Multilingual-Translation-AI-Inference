@@ -76,7 +76,15 @@ class TranslationResult(Base):
     run: Mapped[JobRun] = relationship(back_populates="result")
 
 
+def normalize_postgresql_url(database_url: str) -> str:
+    """Use installed psycopg v3 for provider URLs written as postgresql://."""
+    if database_url.startswith("postgresql://"):
+        return "postgresql+psycopg://" + database_url[len("postgresql://"):]
+    return database_url
+
+
 def make_engine(database_url: str):
+    database_url = normalize_postgresql_url(database_url)
     args = {"pool_pre_ping": True}
     if database_url.startswith("sqlite"):
         args["connect_args"] = {"check_same_thread": False}

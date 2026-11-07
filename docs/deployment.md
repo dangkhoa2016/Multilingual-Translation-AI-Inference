@@ -1,7 +1,7 @@
 # Deployment runbook — CPU mock only
 
 This runbook is **NOT** a production or GPU deployment guide.
-Commands below are examples; **none have been executed for this project**.
+PostgreSQL migrations and local mock requests have been tested. Modal deployment and GPU inference have **not** been performed.
 
 ## 1. Provision a PostgreSQL development database
 
@@ -11,10 +11,9 @@ possible, enable TLS, and obtain TWO credential URLs if your provider supports p
 - `TRANSLATION_INFERENCE_MIGRATION_DATABASE_URL`: direct connection, migration CLI only.
 - `TRANSLATION_INFERENCE_DATABASE_URL`: pooled connection, short CPU gateway/worker operations.
 
-Use `postgresql+psycopg://` SQLAlchemy connection scheme and avoid publishing
-username/password. Migrations run via `alembic -c db/alembic.ini upgrade head`.
+Both `postgresql://` (provider default) and `postgresql+psycopg://` are accepted; SQLAlchemy explicitly selects psycopg v3. Never publish usernames/passwords. Migrations run via `alembic -c db/alembic.ini upgrade head`.
 
-Do not run migrations automatically in each Modal gateway container.
+Do not run migrations automatically in each Modal gateway container. Verify the intended Modal workspace before creating Secrets or deploying.
 
 ## 2. Create exact Modal Secrets (manual, account-scoped)
 

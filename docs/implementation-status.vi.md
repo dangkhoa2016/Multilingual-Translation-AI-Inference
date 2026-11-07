@@ -36,3 +36,14 @@ GPU trong giai đoạn mã nguồn mock.
 - GitHub Actions được bổ sung bước Ruff; CI hosted sẽ được xác minh sau khi push.
 - **Chưa** tạo PostgreSQL cloud, Modal Secret, Volume hay deploy CPU/GPU.
 - Kết quả `is_mock_result=true` không phải bản dịch thật.
+
+## Cập nhật 2026-11-07 — PostgreSQL development nghiệm thu thực tế
+
+- Kết nối thành công PostgreSQL 18.6 qua pooled URL và direct URL (TLS) từ `.env` ở Codespaces.
+- Alembic `upgrade head` hoàn tất, kiểm tra `0001_translation_jobs` và đủ ba bảng trên cả hai kết nối.
+- `POST /v1/jobs/translations` → 202; `GET /v1/jobs/{id}` → 200, `completed`, `is_mock_result=true`.
+- Benchmark bốn mock runs, idempotency không sinh duplicate, key trùng với input khác trả 409.
+- Hỗ trợ URL provider `postgresql://` bằng psycopg v3, kèm unit tests.
+- Không in/commit credentials; `.env` được ignore và đặt permission `0600` trong Codespaces.
+- **24/24 tests + Ruff pass.** Chưa tạo Modal Secrets/deploy CPU vì chưa xác minh workspace đích.
+- PostgreSQL development đã có dữ liệu kiểm thử mock, không chứa bản dịch thật.

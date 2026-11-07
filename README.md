@@ -64,6 +64,9 @@ python scripts/local_demo.py
 ```
 
 Unit tests and CI use only SQLite and CPU. They never require production secrets.
+For Codespaces development with a local `.env`, explicitly load it before running
+Alembic or Uvicorn (`set -a; source .env; set +a`). `.env` is Git-ignored.
+Provider `postgresql://` URLs are converted to the psycopg v3 SQLAlchemy driver.
 
 ## Deploy the **CPU-only** Modal mock
 
@@ -75,7 +78,7 @@ registers ONLY the CPU gateway and CPU mock worker. This has not been deployed y
 ## Current limitations
 
 - No real GGUF runtime, L40S configuration, GPU function registration or model weights.
-- Production PostgreSQL migrations and Modal `spawn()` have **not** been live tested.
+- PostgreSQL development migrations and API mock calls have passed; Modal `spawn()` has **not** been live tested.
 - No reconciliation/retry scheduler, TTL/privacy purger, client quotas or cost guards yet.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
 - The initial migration contains job/run/results tables; model registry, reviews and full provenance

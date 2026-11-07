@@ -4,7 +4,7 @@ import os
 from alembic import context
 from sqlalchemy import create_engine, pool
 
-from translation_ai_inference.database import Base
+from translation_ai_inference.database import Base, normalize_postgresql_url
 
 config = context.config
 target_metadata = Base.metadata
@@ -15,7 +15,7 @@ def get_database_url() -> str:
         "TRANSLATION_INFERENCE_DATABASE_URL")
     if not url:
         raise RuntimeError("Set TRANSLATION_INFERENCE_MIGRATION_DATABASE_URL (direct PostgreSQL URL)")
-    return url
+    return normalize_postgresql_url(url)
 
 
 def run_migrations_offline() -> None:
