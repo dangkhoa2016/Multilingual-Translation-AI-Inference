@@ -130,7 +130,9 @@ class JobRepository:
             self._refresh_parent(session, run_id)
             return job.source_language, job.target_language, job.input_text, job.options_json, run.model_key
 
-    def finish_run(self, run_id: str, token: str, translation: str, *, mock: bool) -> bool:
+    def finish_run(self, run_id: str, token: str, translation: str, *, mock: bool,
+                   input_tokens: int | None = None,
+                   output_tokens: int | None = None) -> bool:
         with self.session_factory.begin() as session:
             updated = session.execute(update(JobRun).where(
                 JobRun.id == run_id, JobRun.claim_token == token,
@@ -138,10 +140,30 @@ class JobRepository:
                 .values(status="completed", finished_at=utcnow(), error_code=None))
             if updated.rowcount != 1:
                 return False
-            session.add(TranslationResult(run_id=run_id, translation_text=translation,
-                                          is_mock_result=mock))
+            session.add(TranslationResult(
+                run_id=run_id, translation_text=translation,
+                is_mock_result=mock, input_tokens=input_tokens,
+                output_tokens=output_tokens,
+            ))
             self._refresh_parent(session, run_id)
             return True
+
+    def get_run_model_key(self, run_id: str) -> str | None:
+        with self.session_factory() as session:
+            return session.scalar(select(JobRun.model_key).where(JobRun.id == run_id))
+
+    def mark_execution_uncertain(self, run_id: str, token: str, code: str) -> bool:
+        """Do not treat a lost GPU RPC acknowledgement as a confirmed failure."""
+        with self.session_factory.begin() as session:
+            changed = session.execute(update(JobRun).where(
+                JobRun.id == run_id, JobRun.claim_token == token,
+                JobRun.status == "running",
+            ).values(status="execution_uncertain", error_code=code))
+            if changed.rowcount == 1:
+                session.expire_all()
+                self._refresh_parent(session, run_id)
+                return True
+            return False
 
     def fail_run(self, run_id: str, token: str, code: str) -> None:
         with self.session_factory.begin() as session:

@@ -23,7 +23,7 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
         repository = JobRepository(make_session_factory(make_engine(settings.database_url)))
     dispatcher = dispatcher or make_dispatcher(settings.dispatcher_mode)
     api = FastAPI(title="Translation AI Inference — Modal + PostgreSQL", version="0.1.0",
-                  description="P1/P2 mock-only foundation. No actual model inference is enabled.")
+                  description="PostgreSQL-backed async translation: model inference is mode-gated.")
 
     def require_auth(credentials: HTTPAuthorizationCredentials | None = Depends(bearer)) -> None:
         if not credentials or not secrets.compare_digest(
@@ -35,13 +35,19 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
     @api.get("/health")
     def health():
         # Deliberately no DB/GPU access.
-        return {"status": "ok", "inference_enabled": False, "phase": "mock-only"}
+        real_inference = settings.dispatcher_mode == "modal-gpu"
+        return {
+            "status": "ok",
+            "inference_enabled": real_inference,
+            "phase": "gpu" if real_inference else "mock-only",
+        }
 
     @api.get("/v1/models", dependencies=[Depends(require_auth)])
     def list_models():
         return {"models": [
             {"key": m.key, "checkpoint": m.checkpoint, "gguf_repository": m.gguf_repository,
-             "quantization": m.quantization, "enabled": m.enabled,
+             "quantization": m.quantization,
+             "enabled": m.runtime_verified and settings.dispatcher_mode == "modal-gpu",
              "runtime_verified": m.runtime_verified}
             for m in MODEL_REGISTRY.values()
         ]}

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "translation-ai-inference"
 version = "0.1.0"
-description = "Translation AI Inference on Modal + PostgreSQL (mock-only P1/P2 foundation)"
+description = "Multilingual translation API with four independently scaling Modal L40S model workers and PostgreSQL"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

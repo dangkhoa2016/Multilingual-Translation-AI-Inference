@@ -24,3 +24,12 @@ MODAL_GPU_INFERENCE_FUNCTION_NAMES = {
     "gemma4_31b_it": "translation_inference_gemma_4_31b_it_l40s_worker",
     "qwen35_35b": "translation_inference_qwen_3_5_35b_a3b_l40s_worker",
 }
+
+
+# Real GPU Modal Cls names (distinct from ephemeral function-based smoke tools).
+MODAL_GPU_INFERENCE_CLASS_NAMES = {
+    "hy_mt2_30b": "HyMT2L40SWorker",
+    "index_35b": "IndexTranslateL40SWorker",
+    "gemma4_31b_it": "Gemma4L40SWorker",
+    "qwen35_35b": "Qwen35L40SWorker",
+}

@@ -24,7 +24,7 @@ class Settings:
             raise RuntimeError("TRANSLATION_INFERENCE_DATABASE_URL must be configured")
         if not api_bearer_token or api_bearer_token.lower() in {"changeme", "replace-me"}:
             raise RuntimeError("TRANSLATION_API_BEARER_TOKEN must contain a real local secret")
-        if dispatcher_mode not in {"record-only", "inline-mock", "modal-cpu-mock"}:
+        if dispatcher_mode not in {"record-only", "inline-mock", "modal-cpu-mock", "modal-gpu"}:
             raise RuntimeError("Unknown TRANSLATION_DISPATCHER_MODE")
         limits = {}
         for key, variable, default in (

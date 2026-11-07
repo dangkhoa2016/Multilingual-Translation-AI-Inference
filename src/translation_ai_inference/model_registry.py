@@ -9,7 +9,7 @@ class ModelDefinition:
     gguf_repository: str
     quantization: str = "Q8_0"
     enabled: bool = False  # Real GPU inference is not enabled in P1/P2.
-    runtime_verified: bool = False
+    runtime_verified: bool = True  # 2026-11-07 four-model L40S smoke, not quality certification.
 
 
 MODEL_REGISTRY: dict[str, ModelDefinition] = {
