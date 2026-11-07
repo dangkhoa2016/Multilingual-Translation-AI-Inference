@@ -86,7 +86,8 @@ Các thông số P3, chọn model và benchmark vẫn theo kế hoạch
 **Đã nghiệm thu:** migrations PostgreSQL development, Modal CPU deploy,
 API gateway → `spawn()` → CPU mock worker → PostgreSQL → polling.
 
-**Bảo vệ vận hành P2:** đã có quota giao dịch trên PostgreSQL, retry thủ công
+**Bảo vệ vận hành P2:** đã có quota giao dịch trên PostgreSQL (idempotent
+replay không bị trừ thêm quota, kể cả khi nhiều request đồng thời), retry thủ công
 chỉ với lần chạy thất bại rõ ràng, đối soát job quá hạn theo nguyên tắc không
 tự chạy lại, và công cụ xóa job cũ có chế độ xem trước. Hướng dẫn:
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md).

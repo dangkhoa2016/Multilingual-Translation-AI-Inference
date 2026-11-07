@@ -85,3 +85,6 @@ GPU trong giai đoạn mã nguồn mock.
 - Live HTTP smoke: health/auth, `spawn()`, translation, benchmark bốn models, polling và idempotency đều pass.
 - Unit tests trên Codespaces: **36/36 passed**, Ruff + compileall pass.
 - HTTP end-to-end retry của một failed run trên Modal vẫn là bài nghiệm thu riêng; không khẳng định đã pass khi chưa có kết quả.
+
+- Kiểm thử bổ sung PostgreSQL: 6 concurrent requests dùng cùng key với quota chỉ 1 job → 6 phản hồi cùng 1 job, không tính quota nhiều lần; probe records đã được dọn.
+- Bộ tests sau khi sửa race idempotency/quota: **37/37 passed**.

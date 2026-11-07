@@ -208,3 +208,26 @@ def test_concurrent_unique_submissions_do_not_exceed_shared_quota(client_factory
             UsageWindow.request_owner == "quota-load-test",
             UsageWindow.scope == "jobs-per-minute")))
         assert len(windows) == 1 and windows[0].used == 3
+
+
+def test_concurrent_identical_requests_reuse_job_even_with_quota_one(client_factory):
+    from concurrent.futures import ThreadPoolExecutor
+
+    _client, repo = client_factory(dispatcher_mode="record-only")
+    payload = {"source_language": "en", "target_language": "vi",
+               "text": "Same request at the same instant",
+               "options": {"preserve_formatting": True}}
+
+    def submit(_index):
+        return repo.submit(owner="same-key-quota-one", idempotency_key="same-key",
+                           kind="translation", payload=payload, model_keys=["hy_mt2_30b"],
+                           max_jobs_per_minute=1, max_jobs_per_day=1,
+                           max_model_runs_per_day=1)
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        job_ids = list(pool.map(submit, range(6)))
+    assert len(set(job_ids)) == 1
+    with repo.session_factory() as session:
+        counters = list(session.scalars(select(UsageWindow).where(
+            UsageWindow.request_owner == "same-key-quota-one")))
+        assert len(counters) == 3 and all(counter.used == 1 for counter in counters)

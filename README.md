@@ -82,7 +82,7 @@ The script validates Bearer auth, idempotency, polling and four mock model runs.
 ## P2 operational safeguards
 
 The development service has PostgreSQL-backed limits for submissions and model
-runs, fail-closed stale-run reconciliation, explicit retry for confirmed failures,
+runs, with same-key idempotent replays honored even at full quota, fail-closed stale-run reconciliation, explicit retry for confirmed failures,
 and opt-in terminal-job retention. See
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md) for exact
 behavior, settings and operator commands. A timeout never automatically

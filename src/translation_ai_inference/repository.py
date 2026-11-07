@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import selectinload
 
 from .database import Job, JobRun, TranslationResult, utcnow
-from .quotas import apply_submission_quotas
+from .quotas import QuotaExceeded, apply_submission_quotas
 
 
 class IdempotencyConflict(Exception):
@@ -42,12 +42,26 @@ class JobRepository:
                     if previous.request_hash != digest:
                         raise IdempotencyConflict("Key already used with a different request")
                     return previous.id
-            apply_submission_quotas(
-                session, owner=owner, model_count=len(model_keys),
-                max_jobs_per_minute=max_jobs_per_minute,
-                max_jobs_per_day=max_jobs_per_day,
-                max_model_runs_per_day=max_model_runs_per_day,
-            )
+            try:
+                apply_submission_quotas(
+                    session, owner=owner, model_count=len(model_keys),
+                    max_jobs_per_minute=max_jobs_per_minute,
+                    max_jobs_per_day=max_jobs_per_day,
+                    max_model_runs_per_day=max_model_runs_per_day,
+                )
+            except QuotaExceeded:
+                # Another request with this key may have committed while our
+                # earlier SELECT was waiting on the shared quota counter.
+                session.rollback()
+                if idempotency_key:
+                    with self.session_factory() as check:
+                        previous = check.scalar(select(Job).where(
+                            Job.request_owner == owner, Job.idempotency_key == idempotency_key))
+                        if previous is not None:
+                            if previous.request_hash != digest:
+                                raise IdempotencyConflict("Key already used with a different request")
+                            return previous.id
+                raise
             job = Job(request_owner=owner, idempotency_key=idempotency_key, request_hash=digest,
                       kind=kind, source_language=payload["source_language"],
                       target_language=payload["target_language"], input_text=payload["text"],

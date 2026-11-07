@@ -20,7 +20,8 @@ USD estimates or a complete billable GPU budget. They limit jobs and model runs
 but **not** provider compute charges, duration, or uncontrolled parallelism.
 
 Rejected submissions return HTTP **429** and a `Retry-After` header. Idempotent
-replays with the same key and payload do not consume quota; changing the payload
+replays with the same key and payload do not consume quota, even under
+concurrent requests at a fully exhausted quota boundary; changing the payload
 under the same key returns **409**. Quota reservation and job creation share a
 single database transaction. The owner is still the single configured API owner;
 IP/client-specific rate limiting is not yet implemented.
