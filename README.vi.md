@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference — Modal + PostgreSQL
 
-**Trạng thái: đã nghiệm thu API P1 và triển khai mock CPU trên Modal ở P2 (2026-11-07). Chưa triển khai dịch thuật GPU thật.**
+**Trạng thái: P1/P2 CPU mock đã triển khai; P3 đã dịch thành công một câu thật bằng Hy-MT2 Q8_0 trên L40S tạm thời. Chưa triển khai API dịch GPU production.**
 
 Mục tiêu: một Modal App, gateway FastAPI CPU, bốn worker L40S độc lập,
 PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấp dự kiến ban đầu). API mặc định là bất đồng bộ,
@@ -99,15 +99,19 @@ budget/rate limits, P3 runtime llama.cpp, 4 GPU Functions, bảo mật nâng cao
 retention và kiểm duyệt chất lượng. Không đưa API mock ra production dịch thuật.
 
 
-## P3 — Khóa metadata model Hy-MT2 (chưa dùng GPU)
+## P3 — Hy-MT2 Q8_0: weights đã kiểm chứng và chuẩn bị smoke L40S
 
-Đã cố định revision checkpoint, GGUF Q8_0 chính chủ, kích thước, SHA256
-do Hugging Face công bố, và kiểm tra header GGUF qua HTTP Range giới hạn.
-**Chưa tải toàn bộ file, chưa tính SHA256 trực tiếp trên weights, chưa chạy
-dịch thật trên L40S.** Không tự bật inference GPU khi mới pass metadata.
+Đã cố định revision checkpoint, GGUF Q8_0 chính chủ và kiểm tra metadata.
+**Toàn bộ GGUF 31.985.729.376 bytes đã tải một lần vào Modal Volume**, được
+tính SHA256 trực tiếp trên file và xác minh khớp hash đã pin. Bài thử
+cấp phát một L40S cũng thành công. Việc load model và dịch thật trên GPU
+là các bước nghiệm thu riêng, không đồng nghĩa với việc SHA256 đã khớp.
 
 - [Tài liệu preflight Hy-MT2](docs/p3-hy-mt2-readiness.md)
 - [Lock file](models/hy_mt2_30b_q8_0.lock.json)
 - Kiểm lại: `python scripts/verify_hy_mt2_p3.py --online --deep-header`
-- Đã build thành công `llama-server` trên **CPU Codespaces** ở commit đã khóa;
-  chưa build CUDA và chưa load weights để dịch thật.
+- Đã build CUDA từ commit llama.cpp cố định, load toàn bộ GGUF và dịch
+  một câu EN→VI trên L40S **thành công**. Chưa nghiệm thu đoạn 1.000 ký tự,
+  benchmark nhiều ngôn ngữ hoặc các tiêu chí production.
+- [Kết quả GPU smoke](docs/p3-hy-mt2-l40s-smoke.md) và
+  [báo cáo JSON](reports/p3_hy_mt2_l40s_smoke.json).

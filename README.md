@@ -1,6 +1,6 @@
 # Multilingual Translation AI Inference
 
-**Status: P1 API and P2 CPU-only mock deployment tested on Modal (2026-11-07). Actual GPU translation is NOT implemented or deployed.**
+**Status: P1/P2 CPU mock is deployed; P3 has successfully run one real Hy-MT2 Q8_0 translation on a temporary Modal L40S. No permanent GPU translation API is deployed.**
 
 This repository starts the text-only, async-first translation service described in
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md). The target
@@ -92,7 +92,7 @@ GPU budget or a production security system.
 
 ## Current limitations
 
-- No real GGUF runtime, L40S configuration, GPU function registration or model weights.
+- No production GPU translation worker or endpoint; the Hy-MT2 CUDA/Q8_0 one-sentence smoke ran separately, and three other candidates remain unverified.
 - PostgreSQL development migrations and Modal CPU `spawn()` have passed live smoke tests; this is not production-ready.
 - No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
 - No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
@@ -105,15 +105,18 @@ GPU budget or a production security system.
 See [`README.vi.md`](README.vi.md) for Vietnamese documentation.
 
 
-## P3 candidate preflight (no GPU)
+## P3 — Hy-MT2 Q8_0 weight verification and L40S smoke
 
-The official `tencent/Hy-MT2-30B-A3B-GGUF` Q8_0 candidate is now locked
-by exact Hugging Face revision, file name, size and metadata SHA256, with a
-bounded GGUF header check. **No complete model file has been downloaded or
-locally SHA256-verified and no GPU text generation has been run.**
+The official `tencent/Hy-MT2-30B-A3B-GGUF` Q8_0 candidate is pinned to
+immutable Hugging Face revisions. The **entire 31,985,729,376-byte GGUF file**
+was downloaded once into a dedicated Modal Volume and independently SHA256
+verified against the pinned official hash. A short L40S hardware probe passed.
+**Model loading and actual GPU translation are separate verification gates.**
 
 - [P3 Hy-MT2 readiness and blockers](docs/p3-hy-mt2-readiness.md)
 - [Pinned artifact manifest](models/hy_mt2_30b_q8_0.lock.json)
 - Run `python scripts/verify_hy_mt2_p3.py --online --deep-header` (metadata only).
-- Pinned llama.cpp `llama-server` **CPU-only** build preflight passed;
-  actual GGUF loading, CUDA and L40S have not been tested.
+- Pinned llama.cpp CUDA build, full GGUF loading and one real L40S EN→VI
+  completion **passed**; 1,000-character benchmarks and production gates remain open.
+- [L40S GPU smoke results](docs/p3-hy-mt2-l40s-smoke.md) and
+  [machine-readable report](reports/p3_hy_mt2_l40s_smoke.json).
