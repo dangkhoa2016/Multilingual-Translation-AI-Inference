@@ -1,0 +1,50 @@
+{
+  "generated_at_utc": "2026-11-07T05:30:48.386875+00:00",
+  "status": "four_concurrent_l40s_verified",
+  "scope": "CUDA scheduling and GPU identity only; NO model weights loaded",
+  "max_concurrent_gpu_reservations_observed": 4,
+  "unique_gpu_uuid_count": 4,
+  "instances": [
+    {
+      "model_key": "hy_mt2_30b",
+      "gpu_name": "NVIDIA L40S",
+      "gpu_uuid": "GPU-dc3029d0-04f3-12ee-d410-bbab48cfee05",
+      "gpu_memory_mib": 46068,
+      "container_hostname": "modal",
+      "start_unix_seconds": 1794029425.5641813,
+      "end_unix_seconds": 1794029447.591848,
+      "hold_seconds": 22
+    },
+    {
+      "model_key": "index_35b",
+      "gpu_name": "NVIDIA L40S",
+      "gpu_uuid": "GPU-ac46ec9a-e859-19fc-4926-2e5dd2113824",
+      "gpu_memory_mib": 46068,
+      "container_hostname": "modal",
+      "start_unix_seconds": 1794029426.1557763,
+      "end_unix_seconds": 1794029448.2416902,
+      "hold_seconds": 22
+    },
+    {
+      "model_key": "gemma4_31b_it",
+      "gpu_name": "NVIDIA L40S",
+      "gpu_uuid": "GPU-3bfb44bc-5138-8dcc-1210-40bd5242b6c6",
+      "gpu_memory_mib": 46068,
+      "container_hostname": "modal",
+      "start_unix_seconds": 1794029426.0476391,
+      "end_unix_seconds": 1794029448.0766006,
+      "hold_seconds": 22
+    },
+    {
+      "model_key": "qwen35_35b",
+      "gpu_name": "NVIDIA L40S",
+      "gpu_uuid": "GPU-b064ba26-b4b3-3e7b-c6f7-6933adeb59c4",
+      "gpu_memory_mib": 46068,
+      "container_hostname": "modal",
+      "start_unix_seconds": 1794029426.1717963,
+      "end_unix_seconds": 1794029448.1972198,
+      "hold_seconds": 22
+    }
+  ],
+  "approx_minimum_gpu_reservation_seconds": 88
+}

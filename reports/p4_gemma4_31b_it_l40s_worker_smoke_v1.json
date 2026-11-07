@@ -1,0 +1,36 @@
+{
+  "generated_at_utc": "2026-11-07T05:46:39.082063+00:00",
+  "scope": "one-sentence model/GGUF/CUDA compatibility only; no production deployment",
+  "status": "all_selected_models_passed",
+  "selected_models": [
+    "gemma4_31b_it"
+  ],
+  "total_rpc_wall_seconds": 34.358,
+  "results": {
+    "gemma4_31b_it": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "gemma4_31b_it",
+      "gguf_sha256_verification_marker": "d5808e5874e660a85ab45b2da00c9e3b4a003621249a333772232d1a703e4d67",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 26.742,
+      "function_elapsed_seconds": 27.533,
+      "start_unix_seconds": 1794030370.9608943,
+      "end_unix_seconds": 1794030398.4934573,
+      "gpu_uuid": "GPU-5c1e97a1-fb57-ec1d-f706-ce467056e9db",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 32979,
+      "translation": "Chú cáo nhỏ đã băng qua cây cầu lúc bình minh.",
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 45,
+        "total_tokens": 58,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    }
+  }
+}

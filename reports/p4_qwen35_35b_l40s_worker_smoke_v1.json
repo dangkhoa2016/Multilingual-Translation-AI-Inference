@@ -1,0 +1,36 @@
+{
+  "generated_at_utc": "2026-11-07T05:45:07.961417+00:00",
+  "scope": "one-sentence model/GGUF/CUDA compatibility only; no production deployment",
+  "status": "all_selected_models_passed",
+  "selected_models": [
+    "qwen35_35b"
+  ],
+  "total_rpc_wall_seconds": 24.471,
+  "results": {
+    "qwen35_35b": {
+      "status": "single_sentence_gpu_smoke_passed",
+      "model_key": "qwen35_35b",
+      "gguf_sha256_verification_marker": "3808866c016ab02b4adb26b873f7008a2cdd2c0704a39704050119ab0631db46",
+      "cuda_llama_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+      "model_load_to_ready_seconds": 18.557,
+      "function_elapsed_seconds": 18.936,
+      "start_unix_seconds": 1794030288.5013585,
+      "end_unix_seconds": 1794030307.4378133,
+      "gpu_uuid": "GPU-14d431bb-5e66-0ca3-87d7-525dc0313aa0",
+      "container_hostname": "modal",
+      "highest_sampled_vram_mib": 35335,
+      "translation": "Con cáo nhỏ băng qua cây cầu lúc bình minh.",
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 44,
+        "total_tokens": 56,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "gpu_memory_peak_is_exact": false,
+      "gpu_count": 1,
+      "real_http_production_endpoint": false
+    }
+  }
+}
