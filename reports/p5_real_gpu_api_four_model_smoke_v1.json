@@ -1,0 +1,43 @@
+{
+  "tested_at_utc": "2026-11-07T07:17:50.383275+00:00",
+  "status": "real_gpu_api_passed",
+  "scope": "Real production POST -> Modal GPU -> PostgreSQL -> authenticated GET",
+  "all_models": true,
+  "input_codepoints": 774,
+  "job_id": "7b9922d4-f9dd-449f-b687-73e03d0885c9",
+  "elapsed_seconds": 54.516,
+  "runs": [
+    {
+      "model": "qwen35_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 674,
+      "translation_sha256": "0e89931cc82c9a5bfbe87352826c85529b295f560776ad9a24637944462a2669",
+      "error_code": null
+    },
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 848,
+      "translation_sha256": "5c938b12cbc6c051cc23c2840df5718f2d8e99bc6f080637992495d45bbc44d4",
+      "error_code": null
+    },
+    {
+      "model": "gemma4_31b_it",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 842,
+      "translation_sha256": "0dc251a087ca2e55b6408ac1015b130555ca95c116e9e8cb0472a834c5f47f78",
+      "error_code": null
+    },
+    {
+      "model": "index_35b",
+      "status": "completed",
+      "is_mock_result": false,
+      "translation_codepoints": 839,
+      "translation_sha256": "65024a4a939ce45be2cffcbc1e176267889281d194c49d2583c59287613e3166",
+      "error_code": null
+    }
+  ]
+}

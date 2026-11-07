@@ -19,11 +19,11 @@ def test_routes_require_bearer_token(client_factory, translation_payload):
     assert client.post("/v1/jobs/translations", json=translation_payload).status_code == 401
 
 
-def test_models_have_unverified_flag(client_factory, headers):
+def test_models_are_smoke_verified_but_disabled_in_mock_mode(client_factory, headers):
     client, _ = client_factory()
     models = client.get("/v1/models", headers=headers).json()["models"]
     assert len(models) == 4
-    assert all(model["runtime_verified"] is False and model["enabled"] is False for model in models)
+    assert all(model["runtime_verified"] is True and model["enabled"] is False for model in models)
 
 
 def test_translation_inline_mock_is_explicitly_fake(client_factory, headers, translation_payload):
