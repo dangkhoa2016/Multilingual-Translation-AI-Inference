@@ -2,8 +2,8 @@
 
 > 🌐 Language / Ngôn ngữ: **English** | [Tiếng Việt](SUPPORT.vi.md)
 
-For usage questions, open a [GitHub Discussion](../../discussions) if enabled,
-or a [GitHub Issue](../../issues) with a minimal non-sensitive reproduction.
+For usage questions, open a [GitHub Discussion](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/discussions) if enabled,
+or a [GitHub Issue](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/issues) with a minimal non-sensitive reproduction.
 
 Before reporting a defect, review the [README](../README.md),
 [deployment guide](../docs/deployment.md), and [troubleshooting](../docs/operations.md).

@@ -2,8 +2,8 @@
 
 > 🌐 Language / Ngôn ngữ: [English](SUPPORT.md) | **Tiếng Việt**
 
-Nếu cần trợ giúp, hãy tạo [GitHub Discussion](../../discussions) khi tính
-năng được bật hoặc [GitHub Issue](../../issues) kèm ví dụ có thể tái hiện
+Nếu cần trợ giúp, hãy tạo [GitHub Discussion](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/discussions) khi tính
+năng được bật hoặc [GitHub Issue](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/issues) kèm ví dụ có thể tái hiện
 mà không lộ dữ liệu riêng tư.
 
 Trước khi báo lỗi, xem [README tiếng Việt](../README.vi.md),

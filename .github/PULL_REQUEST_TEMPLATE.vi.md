@@ -1,3 +1,7 @@
+# Pull request / Yêu cầu hợp nhất
+
+> 🌐 Language / Ngôn ngữ: [English](PULL_REQUEST_TEMPLATE.md) | **Tiếng Việt**
+
 ## Tóm tắt / Summary
 
 <!-- Tóm tắt thay đổi bằng tiếng Việt. -->
