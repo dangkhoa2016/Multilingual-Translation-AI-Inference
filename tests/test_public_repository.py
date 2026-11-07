@@ -52,6 +52,7 @@ def test_version_author_and_package_metadata_are_in_sync():
         "name": "Đăng Khoa", "email": "i.am@dangkhoa.dev",
     }]
     assert config["project"]["license"] == "MIT"
+    assert not any("License ::" in c for c in config["project"].get("classifiers", []))
     assert (root / "CITATION.cff").exists()
 
 

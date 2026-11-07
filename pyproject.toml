@@ -9,7 +9,6 @@ authors = [{name = "Đăng Khoa", email = "i.am@dangkhoa.dev"}]
 license = "MIT"
 keywords = ["translation", "multilingual", "modal", "gpu", "postgresql"]
 classifiers = [
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.12",
 ]
