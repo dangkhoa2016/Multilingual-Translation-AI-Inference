@@ -69,6 +69,63 @@ def translation_inference_cpu_mock_job_worker(run_id: str, claim_token: str) -> 
     return process_mock_translation_run(repository, run_id, claim_token)
 
 
+@modal_application.function(
+    name="translation_inference_cpu_operations_safety_monitor",
+    image=api_dependencies,
+    secrets=[postgresql_connection_secret],
+    cpu=0.125,
+    memory=256,
+    timeout=90,
+    min_containers=0,
+    buffer_containers=0,
+    max_containers=1,
+    schedule=modal.Period(hours=1),
+)
+def translation_inference_cpu_operations_safety_monitor() -> dict:
+    """One hourly CPU-only PostgreSQL aggregate check; never runs/retries GPU.
+
+    Alerts appear as structured warnings in Modal Logs and a failed CPU task.
+    External email/webhook notifications require additional configuration.
+    """
+    import json
+    import os
+    from datetime import datetime, timezone
+
+    from translation_ai_inference.database import make_engine, make_session_factory
+    from translation_ai_inference.operations import collect_operations_snapshot
+    from translation_ai_inference.repository import JobRepository
+
+    engine = make_engine(os.environ["TRANSLATION_INFERENCE_DATABASE_URL"])
+    try:
+        snapshot = collect_operations_snapshot(JobRepository(make_session_factory(engine)))
+    finally:
+        engine.dispose()
+    alerts = []
+    states = snapshot["total_runs_by_state"]
+    if states.get("dispatch_uncertain", 0) or states.get("execution_uncertain", 0):
+        alerts.append("uncertain_runs_need_operator_review")
+    if snapshot["stale_dispatching_count"] or snapshot["stale_running_count"]:
+        alerts.append("stale_active_jobs")
+    if snapshot["recent_error_codes"]:
+        alerts.append("recent_inference_error_codes")
+    payload = {
+        "type": "translation_inference_operations_safety_monitor",
+        "checked_at_utc": datetime.now(timezone.utc).isoformat(),
+        "status": "alert" if alerts else "healthy",
+        "alerts": alerts,
+        "run_counts": snapshot["total_runs_by_state"],
+        "stale_dispatching": snapshot["stale_dispatching_count"],
+        "stale_running": snapshot["stale_running_count"],
+        "recent_error_codes": snapshot["recent_error_codes"],
+        "gpu_allocations": 0,
+        "automatic_retries": 0,
+    }
+    print(json.dumps(payload, sort_keys=True), flush=True)
+    if alerts:
+        raise RuntimeError("CPU operations monitor detected: " + ", ".join(alerts))
+    return payload
+
+
 # The exact revision and model-loader hash previously passed four L40S CUDA smokes.
 # Image source builds on CPU only; these classes allocate GPU on a method call.
 CUDA_REVISION = "fd27b2034905f8dadd8bd6d2cc44595f4929d391"
