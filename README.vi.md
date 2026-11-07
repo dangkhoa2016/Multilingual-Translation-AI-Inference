@@ -1,10 +1,11 @@
 # Multilingual Translation AI Inference — Modal + PostgreSQL
 
-**Trạng thái: P1/P2 CPU mock đã triển khai; P3 đã xác minh Hy-MT2 Q8_0 trên L40S và chạy 16 ca dịch đa ngôn ngữ. Đã phát hiện lỗi trung thực ngữ nghĩa; chưa triển khai API GPU production.**
+**Trạng thái (07/11/2026): API Modal đã chạy dịch thật với bốn GPU worker L40S độc lập, background job và PostgreSQL. Cả bốn model GGUF Q8_0 đã được nghiệm thu qua API. Chưa có chứng nhận chất lượng dịch độc lập hoặc đầy đủ giới hạn chi phí/bảo mật production.**
 
 Mục tiêu: một Modal App, gateway FastAPI CPU, bốn worker L40S độc lập,
-PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấp dự kiến ban đầu). API mặc định là bất đồng bộ,
-đầu vào tối đa 1.000 ký tự Unicode. Phần mock **không phải model dịch**.
+PostgreSQL lưu trạng thái và kết quả job (Neon là một lựa chọn nhà cung cấp).
+API bất đồng bộ, đầu vào tối đa 1.000 ký tự Unicode. Phần CPU mock vẫn có
+để kiểm thử hoặc rollback, **không phải model dịch**; API đã triển khai hiện dùng GPU thật.
 
 ## Quy ước tên Modal tường minh
 
@@ -23,9 +24,10 @@ PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấ
 Tên App, Secret và biến môi trường không phụ thuộc Neon hay nhà cung cấp PostgreSQL khác.
 Đổi nhà cung cấp chỉ cần cập nhật PostgreSQL URL/Secret, nếu schema tương thích.
 
-Đã tạo và xác minh **một Volume Hy-MT2** chứa GGUF Q8_0. Ba Volume còn lại
-chưa tạo. Script `scripts/create_named_modal_volumes.sh` chỉ dùng khi thực sự cần.
-Chưa đăng ký GPU Functions vào App production để tránh cấp phát L40S ngoài ý muốn.
+**Cả bốn Volume đã được tạo, tải đầy đủ GGUF Q8_0 và xác minh SHA256
+toàn file.** Các GPU class tương ứng đã đăng ký trong cùng Modal App:
+`HyMT2L40SWorker`, `IndexTranslateL40SWorker`,
+`Gemma4L40SWorker` và `Qwen35L40SWorker`. Mỗi GPU tự scale-to-zero.
 
 ## Chạy local không tốn GPU
 
@@ -66,6 +68,8 @@ API trả `202`, `job_id`, `status_url`; gọi `GET /v1/jobs/{job_id}`
 Các chế độ: `inline-mock` chạy mock ngay tại gateway để thử local;
 `record-only` chỉ lưu job ở `queued`; `modal-cpu-mock` gọi `spawn()`
 đến CPU mock worker (chỉ sau khi deploy và có PostgreSQL).
+Chế độ `modal-gpu` dùng Modal RPC nội bộ để chạy dịch thật trên GPU L40S và
+lưu kết quả vào PostgreSQL.
 
 ## Kiểm tra và triển khai
 
@@ -74,17 +78,21 @@ python -m pytest -q
 python scripts/local_demo.py
 ```
 
-Hướng dẫn cấu hình PostgreSQL và hai Modal Secrets: [`docs/deployment.md`](docs/deployment.md).
-`.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py ` **chỉ đăng ký CPU**, không tạo Volume hay gọi GPU.
-Đã chạy thử nghiệm thu `spawn()` từ gateway đến CPU worker, PostgreSQL và polling.
-Để nghiệm thu lại, nạp `.env` rồi chạy
-`.venv/bin/python scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_MODAL_URL`.
-Kịch bản kiểm tra Bearer token, idempotency, API polling và bốn mock runs.
-Các thông số P3, chọn model và benchmark vẫn theo kế hoạch
-[`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md).
+Hướng dẫn PostgreSQL, Modal Secrets, Volume, quy trình deploy và rollback:
+[`docs/deployment.md`](docs/deployment.md).
+`.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py` đăng ký
+CPU Gateway, CPU mock fallback và **bốn GPU class L40S** trong cùng App.
+GPU không giữ chạy thường trực; `min_containers=0`.
 
-**Đã nghiệm thu:** migrations PostgreSQL development, Modal CPU deploy,
-API gateway → `spawn()` → CPU mock worker → PostgreSQL → polling.
+Khi Secret đang dùng `TRANSLATION_DISPATCHER_MODE=modal-gpu`, hãy nạp `.env`,
+đặt `TRANSLATION_GATEWAY_BASE_URL` bằng URL HTTPS của gateway đã deploy,
+rồi chạy `scripts/smoke_modal_gpu_api.py --run` để nghiệm thu một model
+hoặc thêm `--all-models` cho cả bốn. Đây là **các lệnh có tính phí GPU**.
+Kịch bản `smoke_modal_cpu.py` chỉ dùng khi đã chuyển về chế độ mock.
+
+**Đã nghiệm thu:** PostgreSQL schema, API Gateway đã xác thực,
+API POST → Modal GPU worker → PostgreSQL → API GET;
+cả bốn model trả kết quả thật với `is_mock_result=false`.
 
 **Bảo vệ vận hành P2:** đã có quota giao dịch trên PostgreSQL (idempotent
 replay không bị trừ thêm quota, kể cả khi nhiều request đồng thời), retry thủ công
@@ -94,9 +102,11 @@ API retry qua HTTP trên Modal CPU đã được nghiệm thu thực tế (HTTP 
 409 cho attempt trùng, job hoàn tất và giữ nguyên lịch sử). Hướng dẫn:
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md).
 
-**Chưa hoàn tất:** reconciliation tự động an toàn, cảnh báo chi phí theo USD,
-budget/rate limits, đánh giá chất lượng có bản dịch tham chiếu và người kiểm duyệt,
-3 model GPU còn lại, bảo mật nâng cao và retention. Không đưa API mock ra production dịch thuật.
+**Chưa hoàn tất:** đối soát tự động, cảnh báo/hạn mức chi phí USD,
+đánh giá chất lượng bằng bản dịch tham chiếu và người kiểm duyệt,
+kiểm thử tải cao, ngưỡng 1.000 ký tự đầy đủ và bảo mật nâng cao.
+API GPU đã hoạt động nhưng chỉ nên sử dụng có kiểm soát cho đến khi
+các yêu cầu chất lượng và vận hành được nghiệm thu.
 
 
 ## P3 — Hy-MT2 Q8_0: weights đã kiểm chứng và smoke L40S thành công
@@ -114,7 +124,7 @@ là các bước nghiệm thu riêng, không đồng nghĩa với việc SHA256 
   một câu EN→VI trên L40S **thành công**.
 - Đã chạy 16 ca EN↔VI, DE↔VI, JA↔VI, KO↔VI trên L40S. Đoạn nguồn dài
   617–969 ký tự. Phát hiện lỗi đổi nghĩa chất liệu ở các bản dịch VI→ngôn ngữ khác;
-  chưa hoàn tất benchmark tham chiếu và tiêu chí production.
+  chưa hoàn tất benchmark tham chiếu và chứng nhận chất lượng dịch.
 - [Kết quả GPU smoke](docs/p3-hy-mt2-l40s-smoke.md) và
   [báo cáo JSON](reports/p3_hy_mt2_l40s_smoke.json).
 
@@ -149,7 +159,8 @@ bị đảo ngược chiều thay thế vật liệu cũng được sửa trong 
 
 **Không đánh đồng phép thử này với benchmark chất lượng độc lập**: bộ câu
 được thiết kế nhằm kiểm tra lỗi đã biết, chưa có bản dịch tham chiếu của người
-kiểm duyệt, chưa thử nhiều seed. API production vẫn chỉ chạy CPU mock.
+kiểm duyệt, chưa thử nhiều seed. Ở thời điểm P3 API chỉ chạy CPU mock;
+P5 sau đó đã triển khai dịch GPU thật.
 
 - [Phương pháp, kết quả và giới hạn](docs/p3-hy-mt2-material-glossary-probe.md)
 - [40 output dịch thật và thời gian xử lý](reports/p3_hy_mt2_material_glossary_probe_v1.json)
@@ -170,10 +181,34 @@ và dịch được một câu **đồng thời trên bốn NVIDIA L40S khác nh
 - VRAM quan sát của từng model: **31.151–35.336 MiB**, không phải peak chính xác.
 - Mỗi worker dùng `min_containers=0`, `buffer_containers=0`,
   `max_containers=1`, có thể scale-to-zero độc lập.
-- Modal App nghiệm thu là **tạm thời và đã dừng**. CPU FastAPI gateway
-  hiện vẫn dùng **mock worker**; chưa tích hợp inference GPU vào API
-  production, chưa nghiệm thu đầu vào dài và độ ổn định.
+- Modal App nghiệm thu P4 là **tạm thời và đã dừng**. Sang P5, bốn
+  GPU class đã được deploy vào App chính thức và API dịch thật đã đạt smoke;
+  vẫn cần kiểm thử ngưỡng tối đa, độ ổn định và chất lượng.
 
 Chứng cứ: [Tài liệu P4](docs/p4-four-independent-l40s-workers.md)
  · [Bản dịch và GPU runtime đồng thời](reports/p4_four_l40s_models_runtime_smoke_v1.json)
  · [Manifest bốn model và Volume](models/four_l40s_workers_q8_0_manifest.json).
+
+
+## P5 — API dịch thật với bốn GPU L40S và PostgreSQL (07/11/2026)
+
+**Cả bốn model GGUF Q8_0 hiện được phục vụ qua một FastAPI Gateway CPU
+có Bearer authentication.** Endpoint `POST /v1/jobs/benchmarks` đã hoàn thành
+bốn lần inference thật với `is_mock_result=false`, lưu kết quả vào
+PostgreSQL và đọc lại thành công qua API GET được xác thực.
+
+- Bốn GPU class có cơ chế load model một lần cho mỗi container đang hoạt động,
+  mỗi class dùng `min_containers=0`, `buffer_containers=0`,
+  `max_containers=1`; không phải trả tiền GPU khi instance đã scale-to-zero.
+- Bài kiểm thử 849 ký tự qua PostgreSQL → Modal GPU → API GET đạt 4/4,
+  mất khoảng **68 giây**.
+- Gọi benchmark bốn model trực tiếp qua API đạt 4/4 trong khoảng **54,5 giây**;
+  bài POST một model và kiểm tra idempotency cũng đạt.
+- Có thể rollback có kiểm soát về CPU mock bằng cách đổi Modal Secret;
+  không đưa token hoặc database URL vào Git.
+- **Chưa thể suy ra bản dịch luôn chính xác:** vẫn cần benchmark có bản dịch
+  tham chiếu đa ngôn ngữ, kiểm duyệt ngữ nghĩa và giới hạn chi phí/bảo mật tốt hơn.
+
+Xem [hướng dẫn vận hành GPU và toàn bộ kết quả](docs/real-gpu-deployment.md),
+[báo cáo bốn class đã deploy](reports/p5_deployed_four_gpu_classes_readiness_v1.json)
+và [kết quả bốn model qua API thật](reports/p5_real_gpu_api_four_model_smoke_v1.json).

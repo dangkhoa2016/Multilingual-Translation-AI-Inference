@@ -10,8 +10,10 @@ Each worker has a separate weight Volume, function name, cold-start lifecycle
 and `min_containers=0`. One warm GPU may serve only its own model.
 
 **This is infrastructure/load validation, not a translation quality assessment.**
-Production CPU PostgreSQL/gateway remains mock-only until real worker
-integration passes its own security/recovery gates.
+At the time of this P4 hardware validation, the CPU gateway was mock-only.
+**Current P5 status:** all four real GPU workers have since been integrated,
+deployed and exercised end-to-end with authenticated HTTP and PostgreSQL.
+See [real GPU deployment](real-gpu-deployment.md).
 
 ## Verified hardware concurrency
 
@@ -151,9 +153,10 @@ modal run --profile YOUR_MODAL_PROFILE scripts/modal_four_model_gpu_smoke.py --a
 
 ## Production integration gate
 
-The existing `modal_app.py` intentionally deploys only a CPU gateway and CPU
-mock worker. The test scripts do not rewrite it, add unauthenticated HTTP
-endpoints, issue PostgreSQL migrations, or silently switch the mock path.
+At the original P4 milestone, `modal_app.py` deployed a CPU gateway and
+mock worker only. P5 subsequently added four real GPU classes under the
+same App without introducing unauthenticated GPU HTTP endpoints.
+See [the current deployed architecture](real-gpu-deployment.md).
 
 To make all four real models available through the API:
 
@@ -171,7 +174,9 @@ To make all four real models available through the API:
 6. **Completed:** a four-model simultaneous load/reservation test, not merely
    GPU identity scheduling; actual deployed API integration is still separate.
 
-**Gate status:** **four physical L40S GPUs with four real GGUF model
-loads and translated outputs VERIFIED in the same interval**. Production
-job routing, load-once resident workers, long-input reliability and
-public endpoint integration **NOT YET DEPLOYED**.
+**P4 gate status:** four physical L40S GPUs loaded four different real
+GGUF models and returned translated outputs in the same interval.
+**P5 update:** production routing, load-once GPU workers, PostgreSQL
+integration and real authenticated HTTP endpoints are now deployed and
+smoke-tested. Independent quality certification and full input-boundary
+reliability testing remain outstanding.

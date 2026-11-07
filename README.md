@@ -1,12 +1,12 @@
 # Multilingual Translation AI Inference
 
-**Status: P1/P2 CPU mock is deployed; P3 has verified Hy-MT2 Q8_0 on one Modal L40S and completed a 16-case multilingual diagnostic. Semantic fidelity issues remain; no production GPU translation API is deployed.**
+**Status (2026-11-07): Live authenticated Modal API with four separately scaling L40S GPU workers and PostgreSQL-backed async jobs. All four Q8_0 models passed real API smoke tests. Translation quality remains uncertified; independent evaluation and hardened operational safeguards are still required.**
 
-This repository starts the text-only, async-first translation service described in
+This repository implements the text-only, async-first translation service described in
 [`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md). The target
 architecture is one Modal App, a CPU FastAPI gateway, four independent L40S model
-workers, and PostgreSQL as a durable job/result store (Neon is the initial hosting option). The CPU mock is an
-integration-test tool; it does **not** translate.
+workers, and PostgreSQL as a durable job/result store (Neon is the initial hosting option). The CPU mock is retained for tests and explicit rollback; it does **not**
+translate. The deployed gateway currently uses real GPU inference.
 
 ## Resource names (no abbreviations)
 
@@ -25,10 +25,11 @@ integration-test tool; it does **not** translate.
 The database provider is configurable via `TRANSLATION_INFERENCE_DATABASE_URL`; no provider name is
 embedded in Modal resource names, environment variable names, or Python identifiers.
 
-Only the Hy-MT2 model Volume has been created and populated. The other three Volume
-names above are reserved, not provisioned. GPU Functions have proposed names in
-`src/translation_ai_inference/resource_names.py` but are **not registered in the
-production Modal App**.
+**All four Volumes are provisioned**, contain full-SHA256-verified GGUF Q8_0
+files, and are mounted by independently scaling GPU classes in the deployed App.
+The class names are `HyMT2L40SWorker`, `IndexTranslateL40SWorker`,
+`Gemma4L40SWorker`, and `Qwen35L40SWorker`. Their explicit registry is in
+`src/translation_ai_inference/resource_names.py`.
 
 ## Run offline (SQLite; no Modal, hosted database, or GPU account needed)
 
@@ -56,7 +57,9 @@ curl -fsS -X POST http://127.0.0.1:8000/v1/jobs/translations \
 The response has `job_id` and `status_url`; `GET /v1/jobs/{id}` exposes results.
 `inline-mock` returns an *explicitly marked mock*, not a translated sentence.
 For an API-only test use `TRANSLATION_DISPATCHER_MODE=record-only` (status stays queued).
-`modal-cpu-mock` uses Modal `spawn()` and requires a deployed Modal App.
+`modal-cpu-mock` uses Modal `spawn()` and returns simulated results; the
+explicit `modal-gpu` mode uses four deployed GPU classes to translate text
+and store real results.
 
 ## Run tests
 
@@ -70,16 +73,21 @@ For Codespaces development with a local `.env`, explicitly load it before runnin
 Alembic or Uvicorn (`set -a; source .env; set +a`). `.env` is Git-ignored.
 Provider `postgresql://` URLs are converted to the psycopg v3 SQLAlchemy driver.
 
-## Deploy the **CPU-only** Modal mock
+## Deploy the Modal API and four L40S GPU classes
 
-See [`docs/deployment.md`](docs/deployment.md). Use a **direct PostgreSQL connection** for schema migrations and, where supported, a
-pooled PostgreSQL connection for the deployed API/worker. The two Modal Secrets and
-PostgreSQL schema must be configured before deployment. Run
+See [`docs/deployment.md`](docs/deployment.md). Use a **direct PostgreSQL connection**
+for schema migrations and a pooled connection for API/worker traffic when supported.
+Configure the existing two Modal Secrets and four verified model Volumes, then run
 `.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py` from the
-repository root. It registers ONLY the CPU gateway and CPU mock worker.
-Development deployment and live Modal `spawn()` tests have passed. For reproducible
-verification, load `.env` and run `scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_MODAL_URL`.
-The script validates Bearer auth, idempotency, polling and four mock model runs.
+repository root. This deploys the CPU gateway, the CPU mock fallback and **four
+model-specific L40S classes**; `min_containers=0` avoids always-on GPUs.
+
+With the authenticated API Secret set to `TRANSLATION_DISPATCHER_MODE=modal-gpu`,
+the gateway submits real background GPU jobs. To verify without exposing secrets
+or raw translations, load `.env`, set `TRANSLATION_GATEWAY_BASE_URL` to the
+actual deployed HTTPS gateway URL, and run `scripts/smoke_modal_gpu_api.py --run`
+for one model or add `--all-models` for all four. Both commands incur GPU charges.
+The CPU mock smoke script is **only for mock mode**.
 
 ## P2 operational safeguards
 
@@ -94,15 +102,18 @@ GPU budget or a production security system.
 
 ## Current limitations
 
-- No production GPU translation worker or endpoint; Hy-MT2 smoke and a 16-case quality diagnostic ran separately. Three other candidates remain unverified on GPU.
-- PostgreSQL development migrations and Modal CPU `spawn()` have passed live smoke tests; this is not production-ready.
+- All four GPU workers and authenticated live API are operational, but no independently
+  scored human-reviewed translation benchmark or general translation-quality certification exists.
+- Four-model GPU API and PostgreSQL integration are verified at smoke level;
+  extended high-concurrency, 1,000-character boundary and resilience tests remain outstanding.
 - No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
 - No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
 - The initial migration contains job/run/results tables; model registry, reviews and full provenance
   schema will be added during P2/P5.
 - `Idempotency-Key` is scoped to a configured owner. Multi-tenant identity is not implemented.
-- **Do not publish this mock API as a real translation service.**
+- **Do not treat operational model inference as a translation accuracy guarantee.**
+  The live API should be limited to controlled usage pending quality and security review.
 
 See [`README.vi.md`](README.vi.md) for Vietnamese documentation.
 
@@ -121,7 +132,7 @@ verified against the pinned official hash. A short L40S hardware probe passed.
 - Pinned llama.cpp CUDA build, full GGUF loading and real L40S EN→VI smoke **passed**.
 - A controlled 16-case EN↔VI, DE↔VI, JA↔VI, KO↔VI diagnostic also completed.
   Source passages were 617–969 characters, and notable semantic substitutions
-  require further review before any production inference is enabled.
+  require further review before relying on the outputs for quality-critical use.
 - [L40S GPU smoke results](docs/p3-hy-mt2-l40s-smoke.md) and
   [machine-readable report](reports/p3_hy_mt2_l40s_smoke.json).
 
@@ -136,7 +147,7 @@ structured text and **3.127s** for narrative text; highest sampled VRAM was
 expression for a *silver compass* was translated as *brass/copper* in all four
 target languages. Automatic placeholder checks reported zero issues, but they
 cannot establish semantic accuracy. This synthetic diagnostic has no qualified
-human-reviewed references, so **Hy-MT2 is not approved for production inference**.
+human-reviewed references, so **Hy-MT2 is not certified for quality-critical use**.
 
 - [Diagnostic design, measured results, and limitations](docs/p3-hy-mt2-quality-diagnostic-review.md)
 - [Complete inference outputs](reports/p3_hy_mt2_quality_diagnostic_v1.json)
@@ -157,8 +168,8 @@ relationship between silver and copper.
 
 This is a **targeted synthetic diagnostic, not an independently scored
 quality benchmark**. One generation per case and simple lexical checks
-cannot establish translation accuracy or production readiness. The production
-CPU gateway stays mock-only.
+cannot establish translation accuracy or production readiness. At the time
+of this P3 experiment the gateway was mock-only; P5 later enabled real GPU routing.
 
 - [Full run methodology, findings and limitations](docs/p3-hy-mt2-material-glossary-probe.md)
 - [Actual outputs and request measurements](reports/p3_hy_mt2_material_glossary_probe_v1.json)
@@ -178,10 +189,34 @@ translated a sentence **simultaneously on four distinct NVIDIA L40S GPUs**.
 - Highest sampled per-model VRAM: **31,151–35,336 MiB** (not exact peaks).
 - Each dedicated worker is configured `min_containers=0`,
   `buffer_containers=0`, `max_containers=1` for independent scale-to-zero.
-- The concurrent GPU test App was **ephemeral and stopped**. The original CPU
-  FastAPI gateway still routes to **mock workers only**: production API
-  integration, long-input and resilience testing remain outstanding.
+- The original concurrent GPU test App was **ephemeral and stopped**.
+  P5 subsequently deployed these workers into the production Modal App and
+  verified real authenticated API requests; resilience and quality testing remain.
 
 Evidence: [P4 infrastructure and runtime review](docs/p4-four-independent-l40s-workers.md)
  · [four-model concurrent output](reports/p4_four_l40s_models_runtime_smoke_v1.json)
  · [pinned model/Volume manifest](models/four_l40s_workers_q8_0_manifest.json).
+
+
+## P5 — Live asynchronous GPU inference via the API (2026-11-07)
+
+**Four real GGUF Q8_0 models are now available through one protected CPU
+FastAPI gateway.** A benchmark submitted to the deployed `POST /v1/jobs/benchmarks`
+completed all four model runs with `is_mock_result=false`; the output was
+persisted in PostgreSQL and retrieved through authenticated GET.
+
+- The deployment contains four independent, load-once L40S GPU classes with
+  `min_containers=0`, `buffer_containers=0`, `max_containers=1`.
+- An independent 849-character PostgreSQL → Modal GPU → API GET smoke passed
+  for all four models in approximately 68 seconds.
+- A real client POST benchmark passed 4/4 in approximately 54.5 seconds;
+  a one-model POST and idempotent replay also passed.
+- The protected API remains compatible with local CPU mock mode and has a
+  controlled Secret-based rollback path. No actual token is stored in Git.
+- This is **operational compatibility verification, not proof of translation
+  quality**; reference-based multilingual tests and stronger cost/security
+  limits remain pending.
+
+See the [real GPU deployment and operations guide](docs/real-gpu-deployment.md),
+[deployed GPU class readiness](reports/p5_deployed_four_gpu_classes_readiness_v1.json)
+and [actual four-model API result](reports/p5_real_gpu_api_four_model_smoke_v1.json).

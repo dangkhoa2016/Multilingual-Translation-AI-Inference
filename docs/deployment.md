@@ -1,111 +1,164 @@
-# Deployment runbook — CPU mock only
+# Deployment runbook — CPU gateway and four independent L40S workers
 
-This runbook is **NOT** a production or GPU deployment guide.
-Development PostgreSQL migrations, Modal CPU deployment, and asynchronous CPU mock smoke tests have passed (2026-11-07). **GPU inference has not been deployed.**
+**Status (2026-11-07):** One Modal App contains an authenticated FastAPI CPU
+gateway, a retained CPU mock worker, and four real model-specific NVIDIA L40S
+classes. The currently deployed API Secret selects `modal-gpu`. All four
+GGUF Q8_0 models passed individual and concurrent CUDA inference smokes,
+and all four completed a real benchmark sent through the deployed API.
 
-## 1. Provision a PostgreSQL development database
+This is **operational GPU inference**, not certification of translation
+accuracy, security, high concurrency or a dollar-denominated spending limit.
+See [real GPU operations and evidence](real-gpu-deployment.md).
 
-Choose a PostgreSQL provider (Neon is optional), match its region to Modal where
-possible, enable TLS, and obtain TWO credential URLs if your provider supports pooling:
+## 1. PostgreSQL
 
-- `TRANSLATION_INFERENCE_MIGRATION_DATABASE_URL`: direct connection, migration CLI only.
-- `TRANSLATION_INFERENCE_DATABASE_URL`: pooled connection, short CPU gateway/worker operations.
+Configure a PostgreSQL provider with TLS, ideally region-adjacent to Modal.
+Neon is optional, not embedded in service identifiers. Two credentials are
+recommended when a provider offers pooled connections:
 
-Both `postgresql://` (provider default) and `postgresql+psycopg://` are accepted; SQLAlchemy explicitly selects psycopg v3. Never publish usernames/passwords. Migrations run via `alembic -c db/alembic.ini upgrade head`.
+- `TRANSLATION_INFERENCE_MIGRATION_DATABASE_URL`: direct, migration CLI only.
+- `TRANSLATION_INFERENCE_DATABASE_URL`: pooled, short API/worker transactions.
 
-Do not run migrations automatically in each Modal gateway container. Verify the intended Modal workspace before creating Secrets or deploying.
-
-## 2. Create exact Modal Secrets (manual, account-scoped)
-
-PostgreSQL provider migration: preserve the Secret name and `TRANSLATION_INFERENCE_DATABASE_URL`
-key. Update its value to the new provider's connection string; apply schema migrations
-to the target before switching. No API application rename or code changes are required
-when SQL compatibility is maintained. Keep the migration URL out of the deployed gateway Secret.
-
-Use the Modal dashboard UI or secret CLI. Provide the following ENV KEY NAMES,
-not the example values:
-
-- Secret `translation-ai-inference-postgresql-connection`:
-  `TRANSLATION_INFERENCE_DATABASE_URL`
-- Secret `translation-ai-inference-api-authentication`:
-  `TRANSLATION_API_BEARER_TOKEN` and `TRANSLATION_DISPATCHER_MODE=modal-cpu-mock`
-
-Generate a long random API token. Never paste live credentials into a commit or log.
-Use a short-lived/pooled PostgreSQL URL for API workers when supported; use a direct
-PostgreSQL URL for migrations. A provider without a pooler may use its direct URL
-for both with conservative connection limits.
-
-## 3. Install and deploy CPU-only app
-
-```bash
-pip install -e '.[dev]'
-.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py
-.venv/bin/modal app list --profile YOUR_MODAL_PROFILE
-.venv/bin/modal function info --profile YOUR_MODAL_PROFILE translation-ai-inference-api-and-model-workers/translation_inference_fastapi_cpu_gateway
-.venv/bin/modal function info --profile YOUR_MODAL_PROFILE translation-ai-inference-api-and-model-workers/translation_inference_cpu_mock_job_worker
-```
-
-Both functions have `gpu=None`, min/buffer containers 0. The mock worker does not
-translate text. Do not run `scripts/create_named_modal_volumes.sh` before P3.
-
-## 4. Smoke
-
-Run the manual integration smoke test against the actual Modal web URL after loading
-the local `.env` (the script reads only the bearer token from the environment):
+SQLAlchemy uses psycopg v3 for either `postgresql://` or
+`postgresql+psycopg://`. Apply database schema migrations **outside** the
+Modal gateway:
 
 ```bash
 set -a; source .env; set +a
-.venv/bin/python scripts/smoke_modal_cpu.py \
-  --base-url https://YOUR_DEPLOYED_ENDPOINT.modal.run
+alembic -c db/alembic.ini upgrade head
 ```
 
-Checks: public `/health`, protected `/v1/models`, translation submission,
-`spawn()`, PostgreSQL persistence, GET polling, idempotency and conflict detection,
-plus a four-model CPU mock benchmark. Every result must declare
-`is_mock_result=true` with the mock disclaimer. No real inference runs.
-The public Modal URL uses application Bearer authentication for `/v1` endpoints;
-the `/health` endpoint is intentionally public. Do not expose this test gateway
-as a production translation service.
+The `0002_p2_safety` revision includes durable dispatch timestamps and
+usage-window quotas. Do not run migrations at GPU cold start.
 
-## 5. Operational safety (P2)
+## 2. Modal Secrets and four preverified Volumes
 
-Apply revision `0002_p2_safety` to PostgreSQL before deploying this version:
-`alembic -c db/alembic.ini upgrade head`.
-The revision adds dispatch timestamps and the `usage_windows` quota table.
+The authenticated Modal workspace must have both named Secrets:
 
-See [P2 operational safety](p2-operational-safety.md) for durable limits, explicit
-failed-run retry, fail-closed reconciliation, and dry-run retention commands.
-Reconciliation and retention are manual operator actions, not scheduled billable work.
+| Secret | Required keys |
+|---|---|
+| `translation-ai-inference-postgresql-connection` | `TRANSLATION_INFERENCE_DATABASE_URL` |
+| `translation-ai-inference-api-authentication` | `TRANSLATION_API_BEARER_TOKEN`, `TRANSLATION_DISPATCHER_MODE` |
 
-## 6. Rollback and incident notes
+Modes: `modal-gpu` means **real, billable GPU translation**; `modal-cpu-mock`
+means explicit mock results; `inline-mock` and `record-only` are intended
+for local development. Never print or commit actual Secret values.
 
-`modal app stop translation-ai-inference-api-and-model-workers` stops the deployed App,
-but DOES NOT delete the PostgreSQL database or any Volume. No automatic data deletion
-is provided. The dispatcher never retries `dispatch_uncertain` or `execution_uncertain`;
-manual investigation is required after a spawn/DB ambiguity. Avoid pushing live
-traffic until P2 reconciliation and quota controls are tested.
+All four GGUF Q8_0 files must already be independently full-SHA256-verified
+inside these separate Modal Volumes:
 
-Further details: [Modal scaling](https://modal.com/docs/guide/scale),
-[Modal Function lookups](https://modal.com/docs/guide/trigger-deployed-functions),
-[Neon pooling](https://neon.com/docs/connect/connection-pooling).
+- `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights`
+- `translation-ai-inference-index-35b-a3b-preview-gguf-weights`
+- `translation-ai-inference-gemma-4-31b-it-gguf-weights`
+- `translation-ai-inference-qwen-3-5-35b-a3b-gguf-weights`
 
-## 7. P4 validation status (2026-11-07)
+The verification markers are required at GPU startup. No GPU worker
+downloads its weights. See the [four-model manifest](../models/four_l40s_workers_q8_0_manifest.json).
 
-Four separate GGUF Q8_0 models have been fully SHA256-verified on four
-persistent, model-specific Modal Volumes. A **real concurrent four-L40S run**
-successfully loaded all models and generated four nonempty translations on
-four distinct GPU UUIDs with overlapping execution intervals.
+## 3. Deploy one Modal App, not four separately managed Apps
 
-This **does not change the deployment instructions above**: `modal_app.py`
-still deploys the original CPU gateway and CPU mock job worker. The validated
-GPU functions live in an opt-in ephemeral load/smoke harness; they are **not
-yet connected to the authenticated translation API**, and none should be
-described as a production endpoint.
+```bash
+pip install -e '.[dev]'
+modal deploy --profile YOUR_MODAL_PROFILE modal_app.py
+modal app list --profile YOUR_MODAL_PROFILE
+modal function info --profile YOUR_MODAL_PROFILE \
+  translation-ai-inference-api-and-model-workers/translation_inference_fastapi_cpu_gateway
+```
 
-- [Four-worker deployment and verification report](p4-four-independent-l40s-workers.md)
-- [Raw concurrent four-model evidence](../reports/p4_four_l40s_models_runtime_smoke_v1.json)
-- [Pinned four-model manifest](../models/four_l40s_workers_q8_0_manifest.json)
+This deploys the CPU gateway, the CPU mock worker and **four GPU classes**:
+`HyMT2L40SWorker`, `IndexTranslateL40SWorker`,
+`Gemma4L40SWorker`, and `Qwen35L40SWorker`.
 
-The next deployment phase is integrating load-once GPU workers with the
-existing PostgreSQL-backed async dispatch and preserving idempotency,
-quota and error recovery.
+Each GPU class uses one L40S 48 GB and a model-specific Volume with
+`min_containers=0`, `buffer_containers=0`, `max_containers=1`.
+Four independent workloads can allocate four GPUs concurrently; idle GPUs
+are not kept awake by GET polling.
+
+Deployed classes have no public GPU HTTP URL. All external requests flow
+through the authenticated CPU gateway.
+
+## 4. Verify mode, authentication and real results
+
+The public `GET /health` endpoint is intentionally unauthenticated. It
+reports `inference_enabled=true` and `phase=gpu` only when the current
+gateway process is configured for real inference.
+
+All `/v1` routes require `Authorization: Bearer <TOKEN>`.
+When the gateway is in real mode, submit one translation first and then
+a bounded four-model benchmark:
+
+```bash
+set -a; source .env; set +a
+export TRANSLATION_GATEWAY_BASE_URL="https://YOUR_DEPLOYED_MODAL_GATEWAY.modal.run"
+PYTHONPATH=src python scripts/smoke_modal_gpu_api.py
+PYTHONPATH=src python scripts/smoke_modal_gpu_api.py --run
+PYTHONPATH=src python scripts/smoke_modal_gpu_api.py --run --all-models
+```
+
+The script uses the deployed API, checks bearer protection and same-key
+idempotency, polls each run, and requires completed nonmock results.
+It does not log bearer tokens or translated text. The two `--run` commands
+allocate billable GPUs.
+
+For a separate database/worker integration proof without modifying the
+gateway dispatcher:
+
+```bash
+PYTHONPATH=src python scripts/smoke_real_gpu_job_dispatch.py --run
+```
+
+For a direct authenticated workspace check of all four **deployed** GPU
+classes, without an API job:
+
+```bash
+PYTHONPATH=src python scripts/verify_deployed_four_gpu_classes.py --run
+```
+
+All three workflows were run successfully on 2026-11-07. See the
+[full result table and raw reports](real-gpu-deployment.md).
+
+## 5. Switching back to safe CPU mock mode
+
+Keep the Secret name and existing bearer token. The opt-in switcher
+uses an owner-private temporary JSON file, never puts token values in
+shell arguments, and forces new Modal containers to load updated Secrets.
+
+```bash
+set -a; source .env; set +a
+export TRANSLATION_GATEWAY_BASE_URL="https://YOUR_DEPLOYED_MODAL_GATEWAY.modal.run"
+python scripts/set_modal_dispatch_mode.py --to-mock
+python scripts/set_modal_dispatch_mode.py --to-mock --apply
+# Explicitly restore real inference when appropriate:
+python scripts/set_modal_dispatch_mode.py --to-gpu --apply
+```
+
+When code is unchanged, `modal deploy` can be a no-op. The switcher
+explicitly performs `modal app rollover --strategy recreate` after the
+Secret update, ensuring old runtime environments are replaced.
+This may temporarily interrupt inflight work. Never automatically retry
+an uncertain GPU execution; reconcile its PostgreSQL state first.
+
+In mock mode, run `scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_URL`
+to validate fake results marked `is_mock_result=true`. Do **not** use
+the CPU mock smoke script against the active real-GPU endpoint.
+
+## 6. Limits and incident handling
+
+- Failed/uncertain GPU calls are isolated per model; ambiguous dispatch or
+  execution never triggers automatic retry.
+- Retry is operator/client-initiated only for confirmed `failed` attempts.
+- PostgreSQL counters enforce per-minute, daily-job and daily-model-run
+  submission limits. These are **not** dollar-based GPU budget caps.
+- Reconciliation and retention are manually invoked; there is no scheduled
+  billable background process for idle polling.
+- `modal app stop translation-ai-inference-api-and-model-workers` terminates
+  the public App but does not delete PostgreSQL or persistent model Volumes.
+  For temporary disabling of real inference while retaining the API, prefer
+  switching to `modal-cpu-mock`.
+- Prior Hy-MT2 semantic errors remain unresolved as a general quality
+  certification matter. Human-reviewed reference-based evaluations, longer
+  1,000-character boundary tests, security and load tests are still required.
+
+Additional guidance: [P2 operational safety](p2-operational-safety.md),
+[Modal scale-to-zero](https://modal.com/docs/guide/scale) and
+[Modal deployment rollover](https://modal.com/docs/guide/managing-deployments).

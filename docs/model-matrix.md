@@ -111,9 +111,29 @@ VRAM was approximately **31–35 GiB per model**; model compatibility is
 verified for the observed 4096-token context configuration, not for every
 future load shape or high-concurrency use case.
 
-This is **not** an independent quality benchmark and does not enable the
-production API. The CPU gateway remains mock-only pending GPU integration.
+This is **not** an independent quality benchmark. At the time of P4,
+the CPU gateway remained mock-only. The later P5 deployment now supports
+real, authenticated GPU inference; see
+[real GPU deployment](real-gpu-deployment.md).
 
 - [Immutable model metadata and SHA256 manifest](../models/four_l40s_workers_q8_0_manifest.json)
 - [Four-model concurrent smoke JSON](../reports/p4_four_l40s_models_runtime_smoke_v1.json)
 - [P4 deployment readiness assessment](p4-four-independent-l40s-workers.md)
+
+
+## 8. P5 — live GPU API and PostgreSQL integration (2026-11-07)
+
+All four independent deployed Modal GPU classes loaded their verified
+GGUF weights on L40S, and the deployed API successfully completed both
+a single-model real translation and a four-model real benchmark.
+
+- `GET /health`: `inference_enabled=true`, `phase=gpu`.
+- `GET /v1/models`: four enabled model keys under Bearer authentication.
+- `POST /v1/jobs/benchmarks`: four `completed` model runs, each persisted
+  with `is_mock_result=false`, retrievable through authenticated GET.
+- `min_containers=0` on each GPU class; idle GPU keepalive is not enabled.
+
+This is operational compatibility evidence, **not** proof of translation
+accuracy or a completed reference-based benchmark.
+
+See [P5 deployment report](real-gpu-deployment.md).
