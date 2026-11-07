@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "project": "Multilingual-Translation-AI-Inference",
+  "date": "2026-11-07",
+  "workspace": "bsmith888",
+  "model_key": "hy_mt2_30b",
+  "checkpoint_revision": "d3ead4dba61c09aac60a261a96ad1df3e705febb",
+  "gguf_revision": "fd3dcbb6b31e9e03923ef4f9f42500f74c3851c3",
+  "gguf_file": "Hy-MT2-30B-A3B-Q8_0.gguf",
+  "bytes": 31985729376,
+  "sha256_computed_on_downloaded_file": "d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98",
+  "volume": "translation-ai-inference-hy-mt2-30b-a3b-gguf-weights",
+  "stage_cpu_seconds": 112.63,
+  "download_seconds": 83.53,
+  "volume_commit_succeeded": true,
+  "stage_modal_run": "ap-MKJy24KYePNqS0Sr3j7YzG",
+  "gpu_probe": {
+    "name": "NVIDIA L40S",
+    "total_mib": 46068,
+    "free_mib": 45484,
+    "compute_capability": "8.9",
+    "driver": "610.57.04",
+    "modal_run": "ap-o4elOqrfp1XIuzmsFS39YM"
+  },
+  "cuda": {
+    "source_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+    "cuda_image_base": "nvidia/cuda:12.8.1-devel-ubuntu22.04",
+    "target_arch": "89",
+    "build_status": "passed",
+    "built_image_id": "im-OWf7a9328NJoqBcqox4lo1",
+    "linker_fix": "-Wl,--allow-shlib-undefined",
+    "binary_executed_on_l40s": true,
+    "gpu_smoke_report": "reports/p3_hy_mt2_l40s_smoke.json"
+  },
+  "real_inference_enabled": false
+}

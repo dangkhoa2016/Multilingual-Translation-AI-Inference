@@ -79,3 +79,12 @@ Evidence, offline/online verifier and exact model lock:
 the entire downloaded 31.99 GB file.** The full-file check and real L40S
 load test have **not** passed. Index, Gemma 4 and Qwen3.5 remain unpinned
 and unverified in P3; do not infer their readiness from Hy-MT2.
+
+## 6. Hy-MT2 L40S single-sentence verification (2026-11-07)
+
+The official Q8_0 GGUF has been fully downloaded, SHA256-verified, and
+loaded into a temporary L40S CUDA llama-server. One EN→VI translation passed;
+observed memory was 31,167 MiB and the model reached ready in 21.21s.
+This is only a one-sentence compatibility smoke. See
+[P3 L40S report](p3-hy-mt2-l40s-smoke.md). Other three models remain
+unverified on GPU.

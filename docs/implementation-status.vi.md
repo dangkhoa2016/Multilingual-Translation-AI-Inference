@@ -114,3 +114,35 @@ GPU trong giai đoạn mã nguồn mock.
   `llama-server --version` trả `0.9.0-dev`. Do source tarball không có `.git`,
   version string không chứa Git SHA; provenance dựa vào pin revision và hash source.
 - Chưa build CUDA, chưa load GGUF toàn bộ, chưa chạy L40S.
+
+
+## P3 — Modal L40S probe và GGUF staging (2026-11-07)
+
+- Workspace `bsmith888` đã cấp 1 GPU L40S thành công qua short-lived probe:
+  46.068 MiB VRAM tổng, 45.484 MiB trống khi đo, compute capability 8.9.
+- Giá L40S truy vấn qua Modal CLI: USD 1,95/giờ; storage Volume USD 0,09/GiB/tháng.
+- Đã tạo đúng 1 Volume: `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights`.
+- GGUF Q8_0 31.985.729.376 bytes đã tải trực tiếp từ Hugging Face vào Modal Volume
+  bởi CPU-only function, không qua Codespaces.
+- SHA256 toàn file **khớp** `d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98`.
+- Thời gian tải 83,53 giây; tổng thời gian stage + SHA256 + commit 112,63 giây.
+- Chưa deploy GPU inference lâu dài; API CPU mock vẫn hoạt động độc lập.
+
+
+## P3 — Hy-MT2 chạy dịch thật trên Modal L40S (2026-11-07)
+
+- CUDA build từ pinned llama.cpp `fd27b2034905f8dadd8bd6d2cc44595f4929d391`
+  chạy thành công 332/332 bước, image `im-OWf7a9328NJoqBcqox4lo1`.
+- Đã sửa lỗi thiếu `libcuda.so.1` lúc image build bằng linker flag
+  `-Wl,--allow-shlib-undefined`; L40S runtime khởi chạy binary thành công.
+- GGUF Q8_0 đã load thật, `/health` ready, chat completion trả tiếng Việt.
+- EN input: "The little fox crossed the bridge at sunrise."
+- Hy-MT2 output: "Chú cáo nhỏ đã băng qua cây cầu vào lúc bình minh."
+- Model ready 21,21 giây, tổng xử lý bên trong function 21,583 giây,
+  VRAM quan sát 31.167 MiB (không phải peak chính xác).
+- Tokens prompt/output: 45/22, tổng 67.
+- Modal run: https://modal.com/apps/bsmith888/main/ap-USXThCPld9Q3wcuULmEC8c
+- Báo cáo: `reports/p3_hy_mt2_l40s_smoke.json`.
+- GPU Function tạm đã kết thúc; gateway P2 vẫn `mock-only`.
+- Chưa đo 1000 ký tự, cold/warm lặp lại, chất lượng nhiều ngôn ngữ;
+  chưa triển khai GPU inference production.

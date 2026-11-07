@@ -10,16 +10,17 @@ SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_hy_mt2_p3.py"
 HELPERS = runpy.run_path(str(SCRIPT))
 
 
-def test_pinned_lock_has_no_false_runtime_or_gpu_claims():
+def test_pinned_lock_has_verified_smoke_but_no_production_readiness():
     lock = HELPERS["load_lock"]()
     assert lock["gguf"]["size_bytes"] == 31_985_729_376
     assert lock["source"]["architecture"] == "hy_v3"
-    assert not lock["verification"]["full_gguf_sha256_computed_locally"]
-    assert not lock["verification"]["gpu_l40s_smoke_passed"]
+    assert lock["verification"]["full_gguf_sha256_computed_locally"] is True
+    assert lock["verification"]["volume_sha256_match"] is True
+    assert lock["verification"]["gpu_l40s_smoke_passed"] is True
     assert not lock["verification"]["ready_for_real_inference"]
-    assert not lock["llama_cpp"]["full_gguf_load_verified"]
+    assert lock["llama_cpp"]["full_gguf_load_verified"] is True
     assert lock["llama_cpp"]["cpu_only_binary_build_verified"] is True
-    assert lock["llama_cpp"]["cuda_binary_build_verified"] is False
+    assert lock["llama_cpp"]["cuda_binary_build_verified"] is True
 
 
 def test_parse_bounded_gguf_architecture_prefix():
@@ -68,3 +69,20 @@ def test_gguf_file_type_7_for_q8_0():
     assert HELPERS["file_type_from_bounded_prefix"](data) == 7
     with pytest.raises(ValueError):
         HELPERS["file_type_from_bounded_prefix"](b"not-a-header")
+
+
+def test_l40s_smoke_report_consistent_with_pinned_lock():
+    lock = HELPERS["load_lock"]()
+    report_path = Path(__file__).resolve().parents[1] / lock["verification"]["gpu_smoke_report"]
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    result = report["result"]
+    assert report["engine_revision"] == lock["llama_cpp"]["revision"]
+    assert result["status"] == "smoke_passed"
+    assert result["model_key"] == lock["model_key"]
+    assert result["gguf_sha256_verified_on_cpu"] == lock["gguf"]["sha256_from_huggingface_metadata"]
+    assert "bình minh" in result["translation_output"]
+    assert result["observed_gpu_used_mib"] > 30000
+    assert result["load_to_ready_seconds"] > 0
+    assert result["usage"]["completion_tokens"] > 0
+    assert result["exact_gpu_memory_peak_externally_instrumented"] is False
+    assert lock["verification"]["ready_for_real_inference"] is False

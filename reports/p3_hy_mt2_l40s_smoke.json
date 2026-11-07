@@ -1,0 +1,23 @@
+{
+  "generated_at_utc": "2026-11-07T04:12:56.037592+00:00",
+  "model_lock": "models/hy_mt2_30b_q8_0.lock.json",
+  "engine_revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+  "result": {
+    "status": "smoke_passed",
+    "model_key": "hy_mt2_30b",
+    "translation_output": "Chú cáo nhỏ đã băng qua cây cầu vào lúc bình minh.",
+    "load_to_ready_seconds": 21.21,
+    "total_seconds": 21.583,
+    "observed_gpu_used_mib": 31167,
+    "usage": {
+      "completion_tokens": 22,
+      "prompt_tokens": 45,
+      "total_tokens": 67,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "gguf_sha256_verified_on_cpu": "d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98",
+    "exact_gpu_memory_peak_externally_instrumented": false
+  }
+}

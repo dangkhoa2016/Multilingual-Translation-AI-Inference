@@ -1,9 +1,11 @@
 # P3 — Hy-MT2 30B-A3B Q8_0: source pinning and readiness
 
-**Checked:** 2026-11-07 (Codespaces, CPU/network only). **Status: PRE-FLIGHT PASSED; GPU NOT VERIFIED.**
+**Checked:** 2026-11-07 (Codespaces, Modal CPU and Modal L40S).
+**Status: integrity, CUDA build, and single-sentence GPU smoke PASSED;
+production readiness NOT established.**
 
-This is a reproducible, metadata-only prerequisite to GPU trials. It must not be
-interpreted as a working translation engine or evidence of model quality.
+This records metadata, full-file SHA256 and a successful single-sentence
+L40S smoke. It is not evidence of broad translation quality or production readiness.
 
 ## 1. Locked public artifacts
 
@@ -51,7 +53,7 @@ and `LICENSE.txt`; hashes are in the JSON lock.
   GitHub tarball rather than cloned with `.git`; provenance is the pinned
   archive URL + verified `hy-v3.cpp` SHA256, not that version string.
   Re-running with prebuilt Web UI downloads disabled also passed.
-  **CUDA compilation and GGUF model loading have NOT been tested.**
+  The later CUDA build and GGUF load passed; see section 6.
 
 ## 2. Read-only reproducible verification
 
@@ -94,36 +96,40 @@ context and runtime overhead. This is **not a measured VRAM budget**.
 
 At verification time, the Codespaces repository filesystem had far less
 free space than the 31.99 GB model. **Never download GGUF weights into the Git
-checkout**. When the GPU stage is approved, use a separately scoped, one-time
-download into a Modal Volume with streamed SHA256 validation, and mount that
-Volume only for the model worker. Do not put credentials into the manifest.
+checkout**. A separately scoped, one-time CPU download into a Modal Volume has now been
+completed and SHA256-verified. The GPU worker will mount the Volume only
+for the controlled smoke test. Do not put credentials into the manifest.
 
 Proposed first translation smoke: text-only, context 4096 tokens, 1 concurrent
 request, max output 128 tokens, one L40S, `min_containers=0`,
 `buffer_containers=0`, `max_containers=1`. Load the model once from a
-verified Volume, not from HF on every API request. Do not register workers,
-enable GPU or allocate Model Volume until the checks below pass.
+verified Volume, not from HF on every API request. Keep the production
+CPU gateway unchanged and register no permanent GPU inference workers until
+the extended-input and quality gates are reviewed.
 
 At the checked public Modal price of **USD 0.000542/GPU-second**, a 300-second
 GPU allocation would be ~USD 0.163 for GPU time alone. Additional CPU,
 memory, volumes, networking, idle/cold-start time and account pricing
-are separate. L40S scheduling/account quota has **not** been proven.
+are separate. A short L40S probe **successfully allocated** one GPU in
+workspace `bsmith888`, but future availability is not guaranteed.
 
-## 4. Release gates — MUST remain false
+## 4. Verification gates — production readiness still false
 
 - [x] Exact source/GGUF revisions, size, license metadata and metadata SHA256 pinned.
 - [x] GGUF magic/version/architecture/counts verified by bounded range.
 - [x] llama.cpp source tree contains a `hy_v3` model loader at a pinned SHA.
 - [x] CPU-only compile + `llama-server --version` on Codespaces.
-- [ ] Compile and execute pinned llama-server binary in the intended CUDA image.
-- [ ] Download full GGUF once, verify **locally computed** SHA256 against lock.
-- [ ] Verify actual tensor loading, text-generation/chat template, and EOS handling.
+- [x] Compile pinned llama-server CUDA image and execute binary on an actual L40S.
+- [x] Download full GGUF once into Modal Volume; compute entire SHA256 and match lock.
+- [x] Load full GGUF and produce an EN→VI translation through llama-server.
+- [ ] Evaluate tokenizer/EOS behavior across varied prompts and boundary cases.
 - [ ] Measure L40S peak VRAM, cold/warm latency and 1000-character translation quality.
-- [ ] Confirm available L40S quota/region/budget in workspace `bsmith888`.
+- [ ] Independently verify ongoing quota, region availability and monthly budget in workspace `bsmith888`.
 - [ ] Keep real-inference enable flags disabled until after full smoke review.
 
-Even with source/header metadata checks, **no model has translated text** in this
-project. The currently deployed CPU functions produce only
+A one-sentence **real translation** has now succeeded using the temporary GPU
+smoke application. This does **not** enable the production translation API:
+the currently deployed CPU gateway and worker still produce only
 `is_mock_result=true` output and must remain unchanged for now.
 
 Primary sources:
@@ -132,3 +138,56 @@ Primary sources:
 - https://github.com/ggml-org/llama.cpp/pull/25395
 - https://github.com/ggml-org/llama.cpp/issues/25657
 - https://modal.com/pricing
+
+
+## 5. P3 Volume staging, 2026-11-07
+
+Hy-MT2 GGUF was downloaded by a **Modal CPU-only Function** into the named
+Volume `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights`.
+It was NOT downloaded to Codespaces and NO GPU was used for the transfer.
+
+- Exact size: **31,985,729,376 bytes**.
+- Full-file SHA256 computed on the actual downloaded file:
+  `d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98`.
+- Result: **MATCH** with pinned official metadata; commit to Modal Volume succeeded.
+- CPU transfer: **83.53 seconds**, download + SHA256 + Volume commit:
+  **112.63 seconds**.
+- Run: https://modal.com/apps/bsmith888/main/ap-MKJy24KYePNqS0Sr3j7YzG
+- Files: official GGUF, `hy_mt2_q8_0_verified.json`, small Hugging Face cache metadata.
+- Script: `scripts/modal_hy_mt2_stage_weights.py` (safe to rerun, verifies before reuse).
+
+This satisfies full-file integrity; CUDA/GPU loading subsequently passed in section 6.
+Volume storage remains billable until the artifact is removed. No extra
+GPU worker or API endpoint was deployed by this step.
+
+
+## 6. CUDA image and real L40S smoke succeeded
+
+Pinned CUDA image `im-OWf7a9328NJoqBcqox4lo1` built all 332 CMake/Ninja
+steps after applying the CUDA-driver-at-link workaround. The structural CPU
+build check passed and the L40S runtime executed `llama-server --version`
+with commit `fd27b2034`.
+
+On 2026-11-07, the temporary GPU Function loaded the verified 31.99 GB GGUF
+and completed a real English → Vietnamese OpenAI-compatible chat completion:
+
+> Input: The little fox crossed the bridge at sunrise.
+
+> Hy-MT2 output: Chú cáo nhỏ đã băng qua cây cầu vào lúc bình minh.
+
+- Modal run: https://modal.com/apps/bsmith888/main/ap-USXThCPld9Q3wcuULmEC8c
+- Within-function model load-to-ready: **21.21 s**.
+- Within-function start-to-completion: **21.583 s**.
+- Observed GPU memory: **31,167 MiB**; samples are NOT guaranteed peak VRAM.
+- Prompt/completion tokens: **45 / 22**, total **67**.
+- Full SHA256 was checked on CPU before the GPU run; persisted Volume marker
+  is verified on GPU.
+- The temporary Modal app stopped after the smoke; the public CPU API remains
+  mock-only.
+
+See [L40S smoke details](p3-hy-mt2-l40s-smoke.md) and
+[smoke report](../reports/p3_hy_mt2_l40s_smoke.json).
+
+Remaining blockers: 1,000-character and multi-language benchmark, reproducible
+quality scoring / human review, accurate GPU peak measurement and production
+budget/error handling. No permanent GPU worker has been deployed.

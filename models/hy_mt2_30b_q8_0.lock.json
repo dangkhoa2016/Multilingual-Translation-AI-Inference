@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "model_key": "hy_mt2_30b",
-  "verification_scope": "metadata_and_bounded_gguf_header_only",
+  "verification_scope": "official_full_gguf_integrity_and_single_sentence_l40s_smoke",
   "checked_on": "2026-11-07",
   "source": {
     "repository": "tencent/Hy-MT2-30B-A3B",
@@ -38,21 +38,32 @@
     "architecture_source_sha256": "c173397670ff141b4a83424cf7d05f8b08f585b4a7a3fa3da36cc40f6b7a8814",
     "source_support_confirmed": true,
     "binary_build_verified": true,
-    "full_gguf_load_verified": false,
+    "full_gguf_load_verified": true,
     "cpu_only_binary_build_verified": true,
-    "cuda_binary_build_verified": false,
-    "cpu_binary_version_output": "0.9.0-dev (build 0, commit unknown; source tarball pinned separately)"
+    "cuda_binary_build_verified": true,
+    "cpu_binary_version_output": "0.9.0-dev (build 0, commit unknown; source tarball pinned separately)",
+    "cuda_binary_executed_on_gpu": true,
+    "cuda_image_id": "im-OWf7a9328NJoqBcqox4lo1",
+    "cuda_runtime_version_output": "0.9.0-dev (build 12182, commit fd27b2034) on NVIDIA L40S"
   },
   "verification": {
     "source_and_gguf_revision_pinned": true,
     "source_small_files_hashed": true,
     "gguf_lfs_sha256_and_remote_head_agree": true,
     "gguf_header_range_read_only": true,
-    "full_gguf_downloaded": false,
-    "full_gguf_sha256_computed_locally": false,
-    "gpu_l40s_smoke_passed": false,
+    "full_gguf_downloaded": true,
+    "full_gguf_sha256_computed_locally": true,
+    "gpu_l40s_smoke_passed": true,
     "ready_for_real_inference": false,
     "remote_8mib_quantization_metadata_checked": true,
-    "cpu_only_llama_server_build_passed": true
+    "cpu_only_llama_server_build_passed": true,
+    "downloaded_to_modal_volume": "translation-ai-inference-hy-mt2-30b-a3b-gguf-weights",
+    "volume_sha256_match": true,
+    "sha256_verification_provenance": "Modal CPU Function stage_weights, run ap-MKJy24KYePNqS0Sr3j7YzG",
+    "gpu_smoke_modal_run": "ap-USXThCPld9Q3wcuULmEC8c",
+    "gpu_smoke_report": "reports/p3_hy_mt2_l40s_smoke.json",
+    "production_ready": false,
+    "long_context_benchmark_passed": false,
+    "human_quality_review_completed": false
   }
 }
