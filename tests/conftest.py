@@ -13,14 +13,15 @@ from translation_ai_inference.settings import Settings
 def client_factory(tmp_path: Path):
     engines = []
 
-    def create(dispatcher_mode="inline-mock", dispatcher=None):
+    def create(dispatcher_mode="inline-mock", dispatcher=None, **settings_overrides):
         path = tmp_path / "test-jobs.sqlite3"
         engine = make_engine(f"sqlite+pysqlite:///{path}")
         Base.metadata.create_all(engine)
         engines.append(engine)
         repo = JobRepository(make_session_factory(engine))
         settings = Settings(database_url=f"sqlite+pysqlite:///{path}",
-                            api_bearer_token="unit-test-token", dispatcher_mode=dispatcher_mode)
+                            api_bearer_token="unit-test-token", dispatcher_mode=dispatcher_mode,
+                            **settings_overrides)
         client = TestClient(create_api(settings, repository=repo, dispatcher=dispatcher))
         return client, repo
 

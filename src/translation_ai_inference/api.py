@@ -8,7 +8,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from .database import make_engine, make_session_factory
 from .dispatcher import dispatch_queued_runs, make_dispatcher
 from .model_registry import MODEL_REGISTRY
-from .repository import IdempotencyConflict, JobRepository, summarize_run_states
+from .quotas import QuotaExceeded
+from .repository import IdempotencyConflict, JobRepository, RetryNotAllowed, summarize_run_states
 from .schemas import JobSubmitted, JobView, RunView, SubmitBenchmark, SubmitTranslation
 from .settings import Settings
 
@@ -52,7 +53,13 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
             job_id = repository.submit(
                 owner=settings.request_owner, idempotency_key=key, kind=kind,
                 payload=payload.model_dump(exclude={"model", "models"}), model_keys=model_keys,
+                max_jobs_per_minute=settings.max_jobs_per_minute,
+                max_jobs_per_day=settings.max_jobs_per_day,
+                max_model_runs_per_day=settings.max_model_runs_per_day,
             )
+        except QuotaExceeded as exc:
+            raise HTTPException(status_code=429, detail=str(exc),
+                                headers={"Retry-After": str(exc.retry_after_seconds)}) from exc
         except IdempotencyConflict as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         # Dispatch only newly queued runs. Repeated HTTP requests with the same key cannot
@@ -72,6 +79,27 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
     def benchmarks(payload: SubmitBenchmark, idempotency_key: str | None = Header(default=None)):
         return submit_job("benchmark", payload, payload.models, idempotency_key)
 
+    @api.post("/v1/jobs/{job_id}/runs/{run_id}/retry", response_model=JobSubmitted,
+              status_code=status.HTTP_202_ACCEPTED, dependencies=[Depends(require_auth)])
+    def retry_confirmed_failed_run(job_id: UUID, run_id: UUID):
+        if repository.get(str(job_id), settings.request_owner) is None:
+            raise HTTPException(status_code=404, detail="Job not found")
+        try:
+            repository.retry_failed_run(
+                job_id=str(job_id), owner=settings.request_owner, run_id=str(run_id),
+                max_attempts_per_model=settings.max_attempts_per_model,
+                max_model_runs_per_day=settings.max_model_runs_per_day,
+            )
+        except QuotaExceeded as exc:
+            raise HTTPException(status_code=429, detail=str(exc),
+                                headers={"Retry-After": str(exc.retry_after_seconds)}) from exc
+        except RetryNotAllowed as exc:
+            raise HTTPException(status_code=409, detail=str(exc)) from exc
+        dispatch_queued_runs(repository, dispatcher, str(job_id), settings.request_owner)
+        job = repository.get(str(job_id), settings.request_owner)
+        return JobSubmitted(job_id=job_id, status=summarize_run_states(job.runs),
+                            kind=job.kind, status_url=f"/v1/jobs/{job_id}")
+
     @api.get("/v1/jobs/{job_id}", response_model=JobView, dependencies=[Depends(require_auth)])
     def get_job(job_id: UUID):
         job = repository.get(str(job_id), settings.request_owner)
@@ -80,7 +108,8 @@ def create_api(settings: Settings | None = None, *, repository: JobRepository | 
         return JobView(
             job_id=job_id, kind=job.kind, status=summarize_run_states(job.runs),
             source_language=job.source_language, target_language=job.target_language,
-            runs=[RunView(run_id=UUID(run.id), model=run.model_key, status=run.status,
+            runs=[RunView(run_id=UUID(run.id), model=run.model_key,
+                          attempt_no=run.attempt_no, status=run.status,
                           translation_text=run.result.translation_text if run.result else None,
                           is_mock_result=run.result.is_mock_result if run.result else False,
                           error_code=run.error_code) for run in job.runs],

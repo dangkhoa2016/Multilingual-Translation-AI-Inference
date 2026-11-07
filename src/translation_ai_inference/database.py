@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     DateTime,
     ForeignKey,
@@ -57,6 +58,7 @@ class JobRun(Base):
     attempt_no: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     status: Mapped[str] = mapped_column(String(32), default="queued", nullable=False, index=True)
     claim_token: Mapped[str | None] = mapped_column(String(36))
+    dispatch_claimed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     modal_call_id: Mapped[str | None] = mapped_column(String(128))
     started_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -82,6 +84,17 @@ def normalize_postgresql_url(database_url: str) -> str:
         return "postgresql+psycopg://" + database_url[len("postgresql://"):]
     return database_url
 
+
+
+class UsageWindow(Base):
+    """Atomic per-owner quota counters; bucket timestamps are UTC Unix seconds."""
+
+    __tablename__ = "usage_windows"
+
+    request_owner: Mapped[str] = mapped_column(String(128), primary_key=True)
+    scope: Mapped[str] = mapped_column(String(32), primary_key=True)
+    bucket_start: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    used: Mapped[int] = mapped_column(Integer, nullable=False)
 
 def make_engine(database_url: str):
     database_url = normalize_postgresql_url(database_url)

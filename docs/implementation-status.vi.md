@@ -61,3 +61,27 @@ GPU trong giai đoạn mã nguồn mock.
 - Script nghiệm thu có thể chạy lại: `scripts/smoke_modal_cpu.py`.
 - **25/25 tests + Ruff pass** trên Codespaces; không có model inference thực tế.
 - Chưa hoàn thành reconciliation, cost/rate limits, retention, production security hoặc đánh giá chất lượng dịch.
+
+
+## Cập nhật 2026-11-07 — P2 operational safety
+
+- Migration `0002_p2_safety`: thời gian claim dispatch và bảng `usage_windows`.
+- Quota atomically qua PostgreSQL: 10 jobs/phút, 100 jobs/ngày, 200 lượt model/ngày (giá trị mặc định).
+- Retry API chỉ cho run **failed rõ ràng**, tối đa 2 attempts; unknown không tự retry.
+- Reconcile trạng thái dispatching/running quá hạn thành *uncertain*, cho late worker kết thúc.
+- Script `scripts/reconcile_stale_jobs.py` và `scripts/purge_retained_jobs.py` mặc định dry-run.
+- Chưa có scheduler thường trực, bảo đảm không phát sinh background GPU job.
+- Bài test SQLite toàn bộ: **36/36 passed** trước khi nghiệm thu PostgreSQL migration thực tế.
+- Đây là giới hạn theo số lượng, chưa phải ngân sách USD hoặc chứng nhận production.
+
+## Nghiệm thu bổ sung P2 — PostgreSQL + Modal CPU (2026-11-07)
+
+- Migration PostgreSQL 18.6 từ `0001_translation_jobs` lên `0002_p2_safety` thành công.
+- Direct và pooled connection cùng nhìn thấy bảng `usage_windows` và cột `dispatch_claimed_at`.
+- Concurrent quota qua PostgreSQL thật: 5 submits với limit 2 → **2 accepted, 3 limited**, bộ đếm đúng 2; test owner được dọn.
+- Explicit retry trên PostgreSQL: lần 2 được tạo, retry lặp lại bị HTTP 409, parent status `completed` sau khi lần 2 thành công; test owner được dọn.
+- Hai scripts maintenance chạy dry-run trên PostgreSQL: stale dispatching = 0, stale running = 0, expired terminal jobs = 0.
+- Modal CPU App được deploy lại trên `bsmith888`, không bật GPU/không tạo Volume.
+- Live HTTP smoke: health/auth, `spawn()`, translation, benchmark bốn models, polling và idempotency đều pass.
+- Unit tests trên Codespaces: **36/36 passed**, Ruff + compileall pass.
+- HTTP end-to-end retry của một failed run trên Modal vẫn là bài nghiệm thu riêng; không khẳng định đã pass khi chưa có kết quả.

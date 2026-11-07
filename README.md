@@ -79,11 +79,22 @@ Development deployment and live Modal `spawn()` tests have passed. For reproduci
 verification, load `.env` and run `scripts/smoke_modal_cpu.py --base-url YOUR_HTTPS_MODAL_URL`.
 The script validates Bearer auth, idempotency, polling and four mock model runs.
 
+## P2 operational safeguards
+
+The development service has PostgreSQL-backed limits for submissions and model
+runs, fail-closed stale-run reconciliation, explicit retry for confirmed failures,
+and opt-in terminal-job retention. See
+[`docs/p2-operational-safety.md`](docs/p2-operational-safety.md) for exact
+behavior, settings and operator commands. A timeout never automatically
+restarts a possibly active Modal execution. This is not a dollar-denominated
+GPU budget or a production security system.
+
 ## Current limitations
 
 - No real GGUF runtime, L40S configuration, GPU function registration or model weights.
 - PostgreSQL development migrations and Modal CPU `spawn()` have passed live smoke tests; this is not production-ready.
-- No reconciliation/retry scheduler, TTL/privacy purger, client quotas or cost guards yet.
+- No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
+- No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
 - The initial migration contains job/run/results tables; model registry, reviews and full provenance
   schema will be added during P2/P5.

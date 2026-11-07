@@ -10,6 +10,10 @@ class Settings:
     request_owner: str = "single-tenant-api"
     dispatcher_mode: str = "record-only"
     max_input_characters: int = 1000
+    max_jobs_per_minute: int = 10
+    max_jobs_per_day: int = 100
+    max_model_runs_per_day: int = 200
+    max_attempts_per_model: int = 2
 
     @classmethod
     def from_environment(cls) -> "Settings":
@@ -22,5 +26,16 @@ class Settings:
             raise RuntimeError("TRANSLATION_API_BEARER_TOKEN must contain a real local secret")
         if dispatcher_mode not in {"record-only", "inline-mock", "modal-cpu-mock"}:
             raise RuntimeError("Unknown TRANSLATION_DISPATCHER_MODE")
+        limits = {}
+        for key, variable, default in (
+            ("max_jobs_per_minute", "TRANSLATION_MAX_JOBS_PER_MINUTE", 10),
+            ("max_jobs_per_day", "TRANSLATION_MAX_JOBS_PER_DAY", 100),
+            ("max_model_runs_per_day", "TRANSLATION_MAX_MODEL_RUNS_PER_DAY", 200),
+            ("max_attempts_per_model", "TRANSLATION_MAX_ATTEMPTS_PER_MODEL", 2),
+        ):
+            value = int(environ.get(variable, str(default)))
+            if value < 1:
+                raise ValueError(f"{variable} must be a positive integer")
+            limits[key] = value
         return cls(database_url=database_url, api_bearer_token=api_bearer_token,
-                   dispatcher_mode=dispatcher_mode)
+                   dispatcher_mode=dispatcher_mode, **limits)

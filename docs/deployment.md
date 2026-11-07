@@ -67,11 +67,21 @@ The public Modal URL uses application Bearer authentication for `/v1` endpoints;
 the `/health` endpoint is intentionally public. Do not expose this test gateway
 as a production translation service.
 
-## 5. Rollback and incident notes
+## 5. Operational safety (P2)
+
+Apply revision `0002_p2_safety` to PostgreSQL before deploying this version:
+`alembic -c db/alembic.ini upgrade head`.
+The revision adds dispatch timestamps and the `usage_windows` quota table.
+
+See [P2 operational safety](p2-operational-safety.md) for durable limits, explicit
+failed-run retry, fail-closed reconciliation, and dry-run retention commands.
+Reconciliation and retention are manual operator actions, not scheduled billable work.
+
+## 6. Rollback and incident notes
 
 `modal app stop translation-ai-inference-api-and-model-workers` stops the deployed App,
 but DOES NOT delete the PostgreSQL database or any Volume. No automatic data deletion
-is provided. The v1 job dispatcher currently does not retry `dispatch_uncertain`;
+is provided. The dispatcher never retries `dispatch_uncertain` or `execution_uncertain`;
 manual investigation is required after a spawn/DB ambiguity. Avoid pushing live
 traffic until P2 reconciliation and quota controls are tested.
 

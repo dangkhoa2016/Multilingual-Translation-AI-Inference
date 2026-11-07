@@ -69,6 +69,7 @@ class JobSubmitted(BaseModel):
 class RunView(BaseModel):
     run_id: UUID
     model: str
+    attempt_no: int = 1
     status: str
     translation_text: str | None = None
     is_mock_result: bool = False
