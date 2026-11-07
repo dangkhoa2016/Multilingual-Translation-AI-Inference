@@ -7,6 +7,6 @@ if [[ "${CONFIRM_TRANSLATION_GPU_VOLUME_CREATION:-}" != "YES" ]]; then
   exit 2
 fi
 modal volume create translation-ai-inference-hy-mt2-30b-a3b-gguf-weights
-modal volume create translation-ai-inference-index-translate-35b-a3b-preview-gguf-weights
+modal volume create translation-ai-inference-index-35b-a3b-preview-gguf-weights
 modal volume create translation-ai-inference-gemma-4-31b-it-gguf-weights
 modal volume create translation-ai-inference-qwen-3-5-35b-a3b-gguf-weights
