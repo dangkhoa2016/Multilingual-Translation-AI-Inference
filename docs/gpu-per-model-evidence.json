@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "kind": "sanitized_gpu_inference_telemetry",
+  "scope": "One opt-in per-model demonstration with public sample text; observed timings only, not a quality ranking or SLA",
+  "source": "Sanitized numeric excerpt of a recorded notebook output; original cloud identifiers and raw evidence are retained privately by the operator",
+  "sequence": "per_model",
+  "models": [
+    "hy_mt2_30b",
+    "index_35b",
+    "gemma4_31b_it",
+    "qwen35_35b"
+  ],
+  "design": {
+    "warmup_per_model": 1,
+    "measurement_inputs_per_model": 3,
+    "language_pair": "en-vi",
+    "measured_input_classes": [
+      "short",
+      "medium",
+      "long"
+    ]
+  },
+  "privacy": "No job/call IDs, deployment versions, timestamps, gateway URLs, cloud accounts, GPU UUIDs, source texts, translations, or credentials.",
+  "runs": [
+    {
+      "model_key": "hy_mt2_30b",
+      "stage": "warmup",
+      "metrics": {
+        "prompt_tokens": 97,
+        "completion_tokens": 24,
+        "queue_ms": 453831.279,
+        "inference_ms": 446.389,
+        "total_ms": 455308.476,
+        "tokens_per_second": 120.627,
+        "sampled_vram_mib": 31173,
+        "worker_reuse_confirmed": 0,
+        "engine_ready_ms": 16025
+      }
+    },
+    {
+      "model_key": "hy_mt2_30b",
+      "stage": "measured_1",
+      "metrics": {
+        "prompt_tokens": 97,
+        "completion_tokens": 26,
+        "queue_ms": 2316.522,
+        "inference_ms": 230.354,
+        "total_ms": 3586.541,
+        "tokens_per_second": 134.254,
+        "sampled_vram_mib": 31173,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "hy_mt2_30b",
+      "stage": "measured_2",
+      "metrics": {
+        "prompt_tokens": 116,
+        "completion_tokens": 69,
+        "queue_ms": 2287.913,
+        "inference_ms": 559.021,
+        "total_ms": 3887.89,
+        "tokens_per_second": 133.523,
+        "sampled_vram_mib": 31173,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "hy_mt2_30b",
+      "stage": "measured_3",
+      "metrics": {
+        "prompt_tokens": 156,
+        "completion_tokens": 159,
+        "queue_ms": 2308.01,
+        "inference_ms": 1192.928,
+        "total_ms": 4545.733,
+        "tokens_per_second": 139.405,
+        "sampled_vram_mib": 31173,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "index_35b",
+      "stage": "warmup",
+      "metrics": {
+        "prompt_tokens": 91,
+        "completion_tokens": 15,
+        "queue_ms": 34582.445,
+        "inference_ms": 402.215,
+        "total_ms": 35034.364,
+        "tokens_per_second": 97.675,
+        "sampled_vram_mib": 35359,
+        "worker_reuse_confirmed": 0,
+        "engine_ready_ms": 23053
+      }
+    },
+    {
+      "model_key": "index_35b",
+      "stage": "measured_1",
+      "metrics": {
+        "prompt_tokens": 91,
+        "completion_tokens": 11,
+        "queue_ms": 370.04,
+        "inference_ms": 161.729,
+        "total_ms": 571.037,
+        "tokens_per_second": 113.307,
+        "sampled_vram_mib": 35379,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "index_35b",
+      "stage": "measured_2",
+      "metrics": {
+        "prompt_tokens": 110,
+        "completion_tokens": 47,
+        "queue_ms": 390.382,
+        "inference_ms": 448.3,
+        "total_ms": 894.144,
+        "tokens_per_second": 124.458,
+        "sampled_vram_mib": 35383,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "index_35b",
+      "stage": "measured_3",
+      "metrics": {
+        "prompt_tokens": 150,
+        "completion_tokens": 113,
+        "queue_ms": 399.867,
+        "inference_ms": 996.612,
+        "total_ms": 1441.3,
+        "tokens_per_second": 129.607,
+        "sampled_vram_mib": 35387,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "gemma4_31b_it",
+      "stage": "warmup",
+      "metrics": {
+        "prompt_tokens": 96,
+        "completion_tokens": 15,
+        "queue_ms": 36360.358,
+        "inference_ms": 1027.482,
+        "total_ms": 37548.551,
+        "tokens_per_second": 19.596,
+        "sampled_vram_mib": 32993,
+        "worker_reuse_confirmed": 0,
+        "engine_ready_ms": 18027
+      }
+    },
+    {
+      "model_key": "gemma4_31b_it",
+      "stage": "measured_1",
+      "metrics": {
+        "prompt_tokens": 96,
+        "completion_tokens": 10,
+        "queue_ms": 584.195,
+        "inference_ms": 640.048,
+        "total_ms": 1384.578,
+        "tokens_per_second": 18.542,
+        "sampled_vram_mib": 33011,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "gemma4_31b_it",
+      "stage": "measured_2",
+      "metrics": {
+        "prompt_tokens": 115,
+        "completion_tokens": 46,
+        "queue_ms": 556.618,
+        "inference_ms": 2424.547,
+        "total_ms": 3129.403,
+        "tokens_per_second": 19.865,
+        "sampled_vram_mib": 33011,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "gemma4_31b_it",
+      "stage": "measured_3",
+      "metrics": {
+        "prompt_tokens": 155,
+        "completion_tokens": 118,
+        "queue_ms": 592.732,
+        "inference_ms": 6077.65,
+        "total_ms": 6828.298,
+        "tokens_per_second": 20.16,
+        "sampled_vram_mib": 33013,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "qwen35_35b",
+      "stage": "warmup",
+      "metrics": {
+        "prompt_tokens": 91,
+        "completion_tokens": 13,
+        "queue_ms": 35066.682,
+        "inference_ms": 457.16,
+        "total_ms": 35672.751,
+        "tokens_per_second": 103.351,
+        "sampled_vram_mib": 35359,
+        "worker_reuse_confirmed": 0,
+        "engine_ready_ms": 24040
+      }
+    },
+    {
+      "model_key": "qwen35_35b",
+      "stage": "measured_1",
+      "metrics": {
+        "prompt_tokens": 91,
+        "completion_tokens": 10,
+        "queue_ms": 587.685,
+        "inference_ms": 165.139,
+        "total_ms": 916.383,
+        "tokens_per_second": 101.554,
+        "sampled_vram_mib": 35379,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "qwen35_35b",
+      "stage": "measured_2",
+      "metrics": {
+        "prompt_tokens": 110,
+        "completion_tokens": 45,
+        "queue_ms": 503.487,
+        "inference_ms": 455.982,
+        "total_ms": 1086.579,
+        "tokens_per_second": 121.104,
+        "sampled_vram_mib": 35383,
+        "worker_reuse_confirmed": 1
+      }
+    },
+    {
+      "model_key": "qwen35_35b",
+      "stage": "measured_3",
+      "metrics": {
+        "prompt_tokens": 150,
+        "completion_tokens": 101,
+        "queue_ms": 579.988,
+        "inference_ms": 898.427,
+        "total_ms": 1644.794,
+        "tokens_per_second": 131.171,
+        "sampled_vram_mib": 35387,
+        "worker_reuse_confirmed": 1
+      }
+    }
+  ],
+  "summary": {
+    "hy_mt2_30b": {
+      "successful_runs": 4,
+      "warmup_runs": 1,
+      "measured_runs": 3,
+      "measured_reuse_confirmed": 3,
+      "measured_medians": {
+        "queue_ms": 2308.01,
+        "inference_ms": 559.021,
+        "total_ms": 3887.89,
+        "tokens_per_second": 134.254,
+        "sampled_vram_mib": 31173
+      }
+    },
+    "index_35b": {
+      "successful_runs": 4,
+      "warmup_runs": 1,
+      "measured_runs": 3,
+      "measured_reuse_confirmed": 3,
+      "measured_medians": {
+        "queue_ms": 390.382,
+        "inference_ms": 448.3,
+        "total_ms": 894.144,
+        "tokens_per_second": 124.458,
+        "sampled_vram_mib": 35383
+      }
+    },
+    "gemma4_31b_it": {
+      "successful_runs": 4,
+      "warmup_runs": 1,
+      "measured_runs": 3,
+      "measured_reuse_confirmed": 3,
+      "measured_medians": {
+        "queue_ms": 584.195,
+        "inference_ms": 2424.547,
+        "total_ms": 3129.403,
+        "tokens_per_second": 19.865,
+        "sampled_vram_mib": 33011
+      }
+    },
+    "qwen35_35b": {
+      "successful_runs": 4,
+      "warmup_runs": 1,
+      "measured_runs": 3,
+      "measured_reuse_confirmed": 3,
+      "measured_medians": {
+        "queue_ms": 579.988,
+        "inference_ms": 455.982,
+        "total_ms": 1086.579,
+        "tokens_per_second": 121.104,
+        "sampled_vram_mib": 35383
+      }
+    }
+  },
+  "limitations": [
+    "Numbers can be recomputed from this public extract; raw infrastructure provenance is not independently verifiable from it.",
+    "Three inputs have different lengths; medians are descriptive only.",
+    "Queue interval includes orchestration and startup; do not interpret as GPU provisioning time."
+  ]
+}
