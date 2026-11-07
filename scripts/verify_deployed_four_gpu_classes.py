@@ -21,7 +21,7 @@ from translation_ai_inference.resource_names import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT_PATH = ROOT / "reports/p5_deployed_four_gpu_classes_readiness_v1.json"
+REPORT_PATH = ROOT / "reports/deployed_gpu_readiness.json"
 
 
 def main():

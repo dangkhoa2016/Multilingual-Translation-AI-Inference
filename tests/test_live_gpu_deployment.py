@@ -14,7 +14,7 @@ def _report(filename):
 
 
 def test_deployed_model_classes_loaded_four_unique_l40s_gpus():
-    report = _report("p5_deployed_four_gpu_classes_readiness_v1.json")
+    report = _report("deployed_gpu_readiness.json")
     assert report["status"] == "four_deployed_gpu_classes_ready"
     assert report["errors"] == {}
     assert set(report["results"]) == KEYS
@@ -29,7 +29,7 @@ def test_deployed_model_classes_loaded_four_unique_l40s_gpus():
 
 
 def test_database_gpu_benchmark_all_four_nonmock_and_gateway_readback():
-    report = _report("p5_postgresql_four_gpu_job_integration_v1.json")
+    report = _report("postgresql_gpu_jobs.json")
     assert report["status"] == "four_real_gpu_jobs_persisted_and_read_by_gateway"
     assert report["model_count"] == 4
     assert report["input_codepoints"] == 849
@@ -49,8 +49,8 @@ def test_database_gpu_benchmark_all_four_nonmock_and_gateway_readback():
 
 def test_live_api_single_real_translation_and_four_model_benchmark():
     for filename, expected_count in (
-        ("p5_real_gpu_api_single_model_smoke_v1.json", 1),
-        ("p5_real_gpu_api_four_model_smoke_v1.json", 4),
+        ("gpu_api_translation.json", 1),
+        ("gpu_api_four_model_benchmark.json", 4),
     ):
         report = _report(filename)
         assert report["status"] == "real_gpu_api_passed"

@@ -220,7 +220,7 @@ def main(smoke: bool = False) -> None:
 
         result = smoke_translation.remote()
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        report_path = ROOT / "reports" / "p3_hy_mt2_l40s_smoke.json"
+        report_path = ROOT / "reports" / "hy_mt2_gpu_smoke.json"
         report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(json.dumps({
             "generated_at_utc": datetime.now(timezone.utc).isoformat(),

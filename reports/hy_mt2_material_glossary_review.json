@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "review_date": "2026-11-07",
-  "source_report": "reports/p3_hy_mt2_material_glossary_probe_v1.json",
+  "source_report": "reports/hy_mt2_material_glossary.json",
   "source_fixture": "benchmarks/hy_mt2_material_glossary_probe_v1.json",
   "dataset_sha256": "63c03fd52780863ed946dee7bfbdd65235740c759fc5cbfdd6dccbdbd5cb2a10",
   "review_type": "assistant_preliminary_semantic_anchor_review",

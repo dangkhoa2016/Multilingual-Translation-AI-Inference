@@ -68,7 +68,7 @@ def test_recorded_gpu_diagnostic_matches_pinned_fixture_and_lock():
 
     root = Path(__file__).resolve().parents[1]
     report = json.loads(
-        (root / "reports/p3_hy_mt2_quality_diagnostic_v1.json").read_text(encoding="utf-8")
+        (root / "reports/hy_mt2_quality_diagnostic.json").read_text(encoding="utf-8")
     )
     lock = json.loads((root / "models/hy_mt2_30b_q8_0.lock.json").read_text(encoding="utf-8"))
     _, digest = load_suite()
@@ -88,10 +88,10 @@ def test_preliminary_semantic_review_anchors_present_in_actual_outputs():
 
     root = Path(__file__).resolve().parents[1]
     report = json.loads(
-        (root / "reports/p3_hy_mt2_quality_diagnostic_v1.json").read_text(encoding="utf-8")
+        (root / "reports/hy_mt2_quality_diagnostic.json").read_text(encoding="utf-8")
     )
     review = json.loads(
-        (root / "reports/p3_hy_mt2_quality_review_v1.json").read_text(encoding="utf-8")
+        (root / "reports/hy_mt2_quality_review.json").read_text(encoding="utf-8")
     )
     outputs = {c["id"]: c for c in report["run"]["cases"]}
     assert review["dataset_sha256"] == report["dataset_sha256"]

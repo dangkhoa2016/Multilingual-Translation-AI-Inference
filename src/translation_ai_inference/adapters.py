@@ -1,7 +1,7 @@
 """P1 model adapter contracts and candidate decoding policies.
 
 These are declarations from model documentation, NOT verified llama.cpp settings.
-The GPU engine and prompt/chats templates must be proven in P3/P4 before enabling.
+Model runtime and prompt templates require independent GPU verification.
 """
 from dataclasses import dataclass
 from typing import Protocol

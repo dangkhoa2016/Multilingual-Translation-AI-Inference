@@ -8,8 +8,8 @@ The first call MAY be cold, but the probe cannot guarantee a cold start;
 its timing alone is not evidence of model load latency. The second call
 tests warm reuse if both calls land on the same GPU UUID.
 
-  PYTHONPATH=src python scripts/p6_gpu_container_reuse.py
-  PYTHONPATH=src python scripts/p6_gpu_container_reuse.py --run
+  PYTHONPATH=src python scripts/gpu_container_reuse.py
+  PYTHONPATH=src python scripts/gpu_container_reuse.py --run
 """
 import argparse
 import json
@@ -25,7 +25,7 @@ from translation_ai_inference.resource_names import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT_PATH = ROOT / "reports/p6_hy_mt2_container_reuse_v1.json"
+REPORT_PATH = ROOT / "reports/gpu_container_reuse.json"
 MODEL_KEY = "hy_mt2_30b"
 
 

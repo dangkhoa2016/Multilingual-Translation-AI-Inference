@@ -8,8 +8,8 @@ class ModelDefinition:
     checkpoint: str
     gguf_repository: str
     quantization: str = "Q8_0"
-    enabled: bool = False  # Real GPU inference is not enabled in P1/P2.
-    runtime_verified: bool = True  # 2026-11-07 four-model L40S smoke, not quality certification.
+    enabled: bool = False  # API mode determines whether this model is enabled.
+    runtime_verified: bool = True  # Verified loading is not an accuracy guarantee.
 
 
 MODEL_REGISTRY: dict[str, ModelDefinition] = {

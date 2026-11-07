@@ -10,9 +10,9 @@ GPU executions are billed. Dry-run by default; --run-boundary / --run-concurrenc
 are separate explicit switches and each runs at most one batch.
 
   set -a; source .env; set +a
-  PYTHONPATH=src python scripts/p6_api_reliability_smoke.py
-  PYTHONPATH=src python scripts/p6_api_reliability_smoke.py --base-url HTTPS_URL --run-boundary
-  PYTHONPATH=src python scripts/p6_api_reliability_smoke.py --base-url HTTPS_URL --run-concurrency
+  PYTHONPATH=src python scripts/api_reliability_smoke.py
+  PYTHONPATH=src python scripts/api_reliability_smoke.py --base-url HTTPS_URL --run-boundary
+  PYTHONPATH=src python scripts/api_reliability_smoke.py --base-url HTTPS_URL --run-concurrency
 """
 import argparse
 import hashlib
@@ -209,7 +209,7 @@ def run_boundary(client, base_url, auth, wait_seconds):
         "runs": runs,
         "note": "No translation quality scoring; no automatic retry of uncertain runs.",
     }
-    write_report("p6_four_models_exactly_1000_codepoints_v1.json", report)
+    write_report("unicode_input_boundary.json", report)
     if not passed:
         raise AssertionError("1000 Unicode-codepoint four-model inference failed")
 
@@ -287,7 +287,7 @@ def run_concurrency(client, base_url, auth, wait_seconds):
         "note": "Both requests were concurrent at the API; GPU processing may be queued "
                 "on max_containers=1. No claim of GPU-parallel execution for the same model.",
     }
-    write_report("p6_same_model_two_concurrent_jobs_v1.json", report)
+    write_report("concurrent_model_jobs.json", report)
     if not passed:
         raise AssertionError("Two independent jobs to the same GPU worker did not both finish")
 

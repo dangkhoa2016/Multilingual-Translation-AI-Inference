@@ -18,7 +18,7 @@ import modal
 from translation_ai_inference.resource_names import MODAL_GPU_INFERENCE_FUNCTION_NAMES
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "reports/p4_four_l40s_capacity_probe_v1.json"
+REPORT = ROOT / "reports/four_gpu_capacity.json"
 MODEL_KEYS = ("hy_mt2_30b", "index_35b", "gemma4_31b_it", "qwen35_35b")
 HOLD_SECONDS = 22
 app = modal.App("translation-ai-inference-four-l40s-capacity-probe")

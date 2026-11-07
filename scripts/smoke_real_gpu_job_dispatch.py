@@ -29,7 +29,7 @@ from translation_ai_inference.repository import JobRepository, summarize_run_sta
 from translation_ai_inference.settings import Settings
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "reports/p5_postgresql_four_gpu_job_integration_v1.json"
+REPORT = ROOT / "reports/postgresql_gpu_jobs.json"
 PARAGRAPH = (
     "At dawn, the village archivist opened a wooden box containing a silver "
     "compass, a blue notebook, and a letter dated 17 October. The letter said "

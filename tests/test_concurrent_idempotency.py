@@ -1,4 +1,4 @@
-"""SQLite stress test for same-key requests; PostgreSQL concurrency is still a P2 gate."""
+"""SQLite stress test for same-key requests; PostgreSQL production concurrency requires independent integration testing."""
 from concurrent.futures import ThreadPoolExecutor
 
 

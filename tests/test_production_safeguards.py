@@ -1,4 +1,4 @@
-"""P7 CPU-only production safety tests: no remote Modal/GPU credentials."""
+"""CPU-only production safety tests: no remote Modal/GPU credentials."""
 from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal
 from uuid import uuid4
@@ -269,7 +269,7 @@ def test_live_cpu_monitor_snapshot_is_readonly_and_redacted():
 
     root = Path(__file__).resolve().parents[1]
     report = json.loads(
-        (root / "reports/p7_cpu_only_live_safeguards_snapshot_v1.json").read_text(
+        (root / "reports/operations_safety_snapshot.json").read_text(
             encoding="utf-8"
         )
     )

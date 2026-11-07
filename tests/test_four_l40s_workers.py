@@ -28,7 +28,7 @@ def test_readiness_flags_match_completed_smoke_evidence():
     assert index["weights_staged_and_fully_hashed"] is True
     assert index["l40s_model_load_verified"] is True
     report = json.loads(
-        (ROOT / "reports/p4_index_l40s_worker_smoke_v1.json").read_text(encoding="utf-8")
+        (ROOT / "reports/index_35b_l40s_worker_smoke.json").read_text(encoding="utf-8")
     )
     assert report["results"]["index_35b"]["status"] == "single_sentence_gpu_smoke_passed"
     assert (
@@ -43,7 +43,7 @@ def test_readiness_flags_match_completed_smoke_evidence():
     assert qwen["l40s_model_load_verified"] is True
     for key in ("gemma4_31b_it", "qwen35_35b"):
         model = manifest["models"][key]
-        result_path = ROOT / f"reports/p4_{key}_l40s_worker_smoke_v1.json"
+        result_path = ROOT / f"reports/{key}_l40s_worker_smoke.json"
         result = json.loads(result_path.read_text(encoding="utf-8"))
         assert result["results"][key]["status"] == "single_sentence_gpu_smoke_passed"
         assert result["results"][key]["gguf_sha256_verification_marker"] == model["gguf_lfs_sha256"]
@@ -52,7 +52,7 @@ def test_readiness_flags_match_completed_smoke_evidence():
 
 
 def test_capacity_probe_records_four_simultaneous_distinct_real_l40s():
-    report_path = ROOT / "reports/p4_four_l40s_capacity_probe_v1.json"
+    report_path = ROOT / "reports/four_gpu_capacity.json"
     assert report_path.exists()
     report = json.loads(report_path.read_text(encoding="utf-8"))
     assert report["status"] == "four_concurrent_l40s_verified"
@@ -92,7 +92,7 @@ def test_no_gpu_deployment_or_mock_gateway_rewrite_was_necessary():
 
 
 def test_four_real_models_completed_in_parallel_on_distinct_l40s():
-    path = ROOT / "reports/p4_four_l40s_models_runtime_smoke_v1.json"
+    path = ROOT / "reports/four_gpu_parallel_inference.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     manifest = load_manifest()
     assert manifest["status"] == "four_real_q8_0_models_simultaneous_l40s_smoke_passed"

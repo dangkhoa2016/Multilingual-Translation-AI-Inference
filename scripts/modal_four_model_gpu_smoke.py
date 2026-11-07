@@ -24,7 +24,7 @@ from translation_ai_inference.resource_names import (
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "models/four_l40s_workers_q8_0_manifest.json"
-REPORT = ROOT / "reports/p4_four_l40s_models_runtime_smoke_v1.json"
+REPORT = ROOT / "reports/four_gpu_parallel_inference.json"
 app = modal.App("translation-ai-inference-four-model-l40s-smoke")
 image = (
     verified_cuda_image
@@ -274,7 +274,7 @@ def main(model: str = "index_35b", smoke: bool = False, all_models: bool = False
         "results": responses,
     }
     report_path = REPORT if all_models else REPORT.with_name(
-        f"p4_{model}_l40s_worker_smoke_v1.json"
+        f"{model}_l40s_worker_smoke.json"
     )
     report_path.write_text(
         json.dumps(report, ensure_ascii=False, indent=2) + "\n",

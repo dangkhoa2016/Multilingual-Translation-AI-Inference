@@ -106,7 +106,7 @@ def save_reports(report, path_json):
         "named entities, numbers, negation, omitted clauses, added meaning, honorifics, "
         "paragraph breaks and domain terminology. Use qualified DE/JA/KO reviewers.",
         "",
-        "P2 CPU gateway remains mock-only; no production GPU API is deployed.",
+        "Historical baseline note: the initial CPU gateway used simulated inference.",
         "",
     ]
     path_json.with_suffix(".md").write_text("\n".join(lines), encoding="utf-8")

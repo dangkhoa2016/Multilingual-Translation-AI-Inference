@@ -30,7 +30,7 @@
     "built_image_id": "im-OWf7a9328NJoqBcqox4lo1",
     "linker_fix": "-Wl,--allow-shlib-undefined",
     "binary_executed_on_l40s": true,
-    "gpu_smoke_report": "reports/p3_hy_mt2_l40s_smoke.json"
+    "gpu_smoke_report": "reports/hy_mt2_gpu_smoke.json"
   },
   "real_inference_enabled": false
 }

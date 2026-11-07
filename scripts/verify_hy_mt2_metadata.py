@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Reproducible Hy-MT2 P3 preflight; DOES NOT download 32 GB weights or use GPU.
 
-Offline: python scripts/verify_hy_mt2_p3.py
-Online:  python scripts/verify_hy_mt2_p3.py --online
+Offline: python scripts/verify_hy_mt2_metadata.py
+Online:  python scripts/verify_hy_mt2_metadata.py --online
 Full file (after separately downloading):
-         python scripts/verify_hy_mt2_p3.py --local-gguf /path/model.gguf
+         python scripts/verify_hy_mt2_metadata.py --local-gguf /path/model.gguf
 """
 import argparse
 import hashlib

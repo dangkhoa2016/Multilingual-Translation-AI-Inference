@@ -61,7 +61,7 @@
     "volume_sha256_match": true,
     "sha256_verification_provenance": "Modal CPU Function stage_weights, run ap-MKJy24KYePNqS0Sr3j7YzG",
     "gpu_smoke_modal_run": "ap-USXThCPld9Q3wcuULmEC8c",
-    "gpu_smoke_report": "reports/p3_hy_mt2_l40s_smoke.json",
+    "gpu_smoke_report": "reports/hy_mt2_gpu_smoke.json",
     "production_ready": false,
     "long_context_benchmark_passed": false,
     "human_quality_review_completed": false

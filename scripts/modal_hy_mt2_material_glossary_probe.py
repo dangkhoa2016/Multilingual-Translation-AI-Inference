@@ -20,7 +20,7 @@ from scripts.modal_hy_mt2_gpu_smoke import image as verified_cuda_image
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = ROOT / "benchmarks/hy_mt2_material_glossary_probe_v1.json"
-REPORT = ROOT / "reports/p3_hy_mt2_material_glossary_probe_v1.json"
+REPORT = ROOT / "reports/hy_mt2_material_glossary.json"
 app = modal.App("translation-ai-inference-hy-mt2-material-glossary-probe")
 image = (verified_cuda_image.add_local_file(DATASET, "/opt/vi_material_glossary_probe.json")
          .add_local_python_source("scripts"))

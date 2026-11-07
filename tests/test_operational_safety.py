@@ -1,4 +1,4 @@
-"""P2 safety: durable quotas, explicit failed-run retries and uncertain reconciliation."""
+"""Job safety: durable quotas, explicit failed-run retries and uncertain reconciliation."""
 from datetime import timedelta
 from uuid import uuid4
 

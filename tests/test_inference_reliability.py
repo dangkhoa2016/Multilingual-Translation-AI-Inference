@@ -1,10 +1,10 @@
-"""CPU-only P6 regressions for 1000-character boundaries and uncertain execution."""
+"""CPU-only Reliability regressions for 1000-character boundaries and uncertain execution."""
 import hashlib
 
 import pytest
 from sqlalchemy import func, select
 
-from scripts.p6_api_reliability_smoke import (
+from scripts.api_reliability_smoke import (
     BOUNDARY_TEXT,
     CONCURRENT_TEXTS,
     request_payload,
@@ -110,7 +110,7 @@ def test_sanitized_report_excludes_translation_text():
     assert translated not in repr(sanitized)
 
 
-def _p6_report(name: str) -> dict:
+def _reliability_report(name: str) -> dict:
     import json
     from pathlib import Path
 
@@ -121,8 +121,8 @@ def _p6_report(name: str) -> dict:
     )
 
 
-def test_real_p6_boundary_report_has_four_nonmock_models_and_rejections():
-    report = _p6_report("p6_four_models_exactly_1000_codepoints_v1.json")
+def test_real_boundary_report_has_four_nonmock_models_and_rejections():
+    report = _reliability_report("unicode_input_boundary.json")
     assert report["status"] == "pass"
     assert report["input_codepoints"] == 1000
     assert report["input_utf8_bytes"] > 1000
@@ -148,8 +148,8 @@ def test_real_p6_boundary_report_has_four_nonmock_models_and_rejections():
         assert "translation_text" not in run
 
 
-def test_real_p6_same_model_report_has_two_distinct_completed_jobs():
-    report = _p6_report("p6_same_model_two_concurrent_jobs_v1.json")
+def test_real_same_model_report_has_two_distinct_completed_jobs():
+    report = _reliability_report("concurrent_model_jobs.json")
     assert report["status"] == "pass"
     assert report["gpu_model"] == "hy_mt2_30b"
     assert report["number_of_jobs"] == 2
@@ -162,8 +162,8 @@ def test_real_p6_same_model_report_has_two_distinct_completed_jobs():
                run["attempt_no"] == 1 for run in report["runs"])
 
 
-def test_real_p6_warm_worker_reuse_report_preserves_cold_start_uncertainty():
-    report = _p6_report("p6_hy_mt2_container_reuse_v1.json")
+def test_real_warm_worker_reuse_report_preserves_cold_start_uncertainty():
+    report = _reliability_report("gpu_container_reuse.json")
     assert report["status"] == "two_readiness_calls_passed"
     assert report["first_call_cold_start_guaranteed"] is False
     assert report["warm_container_reuse_observed"] is True

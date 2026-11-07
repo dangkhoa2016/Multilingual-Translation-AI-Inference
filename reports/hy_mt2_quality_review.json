@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "review_date": "2026-11-07",
-  "benchmark_report": "reports/p3_hy_mt2_quality_diagnostic_v1.json",
+  "benchmark_report": "reports/hy_mt2_quality_diagnostic.json",
   "dataset_sha256": "c58fefdde648a1d69e53fdecd111da2593fcb17c3108076b2fa76c58763cdc2a",
   "review_level": "preliminary_explicit_semantic_anchor_check",
   "reviewer": "assistant",

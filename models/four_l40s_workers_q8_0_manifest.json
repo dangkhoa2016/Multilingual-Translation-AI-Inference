@@ -97,7 +97,7 @@
   },
   "concurrent_smoke": {
     "modal_app_run": "ap-xLywKUBpPOz7NzMmlM4UeQ",
-    "report": "reports/p4_four_l40s_models_runtime_smoke_v1.json",
+    "report": "reports/four_gpu_parallel_inference.json",
     "four_model_outputs_nonempty": true,
     "distinct_gpu_uuids": 4,
     "overlapping_gpu_requests": 4,

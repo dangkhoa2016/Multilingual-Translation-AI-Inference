@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_hy_mt2_p3.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_hy_mt2_metadata.py"
 HELPERS = runpy.run_path(str(SCRIPT))
 
 

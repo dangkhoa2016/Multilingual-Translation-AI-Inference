@@ -1,4 +1,4 @@
-"""Operator-only P2 maintenance. Never retries, spawns or terminates a worker.
+"""Operator-only job maintenance. Never retries, spawns or terminates a worker.
 
 Load TRANSLATION_INFERENCE_DATABASE_URL from .env before running.
 Without --apply this script is read-only.

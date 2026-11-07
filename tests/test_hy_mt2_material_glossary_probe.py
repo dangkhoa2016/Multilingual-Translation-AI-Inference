@@ -58,7 +58,7 @@ def test_material_and_identifier_checks_are_only_indicators():
 
 def test_existing_accepted_v1_results_are_left_unchanged():
     root = Path(__file__).resolve().parents[1]
-    old = json.loads((root / "reports/p3_hy_mt2_quality_diagnostic_v1.json").read_text())
+    old = json.loads((root / "reports/hy_mt2_quality_diagnostic.json").read_text())
     assert old["run"]["status"] == "completed"
     assert len(old["run"]["cases"]) == 16
     assert old["run"]["gguf_sha256"] if "gguf_sha256" in old["run"] else old["run"]["weight_sha256"]
@@ -110,10 +110,10 @@ def test_recorded_glossary_gpu_results_are_immutable_source_with_offline_analysi
 def test_manual_semantic_anchors_are_supported_by_model_outputs():
     root = Path(__file__).resolve().parents[1]
     review = json.loads(
-        (root / "reports/p3_hy_mt2_material_glossary_review_v1.json").read_text(encoding="utf-8")
+        (root / "reports/hy_mt2_material_glossary_review.json").read_text(encoding="utf-8")
     )
     report = json.loads(
-        (root / "reports/p3_hy_mt2_material_glossary_probe_v1.json").read_text(encoding="utf-8")
+        (root / "reports/hy_mt2_material_glossary.json").read_text(encoding="utf-8")
     )
     assert review["dataset_sha256"] == report["dataset_sha256"]
     assert review["native_language_human_reference_review_complete"] is False

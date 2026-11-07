@@ -229,7 +229,7 @@ def main(run: bool = False, max_cases: int = 16):
         "run": result,
         "quality_claim": "unscored: no professional reference translations or human evaluation",
     }
-    path = ROOT / "reports/p3_hy_mt2_quality_diagnostic_v1.json"
+    path = ROOT / "reports/hy_mt2_quality_diagnostic.json"
     files = save_reports(report, path)
     print("Saved reports:", *[str(f) for f in files], sep="\n")
     print(json.dumps({

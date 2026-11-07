@@ -23,7 +23,7 @@ import httpx
 from translation_ai_inference.model_registry import MODEL_REGISTRY
 
 ROOT = Path(__file__).resolve().parents[1]
-REPORT = ROOT / "reports/p5_real_gpu_api_smoke_v1.json"
+REPORT = ROOT / "reports/gpu_api_smoke.json"
 MODELS = tuple(MODEL_REGISTRY)
 SHORT_TEXT = "The little fox crossed the wooden bridge at sunrise."
 LONG_TEXT = (
@@ -132,8 +132,8 @@ def main():
             } for r in runs],
         }
         path = REPORT.with_name(
-            "p5_real_gpu_api_four_model_smoke_v1.json"
-            if all_models else "p5_real_gpu_api_single_model_smoke_v1.json"
+            "gpu_api_four_model_benchmark.json"
+            if all_models else "gpu_api_translation.json"
         )
         path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
         print(json.dumps({
