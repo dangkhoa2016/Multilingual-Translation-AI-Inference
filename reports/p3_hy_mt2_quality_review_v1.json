@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-11-07",
+  "benchmark_report": "reports/p3_hy_mt2_quality_diagnostic_v1.json",
+  "dataset_sha256": "c58fefdde648a1d69e53fdecd111da2593fcb17c3108076b2fa76c58763cdc2a",
+  "review_level": "preliminary_explicit_semantic_anchor_check",
+  "reviewer": "assistant",
+  "human_native_language_review_complete": false,
+  "automatic_checks": "All 16 had output; zero literal/format warnings; these checks DO NOT measure semantic fidelity.",
+  "issues": [
+    {
+      "case_id": "vi_to_en_narrative",
+      "category": "material_substitution",
+      "severity": "major",
+      "source_text": "chiếc la bàn bạc",
+      "actual_output": "brass compass",
+      "expected_concept": "silver compass",
+      "note": "Silver changed to brass."
+    },
+    {
+      "case_id": "vi_to_de_narrative",
+      "category": "material_substitution",
+      "severity": "major",
+      "source_text": "chiếc la bàn bạc",
+      "actual_output": "Kupferkompass",
+      "expected_concept": "silberner Kompass (silver compass)",
+      "note": "Silver changed to copper."
+    },
+    {
+      "case_id": "vi_to_ja_narrative",
+      "category": "material_substitution",
+      "severity": "major",
+      "source_text": "chiếc la bàn bạc",
+      "actual_output": "銅製の羅針盤",
+      "expected_concept": "silver compass (銀の方位磁針)",
+      "note": "Silver changed to copper."
+    },
+    {
+      "case_id": "vi_to_ko_narrative",
+      "category": "material_substitution",
+      "severity": "major",
+      "source_text": "chiếc la bàn bạc",
+      "actual_output": "구리 나침반",
+      "expected_concept": "silver compass (은색 나침반)",
+      "note": "Silver changed to copper."
+    },
+    {
+      "case_id": "vi_to_en_narrative",
+      "category": "proper_name_change",
+      "severity": "moderate",
+      "source_text": "giáo sư Lâm",
+      "actual_output": "Professor Lin",
+      "expected_concept": "Preserve personal name Lâm in Latin-script translation unless transliteration policy explicitly requires otherwise.",
+      "note": "Name was changed."
+    },
+    {
+      "case_id": "vi_to_de_narrative",
+      "category": "proper_name_change",
+      "severity": "moderate",
+      "source_text": "giáo sư Lâm",
+      "actual_output": "Professor Lin",
+      "expected_concept": "Keep Latin-script name Lâm",
+      "note": "Name was changed."
+    },
+    {
+      "case_id": "vi_to_en_narrative",
+      "category": "unsupported_specificity",
+      "severity": "minor",
+      "source_text": "một em bé",
+      "actual_output": "a little girl",
+      "expected_concept": "a child",
+      "note": "Gender added without support in source."
+    }
+  ],
+  "review_notes": [
+    "Both EN->VI and DE->VI texts ended at the actual final sentence in the curated source fixture; there was no demonstrated end-of-output omission.",
+    "One shared VI narrative was translated into 4 languages. The material mistake in all four outputs is a repeatable-pattern observation for that case, NOT a 100%-failure rate on a population of independent translations.",
+    "Japanese and Korean fluency/grammar and name transliteration require expert native-language review; no holistic quality score is assigned.",
+    "Outputs are synthetic fictional test data, not user-private translations."
+  ],
+  "decision": "NOT_PRODUCTION_READY",
+  "reason": "Semantically significant material substitution plus missing independent references and human review; real GPU integration remains disabled."
+}

@@ -68,7 +68,7 @@ def save_reports(report, path_json):
               "elapsed_seconds", "prompt_tokens", "completion_tokens",
               "tokens_per_second", "finish_reason", "warnings", "error"]
     with path_json.with_suffix(".csv").open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for c in cases:
             writer.writerow({k: json.dumps(c[k], ensure_ascii=False)
