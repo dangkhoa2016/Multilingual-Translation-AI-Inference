@@ -1,279 +1,163 @@
 # Multilingual Translation AI Inference
 
-**Status (2026-11-07): Live authenticated Modal API with four separately scaling L40S GPU workers and PostgreSQL-backed async jobs. All four Q8_0 models passed real API smoke tests. Translation quality remains uncertified; independent evaluation and hardened operational safeguards are still required.**
+> 🌐 Language / Ngôn ngữ: **English** | [Tiếng Việt](README.vi.md)
 
-This repository implements the text-only, async-first translation service described in
-[`docs/implementation-plan.vi.md`](docs/implementation-plan.vi.md). The target
-architecture is one Modal App, a CPU FastAPI gateway, four independent L40S model
-workers, and PostgreSQL as a durable job/result store (Neon is the initial hosting option). The CPU mock is retained for tests and explicit rollback; it does **not**
-translate. The deployed gateway currently uses real GPU inference.
+[![Python CI](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/actions/workflows/python-validation.yml/badge.svg?branch=main)](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/actions/workflows/python-validation.yml)
+[![Repository Audit](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/actions/workflows/repository-audit.yml/badge.svg?branch=main)](https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/actions/workflows/repository-audit.yml)
+[![License: MIT](https://img.shields.io/badge/Source%20License-MIT-yellow.svg)](LICENSE)
+[![Model License: Apache 2.0](https://img.shields.io/badge/Model%20License-Apache--2.0-blue.svg)](MODEL_LICENSE.md)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Modal](https://img.shields.io/badge/Modal-L40S%20%C3%97%204-76B900)](https://modal.com/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Status](https://img.shields.io/badge/Status-Validated%20Preview-blue)](docs/roadmap.md)
 
-## Resource names (no abbreviations)
+**An authenticated, asynchronous multilingual translation API using four
+independently scaling large-language models on NVIDIA L40S GPUs, with
+PostgreSQL-backed jobs and reproducible GGUF model provenance.**
 
-| Modal resource | Exact name |
+This project focuses on practical model-serving engineering: use one
+consistent API to select a model or compare four models, keep the gateway
+CPU-only, let each GPU scale to zero, and retain durable results when a
+model fails or a request disconnects.
+
+> **Verified preview, not a quality-certified translation product.**
+> All four backends have produced real outputs through the deployed API,
+> but accuracy across every language direction and production security
+> requirements still need independent evaluation.
+
+## What the project provides
+
+- **Four model-specific NVIDIA L40S workers**, each with its own pinned
+  GGUF artifact, persistent Modal Volume and model-specific decoding.
+- **One FastAPI gateway** with Bearer authentication, input validation,
+  idempotency keys, asynchronous submission and authenticated polling.
+- **Durable PostgreSQL state** for jobs, attempts, results, request
+  quotas and optional estimated USD admission reservations.
+- **Controlled failure handling:** definite failures are isolated and
+  ambiguous GPU executions are never retried automatically.
+- **CPU-only hourly operations monitor** for stale/uncertain jobs,
+  with read-only billing inspection through the Modal CLI.
+- **Real GPU evidence, CPU-only automated tests and bilingual guides**
+  to verify what the service actually does and does not prove.
+
+## Supported model backends
+
+| API model key | Upstream model | GPU | Quantization |
+|---|---|---|---|
+| `hy_mt2_30b` | Tencent Hy-MT2-30B-A3B | L40S 48 GB | GGUF Q8_0 |
+| `index_35b` | IndexTeam Index-Translate-35B-A3B-preview | L40S 48 GB | GGUF Q8_0 |
+| `gemma4_31b_it` | Google Gemma 4 31B IT | L40S 48 GB | GGUF Q8_0 |
+| `qwen35_35b` | Qwen3.5-35B-A3B | L40S 48 GB | GGUF Q8_0 |
+
+The API accepts `en` (English), `vi` (Vietnamese), `de` (German),
+`ja` (Japanese) and `ko` (Korean), with different source and target
+languages and up to **1,000 Unicode code points**. API support is not
+a guarantee that every translation is semantically correct.
+
+Model sources, revisions, weights, checksums and distribution licenses
+are documented in the [model catalog](docs/models.md) and
+[model license register](MODEL_LICENSE.md). No model weights are
+committed to this Git repository.
+
+## Validated results at a glance
+
+| Verification | Observed result |
 |---|---|
-| App | `translation-ai-inference-api-and-model-workers` |
-| CPU gateway | `translation_inference_fastapi_cpu_gateway` |
-| CPU mock worker | `translation_inference_cpu_mock_job_worker` |
-| API token Secret | `translation-ai-inference-api-authentication` |
-| PostgreSQL connection Secret | `translation-ai-inference-postgresql-connection` |
-| Hy-MT2 model Volume (P3) | `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights` |
-| Index-Translate model Volume (P3) | `translation-ai-inference-index-35b-a3b-preview-gguf-weights` |
-| Gemma 4 IT model Volume (P4) | `translation-ai-inference-gemma-4-31b-it-gguf-weights` |
-| Qwen3.5 model Volume (P4) | `translation-ai-inference-qwen-3-5-35b-a3b-gguf-weights` |
+| Four real model loads | PASS on four distinct L40S GPUs |
+| Model executions overlapping | PASS; four different GPU UUIDs |
+| Authenticated single-model HTTP job | Completed with real, nonmock output |
+| Four-model HTTP benchmark | 4/4 completed and persisted in PostgreSQL |
+| Exact 1,000-character benchmark | 4/4 completed; 1,001 rejected with HTTP 422 |
+| Two independent jobs sent to one model | Both completed without duplicate attempts |
+| Immediate worker reuse | Same GPU UUID returned on consecutive readiness calls |
+| Operational monitoring | Hourly CPU function, no GPU allocation or auto-retry |
 
-The database provider is configurable via `TRANSLATION_INFERENCE_DATABASE_URL`; no provider name is
-embedded in Modal resource names, environment variable names, or Python identifiers.
+These are bounded functional checks, **not performance SLAs or
+translation-quality rankings**. Hy-MT2 diagnostics exposed terminology
+and material-substitution errors that require further study.
+See [benchmarking](docs/benchmarking.md) and [reliability](docs/reliability.md).
 
-**All four Volumes are provisioned**, contain full-SHA256-verified GGUF Q8_0
-files, and are mounted by independently scaling GPU classes in the deployed App.
-The class names are `HyMT2L40SWorker`, `IndexTranslateL40SWorker`,
-`Gemma4L40SWorker`, and `Qwen35L40SWorker`. Their explicit registry is in
-`src/translation_ai_inference/resource_names.py`.
-
-## Run offline (SQLite; no Modal, hosted database, or GPU account needed)
+## Quick start — no GPU required
 
 ```bash
+git clone https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference.git
+cd Multilingual-Translation-AI-Inference
+
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -e '.[dev]'
-export TRANSLATION_INFERENCE_DATABASE_URL=sqlite+pysqlite:///./translation_inference_local.sqlite3
-export TRANSLATION_API_BEARER_TOKEN=choose-a-long-local-secret
-export TRANSLATION_DISPATCHER_MODE=inline-mock
-alembic -c db/alembic.ini upgrade head
-uvicorn translation_ai_inference.local:app --host 127.0.0.1 --port 8000
-```
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
 
-Use `http://127.0.0.1:8000/docs` for OpenAPI or:
-
-```bash
-curl -fsS http://127.0.0.1:8000/health
-curl -fsS -X POST http://127.0.0.1:8000/v1/jobs/translations \
-  -H "Authorization: Bearer $TRANSLATION_API_BEARER_TOKEN" \
-  -H 'Content-Type: application/json' -H 'Idempotency-Key: demo-translation-001' \
-  -d '{"model":"hy_mt2_30b","source_language":"en","target_language":"vi","text":"Hello, world!"}'
-```
-
-The response has `job_id` and `status_url`; `GET /v1/jobs/{id}` exposes results.
-`inline-mock` returns an *explicitly marked mock*, not a translated sentence.
-For an API-only test use `TRANSLATION_DISPATCHER_MODE=record-only` (status stays queued).
-`modal-cpu-mock` uses Modal `spawn()` and returns simulated results; the
-explicit `modal-gpu` mode uses four deployed GPU classes to translate text
-and store real results.
-
-## Run tests
-
-```bash
-python -m pytest -q
+cp .env.example .env
+# Replace the sample Bearer token in .env with a local random secret.
 python scripts/local_demo.py
+
+python -m pytest -q
+python -m ruff check .
+python scripts/audit_public_repository.py
 ```
 
-Unit tests and CI use only SQLite and CPU. They never require production secrets.
-For Codespaces development with a local `.env`, explicitly load it before running
-Alembic or Uvicorn (`set -a; source .env; set +a`). `.env` is Git-ignored.
-Provider `postgresql://` URLs are converted to the psycopg v3 SQLAlchemy driver.
+The local demo uses mock inference to exercise API and database behavior.
+**It does not download or run the large GPU models.** Real deployments
+require your own Modal and PostgreSQL configuration; see
+[deployment instructions](docs/deployment.md).
 
-## Deploy the Modal API and four L40S GPU classes
+## API example
 
-See [`docs/deployment.md`](docs/deployment.md). Use a **direct PostgreSQL connection**
-for schema migrations and a pooled connection for API/worker traffic when supported.
-Configure the existing two Modal Secrets and four verified model Volumes, then run
-`.venv/bin/modal deploy --profile YOUR_MODAL_PROFILE modal_app.py` from the
-repository root. This deploys the CPU gateway, the CPU mock fallback and **four
-model-specific L40S classes**; `min_containers=0` avoids always-on GPUs.
+Submit a real translation only after deploying the service and enabling
+the `modal-gpu` dispatcher in your private Modal Secret:
 
-With the authenticated API Secret set to `TRANSLATION_DISPATCHER_MODE=modal-gpu`,
-the gateway submits real background GPU jobs. To verify without exposing secrets
-or raw translations, load `.env`, set `TRANSLATION_GATEWAY_BASE_URL` to the
-actual deployed HTTPS gateway URL, and run `scripts/smoke_modal_gpu_api.py --run`
-for one model or add `--all-models` for all four. Both commands incur GPU charges.
-The CPU mock smoke script is **only for mock mode**.
+```bash
+export BASE_URL="https://YOUR_DEPLOYED_GATEWAY.modal.run"
+# Load your private TRANSLATION_API_BEARER_TOKEN from a secure source.
 
-## P2 operational safeguards
+curl -fsS -X POST "$BASE_URL/v1/jobs/translations" \
+  -H "Authorization: Bearer $TRANSLATION_API_BEARER_TOKEN" \
+  -H "Idempotency-Key: example-translation-001" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "hy_mt2_30b",
+    "source_language": "en",
+    "target_language": "vi",
+    "text": "The little fox crossed the bridge at sunrise.",
+    "options": {"preserve_formatting": true}
+  }'
+```
 
-The development service has PostgreSQL-backed limits for submissions and model
-runs, with same-key idempotent replays honored even at full quota, fail-closed stale-run reconciliation, explicit retry for confirmed failures,
-and opt-in terminal-job retention. See
-[`docs/p2-operational-safety.md`](docs/p2-operational-safety.md) for exact
-behavior, settings and operator commands. A timeout never automatically
-restarts a possibly active Modal execution. The protected failed-run retry
-endpoint has been verified end to end on the deployed Modal CPU mock. This is not a dollar-denominated
-GPU budget or a production security system.
+The API responds with HTTP 202, a `job_id`, and `status_url`. Poll
+`GET /v1/jobs/{job_id}` with the same Bearer token. To compare models,
+submit `POST /v1/jobs/benchmarks` with a `models` array instead of a
+single `model` key. See the [developer/API guide](docs/development.md).
 
-## Current limitations
+## Documentation
 
-- All four GPU workers and authenticated live API are operational, but no independently
-  scored human-reviewed translation benchmark or general translation-quality certification exists.
-- Four-model GPU API and PostgreSQL integration passed live smoke tests. The
-  exact 1,000-character input boundary, two concurrent jobs to one model, and
-  immediate GPU worker reuse have also passed. Extended soak, high-concurrency,
-  real fault-injection and recovery tests remain outstanding.
-- No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
-- No multi-tenant/client-specific quotas, active provider-level USD budget or full
-  security certification. P7 adds an optional *estimated* USD admission cap,
-  which does not equal actual provider billing.
-- `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
-- The initial migration contains job/run/results tables; model registry, reviews and full provenance
-  schema will be added during P2/P5.
-- `Idempotency-Key` is scoped to a configured owner. Multi-tenant identity is not implemented.
-- **Do not treat operational model inference as a translation accuracy guarantee.**
-  The live API should be limited to controlled usage pending quality and security review.
+| Topic | English | Tiếng Việt |
+|---|---|---|
+| Architecture and design | [Architecture](docs/architecture.md) | [Kiến trúc](docs/architecture.vi.md) |
+| Installation | [Deployment](docs/deployment.md) | [Triển khai](docs/deployment.vi.md) |
+| Environment and secrets | [Configuration](docs/configuration.md) | [Cấu hình](docs/configuration.vi.md) |
+| Model selection | [Models](docs/models.md) | [Model](docs/models.vi.md) |
+| Translation evaluation | [Benchmarking](docs/benchmarking.md) | [Đánh giá](docs/benchmarking.vi.md) |
+| Boundaries and concurrency | [Reliability](docs/reliability.md) | [Độ tin cậy](docs/reliability.vi.md) |
+| Monitoring and budgets | [Operations](docs/operations.md) | [Vận hành](docs/operations.vi.md) |
+| Local development | [Development](docs/development.md) | [Phát triển](docs/development.vi.md) |
+| Design trade-offs | [Decisions](docs/design-decisions.md) | [Quyết định](docs/design-decisions.vi.md) |
+| Remaining work | [Roadmap](docs/roadmap.md) | [Lộ trình](docs/roadmap.vi.md) |
+| Model copyrights | [Model licenses](MODEL_LICENSE.md) | [Giấy phép model](MODEL_LICENSE.vi.md) |
 
-See [`README.vi.md`](README.vi.md) for Vietnamese documentation.
+Raw, immutable verification evidence is retained in [`reports/`](reports).
+See [Contributing](.github/CONTRIBUTING.md), [Security](.github/SECURITY.md),
+[Support](.github/SUPPORT.md) and [Changelog](CHANGELOG.md).
 
+## Licensing and attribution
 
-## P3 — Hy-MT2 Q8_0 weight verification and L40S smoke
+Original source code: **MIT © 2026 Đăng Khoa
+<i.am@dangkhoa.dev>** — see [LICENSE](LICENSE).
 
-The official `tencent/Hy-MT2-30B-A3B-GGUF` Q8_0 candidate is pinned to
-immutable Hugging Face revisions. The **entire 31,985,729,376-byte GGUF file**
-was downloaded once into a dedicated Modal Volume and independently SHA256
-verified against the pinned official hash. A short L40S hardware probe passed.
-**Model loading and actual GPU translation are separate verification gates.**
+The four pretrained models and their GGUF derivatives remain
+**third-party Apache-2.0 licensed model artifacts** under their
+respective upstream copyrights. MIT does **not** apply to those weights.
+Review [MODEL_LICENSE.md](MODEL_LICENSE.md) and
+[third-party notices](NOTICE.md) before redistribution or commercial use.
 
-- [P3 Hy-MT2 readiness and blockers](docs/p3-hy-mt2-readiness.md)
-- [Pinned artifact manifest](models/hy_mt2_30b_q8_0.lock.json)
-- Run `python scripts/verify_hy_mt2_p3.py --online --deep-header` (metadata only).
-- Pinned llama.cpp CUDA build, full GGUF loading and real L40S EN→VI smoke **passed**.
-- A controlled 16-case EN↔VI, DE↔VI, JA↔VI, KO↔VI diagnostic also completed.
-  Source passages were 617–969 characters, and notable semantic substitutions
-  require further review before relying on the outputs for quality-critical use.
-- [L40S GPU smoke results](docs/p3-hy-mt2-l40s-smoke.md) and
-  [machine-readable report](reports/p3_hy_mt2_l40s_smoke.json).
-
-## P3 — Hy-MT2 multilingual quality diagnostic (2026-11-07)
-
-A paid, one-shot NVIDIA L40S run completed **16/16 translation requests** across
-EN↔VI, DE↔VI, JA↔VI and KO↔VI. Mean warm response latency was **0.653s** for
-structured text and **3.127s** for narrative text; highest sampled VRAM was
-**31,189 MiB**. The Modal RPC call took **52.271s**, including GPU startup.
-
-**Important:** The diagnostic exposed semantic fidelity errors: the Vietnamese
-expression for a *silver compass* was translated as *brass/copper* in all four
-target languages. Automatic placeholder checks reported zero issues, but they
-cannot establish semantic accuracy. This synthetic diagnostic has no qualified
-human-reviewed references, so **Hy-MT2 is not certified for quality-critical use**.
-
-- [Diagnostic design, measured results, and limitations](docs/p3-hy-mt2-quality-diagnostic-review.md)
-- [Complete inference outputs](reports/p3_hy_mt2_quality_diagnostic_v1.json)
-- [Preliminary semantic review](reports/p3_hy_mt2_quality_review_v1.json)
-- To validate the suite without GPU, run
-  `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py`.
-- The `--run` option **allocates a billable L40S**; it is never invoked by CI.
-
-## P3 — Material terminology glossary probe (2026-11-07)
-
-A separate, **opt-in** one-L40S run compared the frozen Hy-MT2 translation-only
-prompt with an explicit Vietnamese material glossary across 20 test inputs,
-in both variants (40/40 requests completed). The prompt guidance corrected
-the known *silver compass → copper/brass* substitution in all four retested
-language directions and the *copper box → bronze box* substitutions in EN/DE.
-It also corrected one German instruction that reversed the replacement
-relationship between silver and copper.
-
-This is a **targeted synthetic diagnostic, not an independently scored
-quality benchmark**. One generation per case and simple lexical checks
-cannot establish translation accuracy or production readiness. At the time
-of this P3 experiment the gateway was mock-only; P5 later enabled real GPU routing.
-
-- [Full run methodology, findings and limitations](docs/p3-hy-mt2-material-glossary-probe.md)
-- [Actual outputs and request measurements](reports/p3_hy_mt2_material_glossary_probe_v1.json)
-- [Preliminary semantic review](reports/p3_hy_mt2_material_glossary_review_v1.json)
-- CPU-only validation: `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py`.
-- Adding `--run` explicitly allocates a **billable L40S**.
-
-## P4 — Four models, four independent Modal L40S GPUs (2026-11-07)
-
-**Verified in a real concurrent run:** all four Q8_0 GGUF translation models
-(Hy-MT2, Index-Translate, Gemma 4 IT, Qwen3.5) successfully loaded and
-translated a sentence **simultaneously on four distinct NVIDIA L40S GPUs**.
-
-- All four model weights are stored in **separate verified Modal Volumes**,
-  each checked against its pinned full-file SHA256 before GPU loading.
-- Distinct GPU UUIDs: **4**. Highest overlapping active model requests: **4**.
-- Highest sampled per-model VRAM: **31,151–35,336 MiB** (not exact peaks).
-- Each dedicated worker is configured `min_containers=0`,
-  `buffer_containers=0`, `max_containers=1` for independent scale-to-zero.
-- The original concurrent GPU test App was **ephemeral and stopped**.
-  P5 subsequently deployed these workers into the production Modal App and
-  verified real authenticated API requests; resilience and quality testing remain.
-
-Evidence: [P4 infrastructure and runtime review](docs/p4-four-independent-l40s-workers.md)
- · [four-model concurrent output](reports/p4_four_l40s_models_runtime_smoke_v1.json)
- · [pinned model/Volume manifest](models/four_l40s_workers_q8_0_manifest.json).
-
-
-## P5 — Live asynchronous GPU inference via the API (2026-11-07)
-
-**Four real GGUF Q8_0 models are now available through one protected CPU
-FastAPI gateway.** A benchmark submitted to the deployed `POST /v1/jobs/benchmarks`
-completed all four model runs with `is_mock_result=false`; the output was
-persisted in PostgreSQL and retrieved through authenticated GET.
-
-- The deployment contains four independent, load-once L40S GPU classes with
-  `min_containers=0`, `buffer_containers=0`, `max_containers=1`.
-- An independent 849-character PostgreSQL → Modal GPU → API GET smoke passed
-  for all four models in approximately 68 seconds.
-- A real client POST benchmark passed 4/4 in approximately 54.5 seconds;
-  a one-model POST and idempotent replay also passed.
-- The protected API remains compatible with local CPU mock mode and has a
-  controlled Secret-based rollback path. No actual token is stored in Git.
-- This is **operational compatibility verification, not proof of translation
-  quality**; reference-based multilingual tests and stronger cost/security
-  limits remain pending.
-
-See the [real GPU deployment and operations guide](docs/real-gpu-deployment.md),
-[deployed GPU class readiness](reports/p5_deployed_four_gpu_classes_readiness_v1.json)
-and [actual four-model API result](reports/p5_real_gpu_api_four_model_smoke_v1.json).
-
-
-## P6 — Exact input boundary and GPU worker reuse (2026-11-07)
-
-**Live API reliability checks passed:** one benchmark containing exactly
-1,000 Unicode code points (1,002 UTF-8 bytes) completed across all four
-L40S models; 1,001 code points and other invalid inputs returned HTTP 422.
-Two simultaneous API submissions to Hy-MT2 created two independent jobs
-and both completed without retries. Two consecutive deployed Hy-MT2
-readiness calls observed reuse of the same L40S worker (25.104 s versus
-0.459 s RPC time). These are **measured results, not latency SLAs or proof
-of translation accuracy**.
-
-- [P6 methodology, outcomes and remaining risks](docs/p6-api-reliability-validation.md)
-- [Full boundary test report](reports/p6_four_models_exactly_1000_codepoints_v1.json)
-- [Same-model queue report](reports/p6_same_model_two_concurrent_jobs_v1.json)
-- [Container reuse report](reports/p6_hy_mt2_container_reuse_v1.json)
-
-Timeout, connection-loss and malformed inference responses were simulated
-in CPU-only regression tests without intentionally damaging production GPUs.
-Stress, operational failover, cost controls and a human-reviewed multilingual
-quality benchmark remain open.
-
-
-## P7 — CPU production monitoring and estimated USD admission guard (2026-11-07)
-
-**Deployed:** the shared Modal App now schedules an **hourly CPU-only**
-PostgreSQL operations monitor. It reports uncertain, stale and recently
-failed runs to Modal Logs without starting a GPU or retrying jobs. A live
-manual invocation returned `healthy`, **36 completed runs, 0 alerts**.
-
-**Optional, not yet activated:** paired environment variables
-`TRANSLATION_ESTIMATED_GPU_USD_PER_RUN` and
-`TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY` provide a PostgreSQL-atomic
-*estimated* per-model-run reservation cap. Exceeding the configured
-estimated daily budget returns HTTP 429 without creating a job. No
-budget amount is automatically selected, and estimated reservations
-**cannot cap actual Modal billing**.
-
-A separate read-only operator tool reports PostgreSQL state and Modal
-workspace billing. The November 2026 workspace summary during validation
-showed USD **1.59568943 metered** and **0 billed after allowances**;
-these numbers cover the *whole workspace* and are not a project invoice.
-An authoritative Modal Workspace Budget still must be set separately by
-an authorized operator. No email/webhook alert destination is configured.
-
-- [P7 safeguards, USD limitations and operator commands](docs/p7-production-safeguards.md)
-- [Aggregated live CPU monitoring/billing evidence](reports/p7_cpu_only_live_safeguards_snapshot_v1.json)
-- [CPU-only automated safeguards tests](tests/test_p7_production_safeguards.py)
-
-**Remaining:** provider budget configuration, external alerts, isolated
-staging fault injection, security review and independent multilingual
-translation-quality evaluation.
+This is an independent community project, not an official Tencent,
+IndexTeam, Google, Unsloth, Qwen or Modal product.
