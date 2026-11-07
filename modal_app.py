@@ -14,6 +14,8 @@ from translation_ai_inference.resource_names import (
 )
 
 modal_application = modal.App(MODAL_APP_NAME)
+# Modal CLI discovers the deployed application through the conventional `app` name.
+app = modal_application
 
 api_dependencies = modal.Image.debian_slim(python_version="3.12").pip_install(
     "fastapi==0.128.2", "pydantic==2.13.5", "sqlalchemy==2.0.50",
