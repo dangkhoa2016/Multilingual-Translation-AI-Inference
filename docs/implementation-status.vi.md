@@ -84,7 +84,7 @@ GPU trong giai đoạn mã nguồn mock.
 - Modal CPU App được deploy lại trên `bsmith888`, không bật GPU/không tạo Volume.
 - Live HTTP smoke: health/auth, `spawn()`, translation, benchmark bốn models, polling và idempotency đều pass.
 - Unit tests trên Codespaces: **36/36 passed**, Ruff + compileall pass.
-- HTTP end-to-end retry của một failed run trên Modal vẫn là bài nghiệm thu riêng; không khẳng định đã pass khi chưa có kết quả.
+- HTTP end-to-end retry trên Modal **đã pass**: retry run `failed` → HTTP 202 (`dispatching`), retry lặp cùng attempt → HTTP 409, `GET` sau đó trả `completed` với 2 attempts (1 failed + 1 mock completed). Job thử nghiệm đã được xóa; quota counters được giữ nguyên theo chính sách.
 
 - Kiểm thử bổ sung PostgreSQL: 6 concurrent requests dùng cùng key với quota chỉ 1 job → 6 phản hồi cùng 1 job, không tính quota nhiều lần; probe records đã được dọn.
 - Bộ tests sau khi sửa race idempotency/quota: **37/37 passed**.

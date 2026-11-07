@@ -65,6 +65,11 @@ or execution-uncertain states. An ambiguous Modal spawn must first be investigat
 through Modal logs/call metadata, not replayed automatically. PostgreSQL row
 locking serializes concurrent retry requests on the same job.
 
+Live verification on Modal CPU (2026-11-07): the protected retry endpoint
+returned HTTP 202 for a confirmed failed run, HTTP 409 for a duplicate
+attempt retry, and the job reached `completed` with both attempts retained.
+The temporary test job was deleted; its usage counters were not reset.
+
 ## Data retention: explicit dry-run first
 
 ```bash

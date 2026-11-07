@@ -89,7 +89,9 @@ API gateway → `spawn()` → CPU mock worker → PostgreSQL → polling.
 **Bảo vệ vận hành P2:** đã có quota giao dịch trên PostgreSQL (idempotent
 replay không bị trừ thêm quota, kể cả khi nhiều request đồng thời), retry thủ công
 chỉ với lần chạy thất bại rõ ràng, đối soát job quá hạn theo nguyên tắc không
-tự chạy lại, và công cụ xóa job cũ có chế độ xem trước. Hướng dẫn:
+tự chạy lại, và công cụ xóa job cũ có chế độ xem trước.
+API retry qua HTTP trên Modal CPU đã được nghiệm thu thực tế (HTTP 202,
+409 cho attempt trùng, job hoàn tất và giữ nguyên lịch sử). Hướng dẫn:
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md).
 
 **Chưa hoàn tất:** reconciliation tự động an toàn, cảnh báo chi phí theo USD,

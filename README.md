@@ -86,7 +86,8 @@ runs, with same-key idempotent replays honored even at full quota, fail-closed s
 and opt-in terminal-job retention. See
 [`docs/p2-operational-safety.md`](docs/p2-operational-safety.md) for exact
 behavior, settings and operator commands. A timeout never automatically
-restarts a possibly active Modal execution. This is not a dollar-denominated
+restarts a possibly active Modal execution. The protected failed-run retry
+endpoint has been verified end to end on the deployed Modal CPU mock. This is not a dollar-denominated
 GPU budget or a production security system.
 
 ## Current limitations
