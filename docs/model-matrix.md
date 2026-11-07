@@ -88,3 +88,32 @@ observed memory was 31,167 MiB and the model reached ready in 21.21s.
 This is only a one-sentence compatibility smoke. See
 [P3 L40S report](p3-hy-mt2-l40s-smoke.md). Other three models remain
 unverified on GPU.
+
+## 7. P4 update — all four real L40S workers (2026-11-07)
+
+Sections 1–4 above record the **historical P0 source review** and sections 5–6
+the initial P3 Hy-MT2 milestone. The latest P4 evidence **supersedes their
+pending-GPU flags**, but not their original provenance.
+
+All four exact Q8_0 GGUF files were staged to **four separate Modal Volumes**
+and independently SHA256-verified over their entire downloaded contents.
+
+| Model | Exact GGUF size | L40S individual smoke | Four-model concurrent smoke |
+|---|---:|---|---|
+| Hy-MT2 30B A3B | 31,985,729,376 B | PASS | PASS |
+| Index-Translate 35B A3B preview | 37,802,148,992 B | PASS | PASS |
+| Gemma 4 31B IT | 32,635,677,632 B | PASS (non-thinking configuration) | PASS |
+| Qwen3.5 35B A3B | 36,903,139,968 B | PASS | PASS |
+
+The concurrent run produced four valid nonempty short translations on
+**four distinct GPU UUIDs with overlapping execution intervals**. Sampled
+VRAM was approximately **31–35 GiB per model**; model compatibility is
+verified for the observed 4096-token context configuration, not for every
+future load shape or high-concurrency use case.
+
+This is **not** an independent quality benchmark and does not enable the
+production API. The CPU gateway remains mock-only pending GPU integration.
+
+- [Immutable model metadata and SHA256 manifest](../models/four_l40s_workers_q8_0_manifest.json)
+- [Four-model concurrent smoke JSON](../reports/p4_four_l40s_models_runtime_smoke_v1.json)
+- [P4 deployment readiness assessment](p4-four-independent-l40s-workers.md)

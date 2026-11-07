@@ -88,3 +88,24 @@ traffic until P2 reconciliation and quota controls are tested.
 Further details: [Modal scaling](https://modal.com/docs/guide/scale),
 [Modal Function lookups](https://modal.com/docs/guide/trigger-deployed-functions),
 [Neon pooling](https://neon.com/docs/connect/connection-pooling).
+
+## 7. P4 validation status (2026-11-07)
+
+Four separate GGUF Q8_0 models have been fully SHA256-verified on four
+persistent, model-specific Modal Volumes. A **real concurrent four-L40S run**
+successfully loaded all models and generated four nonempty translations on
+four distinct GPU UUIDs with overlapping execution intervals.
+
+This **does not change the deployment instructions above**: `modal_app.py`
+still deploys the original CPU gateway and CPU mock job worker. The validated
+GPU functions live in an opt-in ephemeral load/smoke harness; they are **not
+yet connected to the authenticated translation API**, and none should be
+described as a production endpoint.
+
+- [Four-worker deployment and verification report](p4-four-independent-l40s-workers.md)
+- [Raw concurrent four-model evidence](../reports/p4_four_l40s_models_runtime_smoke_v1.json)
+- [Pinned four-model manifest](../models/four_l40s_workers_q8_0_manifest.json)
+
+The next deployment phase is integrating load-once GPU workers with the
+existing PostgreSQL-backed async dispatch and preserving idempotency,
+quota and error recovery.

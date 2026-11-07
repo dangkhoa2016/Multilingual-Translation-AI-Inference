@@ -16,7 +16,7 @@ PostgreSQL lưu trạng thái và kết quả job (Neon chỉ là nhà cung cấ
 | Secret API | `translation-ai-inference-api-authentication` |
 | Secret kết nối PostgreSQL | `translation-ai-inference-postgresql-connection` |
 | Volume Hy-MT2 | `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights` |
-| Volume Index-Translate | `translation-ai-inference-index-translate-35b-a3b-preview-gguf-weights` |
+| Volume Index-Translate | `translation-ai-inference-index-35b-a3b-preview-gguf-weights` |
 | Volume Gemma 4 IT | `translation-ai-inference-gemma-4-31b-it-gguf-weights` |
 | Volume Qwen3.5 | `translation-ai-inference-qwen-3-5-35b-a3b-gguf-weights` |
 
@@ -157,3 +157,23 @@ kiểm duyệt, chưa thử nhiều seed. API production vẫn chỉ chạy CPU 
 - Chạy kiểm tra dữ liệu không cần GPU:
   `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py`.
 - Chỉ khi thêm `--run` mới cấp phát **L40S tính phí**.
+
+## P4 — Bốn model trên bốn GPU Modal L40S độc lập (07/11/2026)
+
+**Đã kiểm thử bằng GPU thực tế:** cả bốn model GGUF Q8_0
+(Hy-MT2, Index-Translate, Gemma 4 IT, Qwen3.5) đều nạp thành công
+và dịch được một câu **đồng thời trên bốn NVIDIA L40S khác nhau**.
+
+- Mỗi model có **Modal Volume riêng**; toàn bộ file GGUF đều được tính
+  SHA256 và khớp với revision đã khóa trước khi nạp GPU.
+- **4 GPU UUID khác nhau**, mức đồng thời thực tế của bốn inference: **4/4**.
+- VRAM quan sát của từng model: **31.151–35.336 MiB**, không phải peak chính xác.
+- Mỗi worker dùng `min_containers=0`, `buffer_containers=0`,
+  `max_containers=1`, có thể scale-to-zero độc lập.
+- Modal App nghiệm thu là **tạm thời và đã dừng**. CPU FastAPI gateway
+  hiện vẫn dùng **mock worker**; chưa tích hợp inference GPU vào API
+  production, chưa nghiệm thu đầu vào dài và độ ổn định.
+
+Chứng cứ: [Tài liệu P4](docs/p4-four-independent-l40s-workers.md)
+ · [Bản dịch và GPU runtime đồng thời](reports/p4_four_l40s_models_runtime_smoke_v1.json)
+ · [Manifest bốn model và Volume](models/four_l40s_workers_q8_0_manifest.json).

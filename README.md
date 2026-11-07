@@ -18,7 +18,7 @@ integration-test tool; it does **not** translate.
 | API token Secret | `translation-ai-inference-api-authentication` |
 | PostgreSQL connection Secret | `translation-ai-inference-postgresql-connection` |
 | Hy-MT2 model Volume (P3) | `translation-ai-inference-hy-mt2-30b-a3b-gguf-weights` |
-| Index-Translate model Volume (P3) | `translation-ai-inference-index-translate-35b-a3b-preview-gguf-weights` |
+| Index-Translate model Volume (P3) | `translation-ai-inference-index-35b-a3b-preview-gguf-weights` |
 | Gemma 4 IT model Volume (P4) | `translation-ai-inference-gemma-4-31b-it-gguf-weights` |
 | Qwen3.5 model Volume (P4) | `translation-ai-inference-qwen-3-5-35b-a3b-gguf-weights` |
 
@@ -165,3 +165,23 @@ CPU gateway stays mock-only.
 - [Preliminary semantic review](reports/p3_hy_mt2_material_glossary_review_v1.json)
 - CPU-only validation: `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py`.
 - Adding `--run` explicitly allocates a **billable L40S**.
+
+## P4 — Four models, four independent Modal L40S GPUs (2026-11-07)
+
+**Verified in a real concurrent run:** all four Q8_0 GGUF translation models
+(Hy-MT2, Index-Translate, Gemma 4 IT, Qwen3.5) successfully loaded and
+translated a sentence **simultaneously on four distinct NVIDIA L40S GPUs**.
+
+- All four model weights are stored in **separate verified Modal Volumes**,
+  each checked against its pinned full-file SHA256 before GPU loading.
+- Distinct GPU UUIDs: **4**. Highest overlapping active model requests: **4**.
+- Highest sampled per-model VRAM: **31,151–35,336 MiB** (not exact peaks).
+- Each dedicated worker is configured `min_containers=0`,
+  `buffer_containers=0`, `max_containers=1` for independent scale-to-zero.
+- The concurrent GPU test App was **ephemeral and stopped**. The original CPU
+  FastAPI gateway still routes to **mock workers only**: production API
+  integration, long-input and resilience testing remain outstanding.
+
+Evidence: [P4 infrastructure and runtime review](docs/p4-four-independent-l40s-workers.md)
+ · [four-model concurrent output](reports/p4_four_l40s_models_runtime_smoke_v1.json)
+ · [pinned model/Volume manifest](models/four_l40s_workers_q8_0_manifest.json).
