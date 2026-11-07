@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "model_key": "hy_mt2_30b",
+  "verification_scope": "metadata_and_bounded_gguf_header_only",
+  "checked_on": "2026-11-07",
+  "source": {
+    "repository": "tencent/Hy-MT2-30B-A3B",
+    "revision": "d3ead4dba61c09aac60a261a96ad1df3e705febb",
+    "architecture": "hy_v3",
+    "license": "apache-2.0",
+    "small_file_sha256": {
+      "config.json": "a89b1e461fffb2e9a93138e2ada37f98b7fba77fe2159f73ffd8419dc5a5d3ff",
+      "chat_template.jinja": "53e11a67caa40e918de4930d836829024973da39b357cec4f4bf5aa2da96717f",
+      "LICENSE.txt": "c739a55bdf480d9fc8a2fe3f60e84363cc9a8a8d7fbb7c7ac6aa715c127ead47"
+    }
+  },
+  "gguf": {
+    "repository": "tencent/Hy-MT2-30B-A3B-GGUF",
+    "revision": "fd3dcbb6b31e9e03923ef4f9f42500f74c3851c3",
+    "file": "Hy-MT2-30B-A3B-Q8_0.gguf",
+    "quantization": "Q8_0",
+    "size_bytes": 31985729376,
+    "sha256_from_huggingface_metadata": "d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98",
+    "license": "apache-2.0",
+    "header": {
+      "magic": "GGUF",
+      "version": 3,
+      "architecture": "hy_v3",
+      "tensor_count": 766,
+      "metadata_count": 37
+    },
+    "metadata_file_type": 7
+  },
+  "llama_cpp": {
+    "repository": "ggml-org/llama.cpp",
+    "revision": "fd27b2034905f8dadd8bd6d2cc44595f4929d391",
+    "architecture_source": "src/models/hy-v3.cpp",
+    "architecture_source_sha256": "c173397670ff141b4a83424cf7d05f8b08f585b4a7a3fa3da36cc40f6b7a8814",
+    "source_support_confirmed": true,
+    "binary_build_verified": true,
+    "full_gguf_load_verified": false,
+    "cpu_only_binary_build_verified": true,
+    "cuda_binary_build_verified": false,
+    "cpu_binary_version_output": "0.9.0-dev (build 0, commit unknown; source tarball pinned separately)"
+  },
+  "verification": {
+    "source_and_gguf_revision_pinned": true,
+    "source_small_files_hashed": true,
+    "gguf_lfs_sha256_and_remote_head_agree": true,
+    "gguf_header_range_read_only": true,
+    "full_gguf_downloaded": false,
+    "full_gguf_sha256_computed_locally": false,
+    "gpu_l40s_smoke_passed": false,
+    "ready_for_real_inference": false,
+    "remote_8mib_quantization_metadata_checked": true,
+    "cpu_only_llama_server_build_passed": true
+  }
+}

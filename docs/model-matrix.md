@@ -60,3 +60,22 @@
 - Qwen3.5 GGUF files: https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF/tree/main
 
 Các dữ kiện tại đây được xác minh ở mức **tài liệu công khai**, không đại diện một lần triển khai hoặc đánh giá chất lượng độc lập.
+
+
+## 5. P3 Hy-MT2 pinning update — 2026-11-07
+
+The first model `hy_mt2_30b` now has an immutable official checkpoint revision,
+an official GGUF revision, an exact Q8_0 file name, byte size, Hugging Face
+LFS/Xet SHA256 and bounded GGUF header verification. The pinned upstream
+llama.cpp source also contains `hy_v3` loading code.
+
+Evidence, offline/online verifier and exact model lock:
+
+- [P3 Hy-MT2 readiness](p3-hy-mt2-readiness.md)
+- [Machine-readable Hy-MT2 lock](../models/hy_mt2_30b_q8_0.lock.json)
+- `scripts/verify_hy_mt2_p3.py --online`
+
+**Do not conflate SHA256 read from HF metadata with SHA256 recomputed on
+the entire downloaded 31.99 GB file.** The full-file check and real L40S
+load test have **not** passed. Index, Gemma 4 and Qwen3.5 remain unpinned
+and unverified in P3; do not infer their readiness from Hy-MT2.

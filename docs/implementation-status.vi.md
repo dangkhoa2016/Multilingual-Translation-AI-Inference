@@ -88,3 +88,29 @@ GPU trong giai đoạn mã nguồn mock.
 
 - Kiểm thử bổ sung PostgreSQL: 6 concurrent requests dùng cùng key với quota chỉ 1 job → 6 phản hồi cùng 1 job, không tính quota nhiều lần; probe records đã được dọn.
 - Bộ tests sau khi sửa race idempotency/quota: **37/37 passed**.
+
+
+## P3 preflight Hy-MT2 — 2026-11-07
+
+- Model `tencent/Hy-MT2-30B-A3B` được pin revision
+  `d3ead4dba61c09aac60a261a96ad1df3e705febb`.
+- GGUF Q8_0 chính chủ pin revision `fd3dcbb6b31e9e03923ef4f9f42500f74c3851c3`,
+  size 31.985.729.376 bytes, SHA256 HF metadata
+  `d4e74d3b9479db5a7e2e4728879e15554b385e9549b411cc8b0ad03b2970ce98`.
+- Đã đối chiếu HEAD SHA/size và nhận HTTP 206 cho 8 KiB header:
+  GGUF v3, `hy_v3`, 766 tensors, 37 metadata records.
+- Pinned llama.cpp source commit `fd27b2034905f8dadd8bd6d2cc44595f4929d391`,
+  mã nguồn loader `hy_v3` hiện hữu, chưa chứng minh load GGUF thành công.
+- Script metadata preflight và lock JSON đã chạy thành công;
+  không tạo Model Volume, không download weights đầy đủ, không bật L40S.
+- Xem `docs/p3-hy-mt2-readiness.md` và `scripts/verify_hy_mt2_p3.py`.
+
+- Có script biên dịch llama.cpp CPU-only có thể lặp lại:
+  `scripts/build_hy_mt2_llama_cpu_preflight.sh` (không tải model, không bật GPU).
+
+- Đọc thêm tối đa 8 MiB header để kiểm tra `general.file_type=7` = Q8_0; công cụ hỗ trợ `--online --deep-header`.
+
+- Biên dịch llama.cpp pinned source trên CPU Codespaces **PASS**:
+  `llama-server --version` trả `0.9.0-dev`. Do source tarball không có `.git`,
+  version string không chứa Git SHA; provenance dựa vào pin revision và hash source.
+- Chưa build CUDA, chưa load GGUF toàn bộ, chưa chạy L40S.

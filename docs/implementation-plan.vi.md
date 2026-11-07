@@ -3,6 +3,11 @@
 > **Bản dự thảo để duyệt** · Ngày lập: **2026-11-06** · Ngôn ngữ: **Tiếng Việt**
 > **Trạng thái:** Chưa triển khai, chưa tạo database, chưa tiêu tốn GPU cho dự án này.
 > **Cập nhật tên tài nguyên (2026-11-07):** App/Secrets và env vars dùng tên trung lập với nhà cung cấp PostgreSQL. Neon chỉ là phương án host dự kiến; xem `docs/decisions/ADR-0003-postgresql-provider-independent-configuration.md`.
+> **Ghi chú tình trạng 2026-11-07:** P1/P2 CPU mock đã deploy và nghiệm thu;
+> Hy-MT2 bắt đầu P3 với khóa revision/hash metadata ở
+> [P3 readiness](p3-hy-mt2-readiness.md). Chưa dùng GPU hay tải weights.
+> Phần mô tả “chưa triển khai” bên dưới là bối cảnh của bản kế hoạch gốc.
+>
 > **Mục tiêu:** Chất lượng dịch thuật cao nhất có thể trong giới hạn **1 GPU NVIDIA L40S 48 GB cho mỗi model**, tối ưu **scale-to-zero** vì tần suất sử dụng API rất thấp.
 
 ---
