@@ -1,0 +1,23 @@
+name: Translation AI Inference - CPU Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python-tests-without-gpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install local development dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Test API and job orchestration (SQLite, CPU-only)
+        run: python -m pytest -q
+      - name: Static lint (Ruff)
+        run: python -m ruff check .
+      - name: Check import and syntax
+        run: python -m compileall -q src modal_app.py scripts
