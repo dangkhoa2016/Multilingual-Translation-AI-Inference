@@ -1,0 +1,41 @@
+{
+  "at_utc": "2026-11-07T07:38:16.413303+00:00",
+  "status": "pass",
+  "scope": "Two independent concurrent POST jobs to the same single-container L40S model",
+  "gpu_model": "hy_mt2_30b",
+  "number_of_jobs": 2,
+  "unique_job_ids": 2,
+  "post_latencies_seconds": [
+    0.487,
+    0.928
+  ],
+  "job_ids": [
+    "c959a239-0a8b-4e25-8c8d-d85a8ec56e2b",
+    "85b1919f-fd91-4125-b3cb-8f675b095ee8"
+  ],
+  "poll_requests": 18,
+  "elapsed_seconds": 29.839,
+  "runs": [
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 68,
+      "translation_sha256": "0e8d79427b2033781716f76e9aa2ea15983f4ee80f3a725c40d5a1a562be77b8",
+      "error_code": null,
+      "attempt_no": 1
+    },
+    {
+      "model": "hy_mt2_30b",
+      "status": "completed",
+      "is_mock_result": false,
+      "has_nonempty_output": true,
+      "translation_characters": 61,
+      "translation_sha256": "054eef7e0445bc81f750b613597e1a39ae24bddceaec889a6ded63bedae42efc",
+      "error_code": null,
+      "attempt_no": 1
+    }
+  ],
+  "note": "Both requests were concurrent at the API; GPU processing may be queued on max_containers=1. No claim of GPU-parallel execution for the same model."
+}
