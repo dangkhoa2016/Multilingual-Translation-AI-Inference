@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "translation-ai-inference"
+version = "0.1.0"
+description = "Translation AI Inference on Modal + PostgreSQL (mock-only P1/P2 foundation)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.128,<0.129",
+    "pydantic>=2.13,<3",
+    "SQLAlchemy>=2.0.40,<2.1",
+    "psycopg[binary]>=3.2,<4",
+    "uvicorn>=0.34,<1",
+    "modal>=1.0,<2",
+    "alembic>=1.17,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9,<10", "httpx>=0.28,<0.29", "ruff>=0.14,<1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
