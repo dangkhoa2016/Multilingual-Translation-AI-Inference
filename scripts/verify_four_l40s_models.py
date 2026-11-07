@@ -11,6 +11,7 @@ import urllib.request
 from pathlib import Path
 
 from translation_ai_inference.resource_names import (
+    MODAL_GPU_INFERENCE_CLASS_NAMES,
     MODAL_GPU_INFERENCE_FUNCTION_NAMES,
     MODAL_GPU_WEIGHT_VOLUME_NAMES,
 )
@@ -38,7 +39,8 @@ def load_manifest():
         assert model["gpu"] == "L40S"
         assert model["min_containers"] == model["buffer_containers"] == 0
         assert model["max_containers"] == 1
-        assert model["production_enabled"] is False
+        assert model["production_worker_registered"] is True
+        assert model["deployed_modal_class_name"] == MODAL_GPU_INFERENCE_CLASS_NAMES[key]
         weights.append(model["modal_volume_name"])
         functions.append(model["modal_function_name"])
     assert len(set(weights)) == len(set(functions)) == 4

@@ -17,7 +17,7 @@ def test_four_q8_0_pins_and_unique_volume_names():
     assert all(len(name) < 64 for name in volumes)
     assert all(x["gpu"] == "L40S" and x["max_containers"] == 1 for x in models.values())
     assert all(x["min_containers"] == 0 and x["buffer_containers"] == 0 for x in models.values())
-    assert all(x["production_enabled"] is False for x in models.values())
+    assert all(x["production_worker_registered"] is True for x in models.values())
     assert sum(x["gguf_size_bytes"] for x in models.values()) > 120_000_000_000
 
 
@@ -79,7 +79,7 @@ def test_capacity_overlap_check_rejects_serial_queues():
     assert peak_concurrent_intervals(samples) == 2
 
 
-def test_no_gpu_deployment_or_mock_gateway_rewrite_was_necessary():
+def test_gateway_retains_cpu_mock_fallback_and_four_registered_gpu_classes():
     gateway = (ROOT / "modal_app.py").read_text(encoding="utf-8")
     assert "translation_inference_cpu_mock_job_worker" in gateway
     assert "translation_inference_fastapi_cpu_gateway" in gateway
@@ -95,8 +95,8 @@ def test_four_real_models_completed_in_parallel_on_distinct_l40s():
     path = ROOT / "reports/four_gpu_parallel_inference.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     manifest = load_manifest()
-    assert manifest["status"] == "four_real_q8_0_models_simultaneous_l40s_smoke_passed"
-    assert manifest["concurrent_smoke"]["production_api_deployed"] is False
+    assert manifest["status"] == "real_api_and_four_gpu_worker_classes_verified"
+    assert manifest["concurrent_smoke"]["production_api_deployed_during_smoke"] is False
     assert data["status"] == "all_selected_models_passed"
     outputs = data["results"]
     assert set(outputs) == set(EXPECTED_KEYS)
