@@ -137,3 +137,23 @@ bản dịch tham chiếu và kiểm duyệt độc lập. **Chưa phê duyệt 
 - Kiểm tra dữ liệu và script không tốn GPU:
   `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py`.
 - Thêm `--run` mới cấp phát **L40S có tính phí**; CI không chạy GPU.
+
+## P3 — Kiểm thử glossary thuật ngữ chất liệu (07/11/2026)
+
+Đã chạy thêm một bài kiểm thử **có chủ đích** trên một L40S: 20 trường hợp,
+mỗi trường hợp dùng prompt mặc định và prompt có glossary tiếng Việt,
+tổng cộng **40/40 request thành công**. Glossary đã sửa lỗi
+*la bàn bạc → đồng/đồng thau* ở cả bốn hướng dịch thử lại, và sửa lỗi
+*hộp bằng đồng → đồng thau* trong bản dịch EN/DE. Một câu chỉ dẫn tiếng Đức
+bị đảo ngược chiều thay thế vật liệu cũng được sửa trong phép thử.
+
+**Không đánh đồng phép thử này với benchmark chất lượng độc lập**: bộ câu
+được thiết kế nhằm kiểm tra lỗi đã biết, chưa có bản dịch tham chiếu của người
+kiểm duyệt, chưa thử nhiều seed. API production vẫn chỉ chạy CPU mock.
+
+- [Phương pháp, kết quả và giới hạn](docs/p3-hy-mt2-material-glossary-probe.md)
+- [40 output dịch thật và thời gian xử lý](reports/p3_hy_mt2_material_glossary_probe_v1.json)
+- [Đánh giá ngữ nghĩa sơ bộ](reports/p3_hy_mt2_material_glossary_review_v1.json)
+- Chạy kiểm tra dữ liệu không cần GPU:
+  `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py`.
+- Chỉ khi thêm `--run` mới cấp phát **L40S tính phí**.

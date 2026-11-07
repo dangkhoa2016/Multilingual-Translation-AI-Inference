@@ -144,3 +144,24 @@ human-reviewed references, so **Hy-MT2 is not approved for production inference*
 - To validate the suite without GPU, run
   `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_quality_benchmark.py`.
 - The `--run` option **allocates a billable L40S**; it is never invoked by CI.
+
+## P3 — Material terminology glossary probe (2026-11-07)
+
+A separate, **opt-in** one-L40S run compared the frozen Hy-MT2 translation-only
+prompt with an explicit Vietnamese material glossary across 20 test inputs,
+in both variants (40/40 requests completed). The prompt guidance corrected
+the known *silver compass → copper/brass* substitution in all four retested
+language directions and the *copper box → bronze box* substitutions in EN/DE.
+It also corrected one German instruction that reversed the replacement
+relationship between silver and copper.
+
+This is a **targeted synthetic diagnostic, not an independently scored
+quality benchmark**. One generation per case and simple lexical checks
+cannot establish translation accuracy or production readiness. The production
+CPU gateway stays mock-only.
+
+- [Full run methodology, findings and limitations](docs/p3-hy-mt2-material-glossary-probe.md)
+- [Actual outputs and request measurements](reports/p3_hy_mt2_material_glossary_probe_v1.json)
+- [Preliminary semantic review](reports/p3_hy_mt2_material_glossary_review_v1.json)
+- CPU-only validation: `modal run --profile YOUR_MODAL_PROFILE scripts/modal_hy_mt2_material_glossary_probe.py`.
+- Adding `--run` explicitly allocates a **billable L40S**.
