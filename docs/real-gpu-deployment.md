@@ -157,3 +157,16 @@ token, database URL or full translation text from private traffic.
 authenticated real GPU translation, with 4/4 tested models. It should remain
 limited to controlled usage until quality, capacity, security and budget
 requirements are independently satisfied.
+
+
+## P7 update — operational monitoring and budget admission
+
+The deployed Modal App now includes an **hourly CPU-only operations monitor**
+with structured Modal Logs and no GPU allocations. A manual billing
+inspector can read current *workspace-wide* metered and billed charges.
+Two paired optional USD settings allow an **atomic estimated GPU run
+reservation cap** with HTTP 429 on quota exhaustion, but they do not
+measure or cap actual provider spend. The cap is not yet active because
+an explicit operator amount has not been selected.
+
+See [P7 implementation, exact limitations and operations commands](p7-production-safeguards.md).

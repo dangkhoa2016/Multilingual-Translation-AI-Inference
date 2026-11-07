@@ -164,3 +164,36 @@ the CPU mock smoke script against the active real-GPU endpoint.
 Additional guidance: [P2 operational safety](p2-operational-safety.md),
 [Modal scale-to-zero](https://modal.com/docs/guide/scale) and
 [Modal deployment rollover](https://modal.com/docs/guide/managing-deployments).
+
+
+## 7. P7 — CPU monitoring and optional estimated USD admission
+
+The main Modal App now also deploys
+`translation_inference_cpu_operations_safety_monitor`, a **CPU-only function
+scheduled hourly**. It aggregates PostgreSQL job state, reports stale
+running/dispatching work, uncertain statuses, and recent error codes in
+Modal Logs. It **never** starts GPU work or retries failed/uncertain jobs.
+The operator must check the dashboard; there is no external notification
+channel attached.
+
+The API supports optional paired Secret variables
+`TRANSLATION_ESTIMATED_GPU_USD_PER_RUN` and
+`TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY`. When explicitly configured
+together, PostgreSQL atomically reserves a fixed, **estimated** USD amount
+for every GPU model run; requests over this admission budget return HTTP 429.
+This is **not** a true Modal spending cap. The live values have not been set
+because no operator amount was provided.
+
+The authenticated workspace's actual metered/billed costs can be inspected
+without allocating GPUs:
+
+```bash
+set -a; source .env; set +a
+PYTHONPATH=src python scripts/check_production_safeguards.py \
+  --profile YOUR_MODAL_PROFILE
+```
+
+Set an authoritative Workspace Budget in Modal's **Usage and Billing**
+settings to protect actual spend. See the full
+[P7 safeguards runbook](p7-production-safeguards.md) and
+[CPU-only monitoring result](../reports/p7_cpu_only_live_safeguards_snapshot_v1.json).

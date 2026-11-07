@@ -236,3 +236,33 @@ chứng nhận chất lượng dịch**. Các lỗi timeout, mất kết nối v
 Các bước còn lại: stress/soak testing, phục hồi lỗi hạ tầng thật trong môi
 trường staging, giới hạn chi phí USD, bảo mật và benchmark đa ngôn ngữ có
 bản dịch tham chiếu được kiểm duyệt.
+
+
+## P7 — Giám sát production bằng CPU và giới hạn USD ước tính (07/11/2026)
+
+**Đã triển khai:** Modal App có thêm một monitor PostgreSQL **chỉ dùng CPU,
+chạy mỗi giờ**. Monitor ghi cảnh báo về job quá hạn, trạng thái chưa xác
+định hoặc lỗi gần đây vào Modal Logs; **không tự chạy GPU hay retry**.
+Kiểm tra thủ công trên App đang deploy trả `healthy`, **36 runs hoàn
+thành, không có cảnh báo**.
+
+**Đã viết và kiểm thử nhưng chưa kích hoạt giới hạn:** hai biến
+`TRANSLATION_ESTIMATED_GPU_USD_PER_RUN` và
+`TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY` cho phép đặt mức USD
+**ước tính** cho từng model-run và hạn mức theo ngày, cập nhật atomically
+trong PostgreSQL. Khi vượt mức ước tính, API trả HTTP 429, không tạo job.
+Chưa tự chọn con số ngân sách thay người vận hành. Đây **không phải giới
+hạn số tiền thực tế trên Modal**.
+
+Công cụ read-only theo dõi trạng thái PostgreSQL và billing toàn workspace.
+Tại thời điểm nghiệm thu tháng 11/2026, số liệu Modal là **1,59568943 USD
+metered**, **0 USD billed** sau điều chỉnh; không thể xem đây là chi phí
+riêng của bốn model hoặc bảo đảm không phát sinh phí sau này.
+Cần đặt Modal Workspace Budget riêng. Chưa kết nối kênh gửi email/webhook.
+
+- [Tài liệu bảo vệ production và hướng dẫn vận hành P7](docs/p7-production-safeguards.md)
+- [Báo cáo giám sát CPU và billing chỉ gồm số liệu tổng hợp](reports/p7_cpu_only_live_safeguards_snapshot_v1.json)
+- [Các bài test bảo vệ ngân sách và trạng thái job](tests/test_p7_production_safeguards.py)
+
+Vẫn cần: thiết lập ngân sách thực tế, kênh cảnh báo ra bên ngoài,
+kiểm thử lỗi trên staging, bảo mật và benchmark chất lượng dịch đa ngôn ngữ.

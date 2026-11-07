@@ -109,7 +109,9 @@ GPU budget or a production security system.
   immediate GPU worker reuse have also passed. Extended soak, high-concurrency,
   real fault-injection and recovery tests remain outstanding.
 - No scheduled reconciliation or automatic purger; tools are intentionally operator-invoked.
-- No multi-tenant/client-specific quotas, dollar-denominated provider budget guards or full security controls.
+- No multi-tenant/client-specific quotas, active provider-level USD budget or full
+  security certification. P7 adds an optional *estimated* USD admission cap,
+  which does not equal actual provider billing.
 - `dispatch_uncertain` requires operator investigation; automatic retry is intentionally disabled to avoid duplicate billable work.
 - The initial migration contains job/run/results tables; model registry, reviews and full provenance
   schema will be added during P2/P5.
@@ -244,3 +246,34 @@ Timeout, connection-loss and malformed inference responses were simulated
 in CPU-only regression tests without intentionally damaging production GPUs.
 Stress, operational failover, cost controls and a human-reviewed multilingual
 quality benchmark remain open.
+
+
+## P7 — CPU production monitoring and estimated USD admission guard (2026-11-07)
+
+**Deployed:** the shared Modal App now schedules an **hourly CPU-only**
+PostgreSQL operations monitor. It reports uncertain, stale and recently
+failed runs to Modal Logs without starting a GPU or retrying jobs. A live
+manual invocation returned `healthy`, **36 completed runs, 0 alerts**.
+
+**Optional, not yet activated:** paired environment variables
+`TRANSLATION_ESTIMATED_GPU_USD_PER_RUN` and
+`TRANSLATION_MAX_ESTIMATED_GPU_USD_PER_DAY` provide a PostgreSQL-atomic
+*estimated* per-model-run reservation cap. Exceeding the configured
+estimated daily budget returns HTTP 429 without creating a job. No
+budget amount is automatically selected, and estimated reservations
+**cannot cap actual Modal billing**.
+
+A separate read-only operator tool reports PostgreSQL state and Modal
+workspace billing. The November 2026 workspace summary during validation
+showed USD **1.59568943 metered** and **0 billed after allowances**;
+these numbers cover the *whole workspace* and are not a project invoice.
+An authoritative Modal Workspace Budget still must be set separately by
+an authorized operator. No email/webhook alert destination is configured.
+
+- [P7 safeguards, USD limitations and operator commands](docs/p7-production-safeguards.md)
+- [Aggregated live CPU monitoring/billing evidence](reports/p7_cpu_only_live_safeguards_snapshot_v1.json)
+- [CPU-only automated safeguards tests](tests/test_p7_production_safeguards.py)
+
+**Remaining:** provider budget configuration, external alerts, isolated
+staging fault injection, security review and independent multilingual
+translation-quality evaluation.
