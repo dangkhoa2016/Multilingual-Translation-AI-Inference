@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the source project and the upstream models independently."
+type: software
+title: "Multilingual Translation AI Inference"
+authors:
+  - family-names: "Khoa"
+    given-names: "Đăng"
+    email: "i.am@dangkhoa.dev"
+repository-code: "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference"
+url: "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference"
+license: MIT
+version: 0.1.0
+abstract: "Authenticated asynchronous multilingual translation API using four independently scaling NVIDIA L40S workers and PostgreSQL."
+keywords:
+  - multilingual-translation
+  - GPU-inference
+  - Modal
+  - PostgreSQL
+  - GGUF

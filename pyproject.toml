@@ -5,6 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "translation-ai-inference"
 version = "0.1.0"
+authors = [{name = "Đăng Khoa", email = "i.am@dangkhoa.dev"}]
+license = "MIT"
+keywords = ["translation", "multilingual", "modal", "gpu", "postgresql"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+]
 description = "Multilingual translation API with four independently scaling Modal L40S model workers and PostgreSQL"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,6 +25,12 @@ dependencies = [
     "modal>=1.0,<2",
     "alembic>=1.17,<2",
 ]
+
+[project.urls]
+Homepage = "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference"
+Source = "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference"
+Documentation = "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/tree/main/docs"
+Issues = "https://github.com/dangkhoa2016/Multilingual-Translation-AI-Inference/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=9,<10", "httpx>=0.28,<0.29", "ruff>=0.14,<1"]
