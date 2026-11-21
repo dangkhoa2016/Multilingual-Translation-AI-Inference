@@ -1,6 +1,6 @@
 # Match the exact API core pins in modal_app.py CPU gateway image.
 # CPU-only compatibility constraints, NOT a complete transitive lockfile.
 # Keep both this file and modal_app.py in sync.
-fastapi==0.162.4
+fastapi==0.165.0
 pydantic==2.14.3
 SQLAlchemy==2.0.50
